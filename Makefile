@@ -53,5 +53,8 @@ $(ASM) : $(EXE)
 ss : $(EXE)
 	size $<
 
+run : $(EXE)
+	./$<
+
 clean :
 	$(RM) $(RMFLAGS) $(DIR)
