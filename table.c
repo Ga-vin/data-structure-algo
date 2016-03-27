@@ -17,6 +17,10 @@ void printItemTblLst(ElemType item)
     
 }
 
+/* Name     : initTblLst                           */
+/* Function : To initialize table list             */
+/* Input    : size --> Volumn of table list        */
+/* Output   : Pointer to initialized table object  */
 PTableNode initTblLst(UINT32 size)
 {
     PTableNode p_node = NULL;
@@ -35,17 +39,40 @@ PTableNode initTblLst(UINT32 size)
     return (p_node);
 }
 
-STATE destroyTblLst(PTableNode tbl)
+/* Name     : destroyTblLst                          */
+/* Function : To destroy the table list              */
+/* Input    : p_tbl --> Table object to be destroy   */
+/* Output   : When destroy successfully, return TRUE */
+STATE destroyTblLst(PTableNode p_tbl)
 {
+    if (!p_tbl) {
+        fprintf(stdout, "<Error> Object is NULL.\n");
+        
+        return FALSE;
+    } else {
+        free(p_tbl);
+        p_tbl = NULL;
 
-
-    return 0;
+        return TRUE;
+    }
 }
 
-STATE clearTblLst(PTableNode tbl)
+/* Name     : clearTblLst                          */
+/* Function : To clear the table list              */
+/* Input    : p_tbl --> Table object to be cleared */
+/* Output   : When clear successfully, return TRUE */
+STATE clearTblLst(PTableNode p_tbl)
 {
+    if (!p_tbl) {
+        fprintf(stdout, "[Error] Object is NULL.\n");
 
-    return 0;
+        return FALSE;
+    }
+
+    memset((void *)p_tbl->t_data, 0, p_tbl->t_size);
+    p_tbl->t_length = 0;
+    
+    return TRUE;
 }
 
 
