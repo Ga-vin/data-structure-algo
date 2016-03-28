@@ -7,6 +7,10 @@
 int main(int argc, char *argv[])
 {
     T_initializeTblLst();
+    T_getSizeTblLst();
+    T_getLengthTblLst();
+    T_isEmptyTblLst();
+    T_isFullTblLst();
 
     return 0;
 }

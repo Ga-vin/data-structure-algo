@@ -51,6 +51,7 @@ STATE destroyTblLst(PTableNode p_tbl)
         return FALSE;
     } else {
         free(p_tbl);
+        /* When the pointer has been free, NULL should be set */
         p_tbl = NULL;
 
         return TRUE;
@@ -75,46 +76,120 @@ STATE clearTblLst(PTableNode p_tbl)
     return TRUE;
 }
 
-
+/* Name     : getLengthTblLst                      */
+/* Function : Acquire the length of table list     */
+/* Input    : tbl --> Table object to be acquired  */
+/* Output   : The length of the table list         */
 UINT32 getLengthTblLst(const TableNode tbl)
 {
-
-    return 0;
+    return tbl.t_length;
 }
 
+/* Name     : getSizeTblLst                        */
+/* Function : Acquire the size of table list       */
+/* Input    : tbl --> Table object to be acquired  */
+/* Output   : The size of the table list           */
 UINT32 getSizeTblLst(const TableNode tbl)
 {
-
-    return 0;
+    return tbl.t_size;
 }
 
-STATE getIndexByItemTblLst(const PTableNode p_tbl, UINT32 index, ElemType *p_item)
+/* Name     : getIndexByItemTblLst                 */
+/* Function : Get index by specific item           */
+/* Input    : p_tbl   --> Table object to be check */
+/*            index   --> specific index           */
+/*            *p_item --> to store item            */
+/* Output   : When find, return TRUE, or else FALSE*/
+STATE getIndexByItemTblLst(const PTableNode p_tbl,
+                           UINT32 index,
+                           ElemType *p_item)
 {
+    if (NULL == p_tbl) {
+        *p_item = 0;
+        
+        return FALSE;
+    }
 
-    return 0;
+    if (index >= getLengthTblLst(*p_tbl)) {
+        *p_item = 0;
+
+        return FALSE;
+    }
+
+    *p_item = p_tbl->t_data[index];
+    
+    return TRUE;
 }
 
-STATE getItemByIndexTblLst(const PTableNode p_tbl, UINT32 *p_index, ElemType item)
+/* Name     : getItemByIndexTblLst                 */
+/* Function : Get item by specific index           */
+/* Input    : p_tbl    --> Table object to be check*/
+/*            *p_index --> to store index          */
+/*            item     --> specific item           */
+/* Output   : When find, return TRUE, or else FALSE*/
+STATE getItemByIndexTblLst(const PTableNode p_tbl,
+                           UINT32 *p_index,
+                           ElemType item)
 {
+    UINT32 i;
+    UINT32 flag = TBL_NOT_FIND_FLAG;
+    
+    if (NULL == p_tbl) {
+        *p_index = 0;
 
-    return 0;
+        return FALSE;
+    }
+
+    for (i = 0; i != getLengthTblLst(*p_tbl); ++i) {
+        if ( item == p_tbl->t_data[i]) {
+            *p_index = i;
+            flag = TBL_FIND_FLAG;
+            break;
+        }
+    }
+
+    if ( TBL_FIND_FLAG == flag) {
+        return TRUE;
+    } else {
+        *p_index = 0;
+
+        return FALSE;
+    }
 }
 
+/* Name     : isEmptyTblLst                        */
+/* Function : Check whether the table is empty     */
+/* Input    : p_tbl    --> Table object to be check*/
+/* Output   : When it is empty, return TRUE,       */
+/*            or else FALSE.                       */
 STATE isEmptyTblLst(const PTableNode p_tbl)
 {
-
-    return 0;
+    if (NULL == p_tbl) {
+        return FALSE;
+    }
+    
+    return ((0 == getLengthTblLst(*p_tbl)) ? TRUE : FALSE);
 }
 
+/* Name     : isFullTblLst                         */
+/* Function : Check whether the table is full      */
+/* Input    : p_tbl    --> Table object to be check*/
+/* Output   : When it is full, return TRUE,        */
+/*            or else FALSE.                       */
 STATE isFullTblLst(const PTableNode p_tbl)
 {
-
-    return 0;
+    if (NULL == p_tbl) {
+        return FALSE;
+    }
+    
+    return ((getLengthTblLst(*p_tbl) == getSizeTblLst(*p_tbl))
+            ? TRUE
+            : FALSE);
 }
 
 STATE insertItemHeaderTblLst(PTableNode p_tbl, ElemType item)
 {
-
+    
     return 0;
 }
 

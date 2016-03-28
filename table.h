@@ -13,7 +13,9 @@
 #include "common.h"
 
 /* ********************* Constances Macros ********************* */
-#define    TBL_MAX_SIZE    (100)
+#define    TBL_MAX_SIZE        (100)
+#define    TBL_FIND_FLAG       (0xBB)
+#define    TBL_NOT_FIND_FLAG   (0xAA)
 
 /* ******************** New Type Definition ******************** */
 typedef    struct _TABLE_NODE_ {
