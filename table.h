@@ -39,9 +39,9 @@ UINT32    getLengthTblLst(const TableNode tbl);
 
 UINT32    getSizeTblLst(const TableNode tbl);
 
-STATE     getIndexByItemTblLst(const PTableNode p_tbl, UINT32 index, ElemType *p_item);
+STATE     getItemByIndexTblLst(const PTableNode p_tbl, UINT32 index, ElemType *p_item);
 
-STATE     getItemByIndexTblLst(const PTableNode p_tbl, UINT32 *p_index, ElemType item);
+STATE     getIndexByItemTblLst(const PTableNode p_tbl, UINT32 *p_index, ElemType item);
 
 STATE     isEmptyTblLst(const PTableNode p_tbl);
 

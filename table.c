@@ -12,9 +12,13 @@
 #include "common.h"
 #include "table.h"
 
+/* Name     : printItemTblLst                      */
+/* Function : Print item to screen                 */
+/* Input    : item --> To be printed on screen     */
+/* Output   : None                                 */
 void printItemTblLst(ElemType item)
 {
-    
+    fprintf(stdout, "%5d", item);
 }
 
 /* Name     : initTblLst                           */
@@ -94,13 +98,13 @@ UINT32 getSizeTblLst(const TableNode tbl)
     return tbl.t_size;
 }
 
-/* Name     : getIndexByItemTblLst                 */
-/* Function : Get index by specific item           */
+/* Name     : getItemByIndexTblLst                 */
+/* Function : Get item by specific index           */
 /* Input    : p_tbl   --> Table object to be check */
 /*            index   --> specific index           */
 /*            *p_item --> to store item            */
 /* Output   : When find, return TRUE, or else FALSE*/
-STATE getIndexByItemTblLst(const PTableNode p_tbl,
+STATE getItemByIndexTblLst(const PTableNode p_tbl,
                            UINT32 index,
                            ElemType *p_item)
 {
@@ -121,13 +125,13 @@ STATE getIndexByItemTblLst(const PTableNode p_tbl,
     return TRUE;
 }
 
-/* Name     : getItemByIndexTblLst                 */
-/* Function : Get item by specific index           */
+/* Name     : getIndexByItemTblLst                 */
+/* Function : Get index by specific item           */
 /* Input    : p_tbl    --> Table object to be check*/
 /*            *p_index --> to store index          */
 /*            item     --> specific item           */
 /* Output   : When find, return TRUE, or else FALSE*/
-STATE getItemByIndexTblLst(const PTableNode p_tbl,
+STATE getIndexByItemTblLst(const PTableNode p_tbl,
                            UINT32 *p_index,
                            ElemType item)
 {
@@ -187,22 +191,107 @@ STATE isFullTblLst(const PTableNode p_tbl)
             : FALSE);
 }
 
-STATE insertItemHeaderTblLst(PTableNode p_tbl, ElemType item)
+/* Name     : insertItemHeaderTblLst               */
+/* Function : Insert item to header of table list  */
+/* Input    : p_tbl    --> Table object to be check*/
+/*            item     --> To be inserted          */
+/* Output   : When it is inserted successfullly,   */
+/*            TRUE will be returned, or else FALSE */
+STATE insertItemHeaderTblLst(PTableNode p_tbl,
+                             ElemType item)
 {
+    UINT32 i;
     
-    return 0;
+    if (NULL == p_tbl) {
+        fprintf(stdout, "<Error> Table NULL.\n");
+        
+        return FALSE;
+    }
+
+    if ( (TRUE == isFullTblLst(p_tbl)) ||
+         getLengthTblLst(*p_tbl) > getSizeTblLst(*p_tbl)) {
+        fprintf(stdout, "<Error> The table is full.\n");
+
+        return OVERFLOW;
+    }
+
+    for (i = getLengthTblLst(*p_tbl); i > 0; i--) {
+        p_tbl->t_data[i] = p_tbl->t_data[i-1];
+    }
+    p_tbl->t_data[0] = item;
+    p_tbl->t_length++;
+    
+    return TRUE;
 }
 
-STATE insertItemTailTblLst(PTableNode p_tbl, ElemType item)
+/* Name     : insertItemTailTblLst                 */
+/* Function : Insert item to tail of table list    */
+/* Input    : p_tbl    --> Table object to be check*/
+/*            item     --> To be inserted          */
+/* Output   : When it is inserted successfullly,   */
+/*            TRUE will be returned, or else FALSE */
+STATE insertItemTailTblLst(PTableNode p_tbl,
+                           ElemType item)
 {
+    if (NULL == p_tbl) {
+        fprintf(stdout, "<Error> Table NULL.\n");
 
-    return 0;
+        return FALSE;
+    }
+
+    if ( ( TRUE == isFullTblLst(p_tbl)) ||
+         (getLengthTblLst(*p_tbl) > getSizeTblLst(*p_tbl))) {
+        fprintf(stdout, "<Error> Tbale is full.\n");
+
+        return FALSE;
+    }
+
+    p_tbl->t_data[getLengthTblLst(*p_tbl)] = item;
+    p_tbl->t_length++;
+    
+    return TRUE;
 }
 
-STATE insertItemByIndexTblLst(PTableNode p_tbl, UINT32 index, ElemType item)
+/* Name     : insertItemByIndexTblLst              */
+/* Function : Insert item to specific index        */
+/* Input    : p_tbl    --> Table object to be check*/
+/*            index    --> Specific index          */
+/*            item     --> To be inserted          */
+/* Output   : When it is inserted successfullly,   */
+/*            TRUE will be returned, or else FALSE */
+STATE insertItemByIndexTblLst(PTableNode p_tbl,
+                              UINT32 index,
+                              ElemType item)
 {
+    UINT32 i;
+    
+    if (NULL == p_tbl) {
+        fprintf(stdout, "<Error> Table NULL.\n");
 
-    return 0;
+        return FALSE;
+    }
+
+    if (index < 0 || index > getLengthTblLst(*p_tbl)) {
+        fprintf(stdout, "<Error> Specific index fail.\n");
+
+        return FALSE;
+    }
+
+    if ( ( TRUE == isFullTblLst(p_tbl)) ||
+         (getLengthTblLst(*p_tbl) > getSizeTblLst(*p_tbl))) {
+        fprintf(stdout, "<Error> Table is full.\n");
+
+        return OVERFLOW;
+    }
+
+    for (i = getLengthTblLst(*p_tbl); i > index; i--) {
+        p_tbl->t_data[i] = p_tbl->t_data[i-1];
+    }
+
+    p_tbl->t_data[index] = item;
+    p_tbl->t_length++;
+    
+    return TRUE;
 }
 
 STATE deleteItemHeaderTblLst(PTableNode p_tbl, ElemType *p_item)
@@ -223,8 +312,23 @@ STATE deleteItemByIndexTblLst(PTableNode p_tbl, UINT32 index, ElemType *p_item)
     return 0;
 }
 
+/* Name     : traverseTblLst                       */
+/* Function : Traverse the table list one by one   */
+/* Input    : p_tbl    --> Table object to be check*/
+/*            p_func   --> Function pointer to do  */
+/* Output   : None                                 */
 void traverseTblLst(const PTableNode p_tbl, void (*p_func)(ElemType item))
 {
+    UINT32 i;
+    ElemType item;
 
+    for (i = 0; i < getLengthTblLst(*p_tbl); ++i) {
+        if ( TRUE == getItemByIndexTblLst(p_tbl, i, &item)) {
+            p_func(item);
+        } else {
+            fprintf(stdout, "<ERROR> Can not locate item by index.\n");
+        }
+    }
+    fprintf(stdout, "\n");
     return ;
 }
