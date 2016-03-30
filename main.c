@@ -12,5 +12,11 @@ int main(int argc, char *argv[])
     T_isEmptyTblLst();
     T_isFullTblLst();
 
+    T_cleanTblLst();
+
+    T_insertItemHeaderTblLst();
+
+    T_insertItemTailTblLst();
+
     return 0;
 }

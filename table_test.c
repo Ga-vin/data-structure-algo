@@ -1,9 +1,17 @@
 #include "table_test.h"
 #include "table.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-PTableNode p_node;
+static PTableNode p_node;
+
+static inline void cleanLine(void)
+{
+    while ( '\n' != getchar()) {
+        continue;
+    }
+}
 
 void T_initializeTblLst(void)
 {
@@ -57,4 +65,57 @@ void T_isFullTblLst(void)
     } else {
         fprintf(stdout, "[*] The table is not full\n");
     }
+}
+
+void T_cleanTblLst(void)
+{
+    fprintf(stdout, "[*] The length of table is %d\n",
+            getLengthTblLst(*p_node));
+    p_node->t_length = 0;
+    fprintf(stdout, "[*] The length of table is %d\n",
+            getLengthTblLst(*p_node));
+}
+
+void T_insertItemHeaderTblLst(void)
+{
+    ElemType value;
+
+    do {
+        fprintf(stdout, "[*] Enter a number to insert> ");
+
+        scanf("%d", &value);
+        if ( TRUE != insertItemHeaderTblLst(p_node, value)) {
+            fprintf(stdout, "[*] Insert item %d Fail\n", value);
+
+            break;
+        }
+        
+        cleanLine();
+    } while (value != 12321);
+
+    fprintf(stdout, "[*] The length of table is %d\n", getLengthTblLst(*p_node));
+    fprintf(stdout, "[*] All elements of table is \n");
+    traverseTblLst(p_node, printItemTblLst);
+}
+
+void T_insertItemTailTblLst(void)
+{
+    ElemType value;
+
+    do {
+        fprintf(stdout, "[*] Enter a number to insert> ");
+
+        scanf("%d", &value);
+        if ( TRUE != insertItemTailTblLst(p_node, value)) {
+            fprintf(stdout, "[*] Insert item %d Fail\n", value);
+
+            break;
+        }
+        
+        cleanLine();
+    } while (value != 12321);
+
+    fprintf(stdout, "[*] The length of table is %d\n", getLengthTblLst(*p_node));
+    fprintf(stdout, "[*] All elements of table is \n");
+    traverseTblLst(p_node, printItemTblLst);    
 }

@@ -294,22 +294,99 @@ STATE insertItemByIndexTblLst(PTableNode p_tbl,
     return TRUE;
 }
 
+/* Name     : deleteItemHeaderTblLst               */
+/* Function : Delete item from header of list      */
+/* Input    : p_tbl    --> Table object to be check*/
+/*            p_item   --> To be stored to be del  */
+/* Output   : When it is deleted successfullly,    */
+/*            TRUE will be returned, or else FALSE */
 STATE deleteItemHeaderTblLst(PTableNode p_tbl, ElemType *p_item)
 {
+    UINT32 i;
+    
+    if ( NULL == p_tbl) {
+        fprintf(stdout, "<Error> Table NULL.\n");
+        *p_item = 0;
 
-    return 0;
+        return FALSE;
+    }
+
+    if ( TRUE == isEmptyTblLst(p_tbl)) {
+        fprintf(stdout, "<Error> Table Empty.\n");
+        *p_item = 0;
+
+        return FALSE;
+    }
+    
+    *p_item = p_tbl->t_data[0];
+    for (i = 0; i != (getLengthTblLst(*p_tbl)-1); ++i) {
+        p_tbl->t_data[i] = p_tbl->t_data[i+1];
+    }
+    p_tbl->t_length--;
+    
+    return TRUE;
 }
 
 STATE deleteItemTailTblLst(PTableNode p_tbl, ElemType *p_item)
 {
+    if ( NULL == p_tbl) {
+        fprintf(stdout, "<Error> Table NULL.\n");
+        *p_item = 0;
 
-    return 0;
+        return FALSE;
+    }
+
+    if ( TRUE == isEmptyTblLst(p_tbl)) {
+        fprintf(stdout, "<Error> Table Empty.\n");
+        *p_item = 0;
+
+        return FALSE;
+    }
+
+    *p_item = p_tbl->t_data[getLengthTblLst(*p_tbl)-1];
+    p_tbl->t_length--;
+    
+    return TRUE;
 }
 
 STATE deleteItemByIndexTblLst(PTableNode p_tbl, UINT32 index, ElemType *p_item)
 {
+    UINT32 i;
+    
+    if ( NULL == p_tbl) {
+        fprintf(stdout, "<Error> Table NULL.\n");
+        *p_item = 0;
 
-    return 0;
+        return FALSE;
+    }
+
+    if ( TRUE == isEmptyTblLst(p_tbl)) {
+        fprintf(stdout, "<Error> Table Empty.\n");
+        *p_item = 0;
+
+        return FALSE;
+    }
+
+    if (index < 0 || index > getLengthTblLst(*p_tbl)) {
+        fprintf(stdout, "<Error> Index failed.\n");
+        *p_item = 0;
+
+        return OVERFLOW;
+    }
+
+    if ( TRUE != getItemByIndexTblLst(p_tbl, index, p_item)) {
+        fprintf(stdout, "<Error> Get item fails.\n");
+        *p_item = 0;
+
+        return FALSE;
+    } else {
+        for (i = index; i < (getLengthTblLst(*p_tbl)-1); ++i) {
+            p_tbl->t_data[i] = p_tbl->t_data[i+1];
+        }
+        p_tbl->t_length--;
+    }
+    
+    return TRUE;
 }
 
 /* Name     : traverseTblLst                       */
