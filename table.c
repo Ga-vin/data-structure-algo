@@ -241,7 +241,7 @@ STATE insertItemTailTblLst(PTableNode p_tbl,
 
     if ( ( TRUE == isFullTblLst(p_tbl)) ||
          (getLengthTblLst(*p_tbl) > getSizeTblLst(*p_tbl))) {
-        fprintf(stdout, "<Error> Tbale is full.\n");
+        fprintf(stdout, "<Error> Table is full.\n");
 
         return FALSE;
     }

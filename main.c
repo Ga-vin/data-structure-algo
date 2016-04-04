@@ -18,5 +18,17 @@ int main(int argc, char *argv[])
 
     T_insertItemTailTblLst();
 
+    T_insertItemByIndexTblLst();
+
+#ifdef    __DEBUG_DELITEMHEADER_    
+    T_deleteItemHeaderTblLst();
+#endif /* __DEBUG_DELITEMHEADER_ */
+
+#ifdef    __DEBUG_DELITEMTAIL_    
+    T_deleteItemTailTblLst();
+#endif /* __DEBUG_DELITEMTAIL_ */
+
+    T_deleteItemByIndexTblLst();
+    
     return 0;
 }

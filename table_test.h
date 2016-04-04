@@ -23,4 +23,10 @@ void T_getItemByIndexTblLst(void);
 
 void T_getIndexByItemTblLst(void);
 
+void T_deleteItemHeaderTblLst(void);
+
+void T_deleteItemTailTblLst(void);
+
+void T_deleteItemByIndexTblLst(void);
+
 #endif     /* __EX_TABLE_TEST_H_ */
