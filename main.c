@@ -3,6 +3,7 @@
 
 #include "table.h"
 #include "table_test.h"
+#include "pointer.h"
 
 int main(int argc, char *argv[])
 {
