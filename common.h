@@ -30,4 +30,8 @@ typedef    UINT32          ElemType;
 #define    OVERFLOW    (-1)
 #endif /* OVERFLOW */
 
+#ifndef    EMPTY
+#define    EMPTY       (-2)
+#endif /* EMPTY */
+
 #endif /* __EX_COMMON_H_ */

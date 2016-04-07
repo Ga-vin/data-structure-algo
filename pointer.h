@@ -34,7 +34,7 @@ typedef    PointNode *    PPointNode;
 /* ************************************************************* */
 void       printItemPTblLst(ElemType item);
 
-PPointNode initPTblLst(UINT32 size);
+PointNode initPTblLst(UINT32 size);
 
 STATE      destroyPTblLst(PPointNode p_tbl);
 
@@ -44,11 +44,11 @@ UINT32     getLengthPTblLst(const PointNode tbl);
 
 UINT32     getSizePTblLst(const PointNode tbl);
 
-STATE      getItemByIndexPTblLst(PPointNode p_tbl,
+STATE      getItemByIndexPTblLst(const PPointNode p_tbl,
                                  UINT32     index,
                                  ElemType  *p_item);
 
-STATE      getIndexByItemPTblLst(PPointNode p_tbl,
+STATE      getIndexByItemPTblLst(const PPointNode p_tbl,
                                  UINT32    *p_index,
                                  ElemType   item);
 
