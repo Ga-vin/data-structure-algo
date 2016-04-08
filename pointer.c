@@ -225,7 +225,8 @@ STATE isFullPTblLst(const PPointNode p_tbl)
 STATE insertItemHeaderPTblLst(PPointNode p_tbl,
                               ElemType   item)
 {
-    UINT32 i;
+    UINT32    i;
+    ElemType *p_new_data = NULL;
     
     /* 指针为空 */
     if (!p_tbl) {
@@ -239,7 +240,16 @@ STATE insertItemHeaderPTblLst(PPointNode p_tbl,
 
     /* 数组链表为满 */ 
     if ( TRUE != isFullPTblLst(p_tbl)) {
-        return FALSE;
+        /* 数组链表已经满时，要再添加新的分配空间，叠加到之前的空间上 */
+        p_new_data = (ElemType *)realloc(p_tbl->data, (p_tbl->size + PTBL_ADD_SIZE) * sizeof(ElemType));
+        if (!p_new_data) {
+            fprintf(stdout, "[X] Realloc space fail\n");
+
+            return FALSE;
+        }
+
+        p_tbl->data  = p_new_data;
+        p_tbl->size += PTBL_ADD_SIZE;
     }
 
     /* 向后依次移动后面的length-1个元素 */
@@ -260,6 +270,8 @@ STATE insertItemHeaderPTblLst(PPointNode p_tbl,
 STATE insertItemTailPTblLst(PPointNode p_tbl,
                             ElemType   item)
 {
+    ElemType *p_new_data = NULL;
+    
     /* 指针为空 */
     if (!p_tbl) {
         return EMPTY;
@@ -272,7 +284,16 @@ STATE insertItemTailPTblLst(PPointNode p_tbl,
 
     /* 不为满 */
     if ( TRUE != isFullPTblLst(p_tbl)) {
-        return FALSE;
+        /* 数组链表为满时需要再分配新的空间 */
+        p_new_data = (ElemType *)realloc(p_tbl->data, (p_tbl->size + PTBL_ADD_SIZE) * sizeof(ElemType));
+        if (!p_new_data) {
+            fprintf(stdout, "[X] Realloc space fail\n");
+
+            return FALSE;
+        }
+
+        p_tbl->data  = p_new_data;
+        p_tbl->size += PTBL_ADD_SIZE;
     }
 
     /* 不用移动，直接添加至最后一个位置 */
@@ -292,7 +313,8 @@ STATE insertItemByIndexPTblLst(PPointNode p_tbl,
                                UINT32     index,
                                ElemType   item)
 {
-    UINT32 i;
+    UINT32    i;
+    ElemType *p_new_data = NULL;
     
     /* 指针为空 */
     if (!p_tbl) {
@@ -306,11 +328,19 @@ STATE insertItemByIndexPTblLst(PPointNode p_tbl,
 
     /* 数组链表为满 */
     if ( TRUE != isFullPTblLst(p_tbl)) {
-        return FALSE;
+        p_new_data = (ElemType *)realloc(p_tbl->data, (p_tbl->size + PTBL_ADD_SIZE) * sizeof(ElemType));
+        if (!p_new_data) {
+            fprintf(stdout, "[X] Realloc space fail\n");
+
+            return FALSE;
+        }
+
+        p_tbl->data  = p_new_data;
+        p_tbl->size += PTBL_ADD_SIZE;
     }
 
     /* 指定索引不合法 */
-    if (index > getLengthPTblLst(*p_tbl)) {
+    if (index >= getSizePTblLst(*p_tbl)) {
         return FALSE;
     }
 

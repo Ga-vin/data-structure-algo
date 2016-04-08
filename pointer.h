@@ -17,6 +17,7 @@
 #define    PTBL_MAX_SIZE         (100)
 #define    PTBL_FIND_FLAG        (0xBB)
 #define    PTBL_NOT_FIND_FLAG    (0xAA)
+#define    PTBL_ADD_SIZE         (10)
 
 /* ************************************************************* */
 /* Data-type                                                     */
