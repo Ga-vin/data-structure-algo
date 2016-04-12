@@ -352,3 +352,60 @@ STATE insertItemByIndexPTblLst(PPointNode p_tbl,
 
     return TRUE;
 }
+
+/* Name     : deleteItemHeaderPTblLst                 */
+/* Function : Delete item from header one by one      */
+/* Input    : p_tbl  --> table list to be deleted     */
+/*            p_item --> item to be deleted           */ 
+/* Output   : Return TRUE delete successfully         */
+STATE deleteItemHeaderPTblLst(PPointNode p_tbl,
+                              ElemType  *p_item)
+{
+    UINT32 index;
+    
+    if (!p_tbl) {
+        return EMPTY;
+    }
+
+    if (!p_tbl->data) {
+        return EMPTY;
+    }
+
+    if ( TRUE == isEmptyPTblLst(p_tbl)) {
+        return FALSE;
+    }
+
+    *p_item = *(p_tbl->data + 0);
+    for (index = 0; index < (getLengthPTblLst(*p_tbl) - 2); ++index) {
+        *(p_tbl->data + index) = *(p_tbl->data + index + 1);
+    }
+    p_tbl->length--;
+
+    return TRUE;
+}
+
+/* Name     : deleteItemTailPTblLst                   */
+/* Function : Delete item from tail one by one        */
+/* Input    : p_tbl  --> table list to be deleted     */
+/*            p_item --> item to be deleted           */ 
+/* Output   : Return TRUE delete successfully         */
+STATE deleteItemTailPTblLst(PPointNode p_tbl,
+                            ElemType  *p_item)
+{
+    if (!p_tbl) {
+        return EMPTY;
+    }
+
+    if (!p_tbl->data) {
+        return EMPTY;
+    }
+
+    if ( TRUE == isEmptyPTblLst(p_tbl)) {
+        return FALSE;
+    }
+
+    *p_item = *(p_tbl->data + getLengthPTblLst(*p_tbl) - 1);
+    p_tbl->length--;
+
+    return TRUE;
+}
