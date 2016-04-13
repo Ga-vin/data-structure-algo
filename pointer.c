@@ -401,6 +401,7 @@ STATE deleteItemTailPTblLst(PPointNode p_tbl,
     }
 
     if ( TRUE == isEmptyPTblLst(p_tbl)) {
+        *p_item = (ElemType)0;
         return FALSE;
     }
 
@@ -408,4 +409,57 @@ STATE deleteItemTailPTblLst(PPointNode p_tbl,
     p_tbl->length--;
 
     return TRUE;
+}
+
+/* Name     : deleteItemByIndexPTblLst                */
+/* Function : Delete item specified by index          */
+/* Input    : p_tbl  --> table list to be deleted     */
+/*            index  --> specific location            */
+/*            p_item --> item to be deleted           */ 
+/* Output   : Return TRUE delete successfully         */
+STATE deleteItemByIndexPTblLst(PPointNode p_tbl,
+                               UINT32     index,
+                               ElemType   *p_item)
+{
+    UINT32 i;
+    
+    if (!p_tbl) {
+        return EMPTY;
+    }
+
+    if (!p_tbl->data) {
+        return EMPTY;
+    }
+
+    if ( TRUE == isEmptyPTblLst(p_tbl)) {
+        *p_item = (ElemType)0;
+        return FALSE;
+    }
+
+    if (index >= getLengthPTblLst(*p_tbl)) {
+        *p_item = (ElemType)0;
+        return FALSE;
+    }
+
+    *p_item = *(p_tbl->data + index);
+    for (i = index; i < (getLengthPTblLst(*p_tbl)-1); ++i) {
+        *(p_tbl->data+i) = *(p_tbl->data+i+1);
+    }
+
+    return TRUE;
+}
+
+/* Name     : traversePTblLst                         */
+/* Function : Traverse all items one by one           */
+/* Input    : p_tbl  --> table list to be traversed   */
+/*            p_func --> item to be traversed         */ 
+/* Output   : None                                    */
+void traversePTblLst(const PPointNode p_tbl,
+                     void (*p_func)(ElemType item))
+{
+    UINT32 index;
+
+    for (index = 0; index < getLengthPTblLst(*p_tbl); ++index) {
+        p_func(*(p_tbl->data+index));
+    }
 }
