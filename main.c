@@ -4,9 +4,13 @@
 #include "table.h"
 #include "table_test.h"
 #include "pointer.h"
+#include "pointer_test.h"
+
+#define    DEBUG_WHICH_ONE    (2)
 
 int main(int argc, char *argv[])
 {
+#if DEBUG_WHICH_ONE < 1
     T_initializeTblLst();
     T_getSizeTblLst();
     T_getLengthTblLst();
@@ -30,6 +34,10 @@ int main(int argc, char *argv[])
 #endif /* __DEBUG_DELITEMTAIL_ */
 
     T_deleteItemByIndexTblLst();
+#endif /* DEBUG_WHICH_ONE */
+
+    P_initPTblLst();
+    P_clearPTblLst();
     
     return 0;
 }
