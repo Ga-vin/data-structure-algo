@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
 #include "common.h"
 #include "pointer.h"
 #include "pointer_test.h"
@@ -123,27 +125,102 @@ void P_getIndexByItemPTblLst(void)
 
 void P_isEmptyPTblLst(void)
 {
-    
+    fprintf(stdout, "[*] Test for check whether the point table is empty\n");
+
+    if ( TRUE == isEmptyPTblLst(&g_point_node)) {
+        fprintf(stdout, "[*] The pointer table is empty\n");
+    } else {
+        fprintf(stdout, "[*] The pointer table is not empty\n");
+    }
 }
 
 void P_isFullPTblLst(void)
 {
-    
+    fprintf(stdout, "[*] Test for checking whether the point table is full\n");
+
+    if ( TRUE == isFullPTblLst(&g_point_node)) {
+        fprintf(stdout, "[*] The pointer table is full\n");
+    } else {
+        fprintf(stdout, "[*] The pointer table is not full\n");
+    }
 }
 
 void P_insertItemHeaderPTblLst(void)
 {
-    
+    UINT32 value;
+
+    srand(time(0));
+
+    /* 插入直到链表为满 */
+    while ( TRUE != isFullPTblLst(&g_point_node)) {
+        value = rand() % 1000;
+        if ( TRUE != insertItemHeaderPTblLst(&g_point_node, (ElemType)value)) {
+            fprintf(stdout, "[X] Insert Item Header fail, system will terminate.\n");
+
+            return ;
+        }
+    }
+    P_traversePTblLst();
+
+    value = rand() % 200;
+    if ( TRUE != insertItemHeaderPTblLst(&g_point_node, (ElemType)value)) {
+        fprintf(stdout, "[X] Insert Item fail\n");
+
+        return ;
+    }
+    P_traversePTblLst();
 }
 
 void P_insertItemTailPTblLst(void)
 {
-    
+    UINT32 value;
+
+    srand(time(0));
+
+    /* 插入直到链表为满 */
+    while ( TRUE != isFullPTblLst(&g_point_node)) {
+        value = rand() % 1000;
+        if ( TRUE != insertItemTailPTblLst(&g_point_node, (ElemType)value)) {
+            fprintf(stdout, "[X] Insert Item Tail fail, system will terminate.\n");
+
+            return ;
+        }
+    }
+    P_traversePTblLst();
+
+    value = rand() % 200;
+    if ( TRUE != insertItemTailPTblLst(&g_point_node, (ElemType)value)) {
+        fprintf(stdout, "[X] Insert Item one above in tail fail\n");
+
+        return ;
+    }
+    P_traversePTblLst();    
 }
 
 void P_insertItemByIndexPTblLst(void)
 {
-    
+    UINT32 buffer[PTBL_MAX_SIZE];
+    UINT32 index;
+    static UINT32 counter = 0;
+    UINT32 temp_value;
+
+    memset((void *)buffer, 0, (size_t)PTBL_MAX_SIZE);
+    srand(time(0));
+
+    for (index = 0; counter != PTBL_MAX_SIZE; ++index) {
+        temp_value = rand() % 100;
+        if ( 1 != buffer[temp_value]) {
+            if ( TRUE != insertItemByIndexPTblLst(&g_point_node,
+                                                  temp_value,
+                                                  counter)) {
+                fprintf(stdout, "[X] Insert item by index fail\n");
+
+                return ;
+            }
+            buffer[temp_value] = 1;
+            counter++;
+        }
+    }
 }
 
 void P_deleteItemHeaderPTblLst(void)
@@ -163,5 +240,5 @@ void P_deleteItemByIndexPTblLst(void)
 
 void P_traversePTblLst(void)
 {
-    
+    traversePTblLst(&g_point_node, printItemPTblLst);
 }
