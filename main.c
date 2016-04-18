@@ -38,6 +38,10 @@ int main(int argc, char *argv[])
 
     P_initPTblLst();
     P_clearPTblLst();
+
+    P_insertItemHeaderPTblLst();
+    P_isEmptyPTblLst();
+    P_isFullPTblLst();
     
     return 0;
 }

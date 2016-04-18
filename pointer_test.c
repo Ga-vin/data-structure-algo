@@ -148,23 +148,34 @@ void P_isFullPTblLst(void)
 void P_insertItemHeaderPTblLst(void)
 {
     UINT32 value;
+    UINT32 counter = 0;
 
     srand(time(0));
 
     /* 插入直到链表为满 */
     while ( TRUE != isFullPTblLst(&g_point_node)) {
         value = rand() % 1000;
+        fprintf(stdout, "%d\t", value);
         if ( TRUE != insertItemHeaderPTblLst(&g_point_node, (ElemType)value)) {
-            fprintf(stdout, "[X] Insert Item Header fail, system will terminate.\n");
+            fprintf(stdout, "[X] <%s> : %d => Insert Item Header fail, system will terminate.\n", __FILE__,
+                    __LINE__);
 
             return ;
+        }
+
+        if (counter < PTBL_MAX_SIZE) {
+            fprintf(stdout, "[*] %d\n", counter++);
+        } else {
+            break;
         }
     }
     P_traversePTblLst();
 
     value = rand() % 200;
     if ( TRUE != insertItemHeaderPTblLst(&g_point_node, (ElemType)value)) {
-        fprintf(stdout, "[X] Insert Item fail\n");
+        fprintf(stdout, "[X] <%s> : %d => Insert Item fail\n",
+                __FILE__,
+                __LINE__);
 
         return ;
     }
@@ -181,7 +192,8 @@ void P_insertItemTailPTblLst(void)
     while ( TRUE != isFullPTblLst(&g_point_node)) {
         value = rand() % 1000;
         if ( TRUE != insertItemTailPTblLst(&g_point_node, (ElemType)value)) {
-            fprintf(stdout, "[X] Insert Item Tail fail, system will terminate.\n");
+            fprintf(stdout, "[X] <%s> : %d => Insert Item Tail fail, system will terminate.\n", __FILE__,
+                    __LINE__);
 
             return ;
         }
@@ -190,7 +202,9 @@ void P_insertItemTailPTblLst(void)
 
     value = rand() % 200;
     if ( TRUE != insertItemTailPTblLst(&g_point_node, (ElemType)value)) {
-        fprintf(stdout, "[X] Insert Item one above in tail fail\n");
+        fprintf(stdout, "[X] <%s> : %d => Insert Item one above in tail fail\n",
+                __FILE__,
+                __LINE__);
 
         return ;
     }
@@ -213,7 +227,9 @@ void P_insertItemByIndexPTblLst(void)
             if ( TRUE != insertItemByIndexPTblLst(&g_point_node,
                                                   temp_value,
                                                   counter)) {
-                fprintf(stdout, "[X] Insert item by index fail\n");
+                fprintf(stdout, "[X] <%s> : in %d => Insert item by index fail\n",
+                        __FILE__,
+                        __LINE__);
 
                 return ;
             }
@@ -225,17 +241,74 @@ void P_insertItemByIndexPTblLst(void)
 
 void P_deleteItemHeaderPTblLst(void)
 {
+    ElemType value;
     
+    fprintf(stdout, "[*] Test for delete item from header.\n");
+
+    while ( TRUE != isEmptyPTblLst(&g_point_node)) {
+        if ( FALSE == deleteItemHeaderPTblLst(&g_point_node,
+                                              &value)) {
+            fprintf(stdout, "[X] <%s> : in %d Delete item from header fail\n",
+                    __FILE__,
+                    __LINE__);
+
+            return ;
+        }
+
+        fprintf(stdout, "[*] %d will be deleted.\n", value);
+    }
+    fprintf(stdout, "[*] All elements have been deleted.\n");
 }
 
 void P_deleteItemTailPTblLst(void)
 {
+    ElemType value;
     
+    fprintf(stdout, "[*] Test for delete item from tail.\n");
+
+    while ( TRUE != isEmptyPTblLst(&g_point_node)) {
+        if ( FALSE == deleteItemTailPTblLst(&g_point_node,
+                                              &value)) {
+            fprintf(stdout, "[X] <%s> : in %d Delete item from tail fail\n",
+                    __FILE__,
+                    __LINE__);
+
+            return ;
+        }
+
+        fprintf(stdout, "[*] %d will be deleted.\n", value);
+    }
+    fprintf(stdout, "[*] All elements have been deleted.\n");    
 }
 
 void P_deleteItemByIndexPTblLst(void)
 {
-    
+    ElemType value;
+    UINT32   buffer[PTBL_MAX_SIZE];
+    UINT32   index;
+
+    memset((void *)buffer, 0, PTBL_MAX_SIZE);
+
+    srand(time(0));
+
+    while ( TRUE != isEmptyPTblLst(&g_point_node)) {
+        index = rand() % PTBL_MAX_SIZE;
+        if (!buffer[index]) {
+            buffer[index] = 1;
+            if ( FALSE == deleteItemByIndexPTblLst(&g_point_node,
+                                                   index,
+                                                   &value)) {
+                fprintf(stdout, "[X] <%s> : in %d Delete item by index fail\n",
+                        __FILE__,
+                        __LINE__);
+
+                return ;
+            }
+
+            fprintf(stdout, "[*] Item %d will be deleted.\n", value);
+        }
+    }
+    fprintf(stdout, "[*] All elements have been deleted.\n");
 }
 
 void P_traversePTblLst(void)
