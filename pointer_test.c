@@ -171,6 +171,7 @@ void P_insertItemHeaderPTblLst(void)
     }
     P_traversePTblLst();
 
+    P_isFullPTblLst();
     value = rand() % 200;
     if ( TRUE != insertItemHeaderPTblLst(&g_point_node, (ElemType)value)) {
         fprintf(stdout, "[X] <%s> : %d => Insert Item fail\n",
@@ -185,12 +186,14 @@ void P_insertItemHeaderPTblLst(void)
 void P_insertItemTailPTblLst(void)
 {
     UINT32 value;
+    UINT32 counter = 0;
 
     srand(time(0));
 
     /* 插入直到链表为满 */
     while ( TRUE != isFullPTblLst(&g_point_node)) {
         value = rand() % 1000;
+        fprintf(stdout, "[*] %6d : [%d]\n", value, counter++);
         if ( TRUE != insertItemTailPTblLst(&g_point_node, (ElemType)value)) {
             fprintf(stdout, "[X] <%s> : %d => Insert Item Tail fail, system will terminate.\n", __FILE__,
                     __LINE__);

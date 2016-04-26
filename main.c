@@ -42,6 +42,11 @@ int main(int argc, char *argv[])
     P_insertItemHeaderPTblLst();
     P_isEmptyPTblLst();
     P_isFullPTblLst();
+    fprintf(stdout, "[*] Clean the table list.\n");
+    P_clearPTblLst();
+
+    fprintf(stdout, "[*] Insert item into table-list in tail.\n");
+    P_insertItemTailPTblLst();
     
     return 0;
 }

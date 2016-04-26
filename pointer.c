@@ -190,9 +190,9 @@ STATE isEmptyPTblLst(const PPointNode p_tbl)
     }
 
     if (getLengthPTblLst(*p_tbl) < (getSizePTblLst(*p_tbl) - 1)) {
-        return TRUE;
-    } else {
         return FALSE;
+    } else {
+        return TRUE;
     }
 }
 
@@ -239,7 +239,7 @@ STATE insertItemHeaderPTblLst(PPointNode p_tbl,
     }
 
     /* 数组链表为满 */ 
-    if ( TRUE != isFullPTblLst(p_tbl)) {
+    if ( TRUE == isFullPTblLst(p_tbl)) {
         /* 数组链表已经满时，要再添加新的分配空间，叠加到之前的空间上 */
         p_new_data = (ElemType *)realloc(p_tbl->data, (p_tbl->size + PTBL_ADD_SIZE) * sizeof(ElemType));
         if (!p_new_data) {
@@ -253,12 +253,13 @@ STATE insertItemHeaderPTblLst(PPointNode p_tbl,
     }
 
     /* 向后依次移动后面的length-1个元素 */
-    for (i = getLengthPTblLst(*p_tbl); i > 1; i--) {
+    for (i = getLengthPTblLst(*p_tbl); i >= 1; i--) {
         *(p_tbl->data + i) = *(p_tbl->data + i - 1);
     }
     *(p_tbl->data + 0) = item;
     p_tbl->length++;
 
+    free(p_new_data);
     return TRUE;
 }
 
