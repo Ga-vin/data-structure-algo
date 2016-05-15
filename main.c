@@ -42,11 +42,27 @@ int main(int argc, char *argv[])
     P_insertItemHeaderPTblLst();
     P_isEmptyPTblLst();
     P_isFullPTblLst();
+    fprintf(stdout, "[*] Delete item from header.\n");
+#ifdef    __DEBUG_DELITEMINDEX_    
+    P_deleteItemHeaderPTblLst();
+    P_isEmptyPTblLst();
+#endif /* __DEBUG_DELITEMINDEX_ */
+    fprintf(stdout, "[*] Delete item from list by index.\n");
+    P_deleteItemByIndexPTblLst();
+
+#ifdef    __DEBUG_DELITEMINDEX_    
     fprintf(stdout, "[*] Clean the table list.\n");
     P_clearPTblLst();
 
     fprintf(stdout, "[*] Insert item into table-list in tail.\n");
     P_insertItemTailPTblLst();
+    fprintf(stdout, "[*] Delete item from tail.\n");
+    P_deleteItemTailPTblLst();
+    P_isEmptyPTblLst();
+
+    fprintf(stdout, "[*] Insert item into table-list valid random location.\n");
+    P_insertItemByIndexPTblLst();
+#endif /* __DEBUG_DELITEMINDEX_ */    
     
     return 0;
 }

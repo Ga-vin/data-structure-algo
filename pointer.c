@@ -189,10 +189,10 @@ STATE isEmptyPTblLst(const PPointNode p_tbl)
         return EMPTY;
     }
 
-    if (getLengthPTblLst(*p_tbl) < (getSizePTblLst(*p_tbl) - 1)) {
-        return FALSE;
-    } else {
+    if (!getLengthPTblLst(*p_tbl)) {
         return TRUE;
+    } else {
+        return FALSE;
     }
 }
 
@@ -283,12 +283,12 @@ STATE insertItemTailPTblLst(PPointNode p_tbl,
         return EMPTY;
     }
 
-    /* 不为满 */
-    if ( TRUE != isFullPTblLst(p_tbl)) {
+    /* 为满时重新申请新空间 */
+    if ( TRUE == isFullPTblLst(p_tbl)) {
         /* 数组链表为满时需要再分配新的空间 */
         p_new_data = (ElemType *)realloc(p_tbl->data, (p_tbl->size + PTBL_ADD_SIZE) * sizeof(ElemType));
         if (!p_new_data) {
-            fprintf(stdout, "[X] Realloc space fail\n");
+            fprintf(stdout, "[X] Realloc space fail: <%s  %d> \n", __FILE__, __LINE__);
 
             return FALSE;
         }
@@ -298,7 +298,7 @@ STATE insertItemTailPTblLst(PPointNode p_tbl,
     }
 
     /* 不用移动，直接添加至最后一个位置 */
-    *(p_tbl->data + getLengthPTblLst(*p_tbl)) = item;
+    *((p_tbl->data) + getLengthPTblLst(*p_tbl)) = item;
     p_tbl->length++;
 
     return TRUE;
@@ -328,7 +328,7 @@ STATE insertItemByIndexPTblLst(PPointNode p_tbl,
     }
 
     /* 数组链表为满 */
-    if ( TRUE != isFullPTblLst(p_tbl)) {
+    if ( TRUE == isFullPTblLst(p_tbl)) {
         p_new_data = (ElemType *)realloc(p_tbl->data, (p_tbl->size + PTBL_ADD_SIZE) * sizeof(ElemType));
         if (!p_new_data) {
             fprintf(stdout, "[X] Realloc space fail\n");
@@ -377,7 +377,7 @@ STATE deleteItemHeaderPTblLst(PPointNode p_tbl,
     }
 
     *p_item = *(p_tbl->data + 0);
-    for (index = 0; index < (getLengthPTblLst(*p_tbl) - 2); ++index) {
+    for (index = 0; index < (getLengthPTblLst(*p_tbl) - 1); ++index) {
         *(p_tbl->data + index) = *(p_tbl->data + index + 1);
     }
     p_tbl->length--;
@@ -446,6 +446,7 @@ STATE deleteItemByIndexPTblLst(PPointNode p_tbl,
     for (i = index; i < (getLengthPTblLst(*p_tbl)-1); ++i) {
         *(p_tbl->data+i) = *(p_tbl->data+i+1);
     }
+    p_tbl->length--;
 
     return TRUE;
 }
@@ -462,5 +463,9 @@ void traversePTblLst(const PPointNode p_tbl,
 
     for (index = 0; index < getLengthPTblLst(*p_tbl); ++index) {
         p_func(*(p_tbl->data+index));
+        if (0 == ((index+1) % 10))  {
+            putchar('\n');
+        }
     }
+    putchar('\n');
 }
