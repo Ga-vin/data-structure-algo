@@ -9,6 +9,7 @@ typedef    short           INT16;
 typedef    char            INT8;
 typedef    UINT32          STATE;
 typedef    UINT32          ElemType;
+typedef    INT32           BOOL;
 
 #ifndef    TRUE
 #define    TRUE        (1)
