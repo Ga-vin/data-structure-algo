@@ -11,13 +11,33 @@
 #include <string.h>
 #include "list.h"
 
+#define    GET_FILE    (__FILE__)
+#define    GET_LINE    (__LINE__)
+
+static void debugError(const char *str,
+                       const char *p_file_name,
+                       INT32 line)
+{
+    fprintf(stdout, "[X] <Error> : %s in %s-%d.\n", str,
+            p_file_name,
+            line);
+}
+
 /* Name     : createList                                                     */
 /* Function : Create a new header of list                                    */
 /* Input    : None                                                           */
 /* Output   : New list pointer                                               */
 List createList(void)
 {
-    
+    List p_list = NULL;
+
+    p_list = (List)malloc(sizeof(LNode));
+    if (!p_list) {
+        debugError("createList", GET_FILE, GET_LINE);
+        return LIST_NULL;
+    }
+
+    return p_list;
 }
 
 /* Name     : destroyList                                                    */
@@ -26,7 +46,27 @@ List createList(void)
 /* Output   : TRUE destroy successfully FALSE error                          */
 STATE destroyList(List p_list)
 {
-    
+    Position p_temp_list;
+    Position p_temp;
+
+    if (!p_list) {
+        debugError("destroyList", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+
+    p_temp_list    = p_list->p_next;
+    p_list->p_next = NULL;
+    free(p_list);
+    p_list         = LIST_NULL;
+    while (p_temp_list) {
+        /* Make sure next node of list is valid */
+        p_temp      = p_temp_list->p_next;
+        free(p_temp_list);
+        p_temp_list = p_temp;
+    }
+
+    return TRUE;
 }
 
 /* Name     : clearList                                                      */
@@ -35,7 +75,15 @@ STATE destroyList(List p_list)
 /* Output   : TRUE clear successfully FALSE error                            */
 STATE clearList(List p_list)
 {
-    
+    if (!p_list) {
+        debugError("clearList", GET_FILE, GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_list->p_next = LIST_NULL;
+
+    return TRUE;
 }
 
 /* Name     : isEmptyList                                                    */
@@ -44,16 +92,28 @@ STATE clearList(List p_list)
 /* Output   : TRUE if it is empty, or FALSE                                  */
 BOOL isEmptyList(const List p_list)
 {
-    
+    if (!p_list) {
+        debugError("isEmptyList", GET_FILE, GET_LINE);
+
+        exit(EXIT_FAILURE);
+    }
+
+    return ((LIST_NULL == p_list->p_next) ? TRUE : FALSE);
 }
 
 /* Name     : isLastList                                                     */
 /* Function : Check whether it is the last one                               */
 /* Input    : p_list    an list pointer                                      */
 /* Output   : TRUE if it is last, or FALSE                                   */
-BOOL isLastList(const List p_list)
+BOOL isLastList(const List p_list, const Position p_item)
 {
-    
+    if (!p_list || !p_item) {
+        debugError("isLastList", GET_FILE, GET_LINE);
+
+        exit(EXIT_FAILURE);
+    }
+
+    return ((LIST_NULL == p_item->p_next) ? TRUE : FALSE);
 }
 
 /* Name     : getLengthList                                                  */

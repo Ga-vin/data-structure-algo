@@ -14,8 +14,8 @@
 /* *****************************************************************************
  * New definition of new constances
  ******************************************************************************/
-typedef NULL    LIST_NULL;
-#define    LIST_EMPTY    (0)
+#define    LIST_NULL    (NULL)
+#define    LIST_EMPTY   (0)
 /* *****************************************************************************
  * New definition of new structure
  ******************************************************************************/
@@ -35,7 +35,7 @@ List     createList(void);
 STATE    destroyList(List p_list);
 STATE    clearList(List p_list);
 BOOL     isEmptyList(const List p_list);
-BOOL     isLastList(const List p_list);
+BOOL     isLastList(const List p_list, const Position p_item);
 UINT32   getLengthList(const List p_list);
 Position findItemList(const List p_list, const ElemType item);
 STATE    deleteItemHeaderList(List p_list, Position p_del_item);
