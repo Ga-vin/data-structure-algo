@@ -40,7 +40,7 @@ UINT32   getLengthList(const List p_list);
 Position findItemList(const List p_list, const ElemType item);
 STATE    deleteItemHeaderList(List p_list, Position p_del_item);
 STATE    deleteItemTailList(List p_list, Position p_del_item);
-STATE    deleteItemList(List p_list, const ElemType item, Position p_del_item);
+STATE    deleteItemList(List p_list, const ElemType item);
 Position findPreviousItemList(const List p_list, const ElemType item);
 STATE    insertItemHeaderList(List p_list, const Position p_item);
 STATE    insertItemTailList(List p_list, const Position p_item);

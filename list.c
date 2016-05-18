@@ -120,9 +120,25 @@ BOOL isLastList(const List p_list, const Position p_item)
 /* Function : Get the length of the list                                     */
 /* Input    : p_list    an list pointer                                      */
 /* Output   : Length of list                                                 */
-UINT32 getLengthList(const List p_list)
+UINT32 getLengthList(const List p_header)
 {
+    UINT32   ui_counter = 0;
+    Position p_list = LIST_NULL;
     
+    if (!p_list) {
+        debugError("Object is NULL", GET_FILE, GET_LINE);
+
+        return 0;
+    }
+
+    /* Check from the first node */
+    p_list = p_header->p_next;
+    while (p_list) {
+        ui_counter++;
+        p_list = p_list->p_next;
+    }
+
+    return ui_counter;
 }
 
 /* Name     : findItemList                                                   */
@@ -130,9 +146,32 @@ UINT32 getLengthList(const List p_list)
 /* Input    : p_list    an list pointer                                      */
 /*            item      specific value member                                */
 /* Output   : List pointer when find it, or NULL                             */
-Position findItemList(const List p_list, const ElemType item)
+Position findItemList(const List p_header, const ElemType item)
 {
+    Position p_list = LIST_NULL;
+    BOOL     b_flag = FALSE;
     
+    if (!p_header) {
+        debugError("<findItemList>:Object is NULL", GET_FILE, GET_LINE);
+
+        return LIST_NULL;
+    }
+
+    p_list = p_header->p_next;
+    while (p_list) {
+        if ( item  == p_list->item) {
+            b_flag = TRUE;
+            break;
+        }
+
+        p_list = p_list->p_next;
+    }
+
+    if ( TRUE == b_flag) {
+        return p_list;
+    } else {
+        return LIST_NULL;
+    }
 }
 
 /* Name     : deleteItemHeaderList                                           */
@@ -140,7 +179,7 @@ Position findItemList(const List p_list, const ElemType item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_del_item  will be deleted item                               */
 /* Output   : TRUE when delete successfully, or FALSE                        */
-STATE deleteItemHeaderList(List p_list, Position p_del_item)
+STATE deleteItemHeaderList(List p_header, Position p_del_item)
 {
     
 }
@@ -150,7 +189,7 @@ STATE deleteItemHeaderList(List p_list, Position p_del_item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_del_item  will be deleted item                               */
 /* Output   : TRUE when delete successfully, or FALSE                        */
-STATE deleteItemTailList(List p_list, Position p_del_item)
+STATE deleteItemTailList(List p_header, Position p_del_item)
 {
     
 }
@@ -161,9 +200,31 @@ STATE deleteItemTailList(List p_list, Position p_del_item)
 /*            item        specific item                                      */
 /*            p_del_item  will be deleted item                               */
 /* Output   : TRUE when delete successfully, or FALSE                        */
-STATE deleteItemList(List p_list, const ElemType item, Position p_del_item)
+STATE deleteItemList(List p_header, const ElemType item)
 {
+    Position p_list = LIST_NULL;
+    Position p_temp = LIST_NULL;
+
+    if ( !p_header) {
+        debugError("<deleteItemList>:Object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+
+    p_list = findPreviousItemList(p_header, item);
+    if ( LIST_NULL == p_list) {
+        debugError("<deleteItemList>:find previous item fail", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
     
+    if ( !isLastList(p_header, p_list)) {
+        p_temp = p_list->p_next;
+        p_list->p_next = p_temp->p_next;
+        free(p_temp);
+    }
+
+    return TRUE;
 }
 
 /* Name     : findPreviousItemList                                           */
@@ -171,9 +232,22 @@ STATE deleteItemList(List p_list, const ElemType item, Position p_del_item)
 /* Input    : p_list      an list pointer                                    */
 /*            item        specific item                                      */
 /* Output   : TRUE when find successfully, or FALSE                          */
-Position findPreviousItemList(const List p_list, const ElemType item)
+Position findPreviousItemList(const List p_header, const ElemType item)
 {
-    
+    Position p_list = LIST_NULL;
+
+    if ( !p_header) {
+        debugError("<findPreviousItemList> : Object is NULL", GET_FILE, GET_LINE);
+
+        return LIST_NULL;
+    }
+
+    p_list = p_header;
+    while ( (p_list->p_next) && (p_list->p_next->item != item)) {
+        p_list = p_list->p_next;
+    }
+
+    return p_list;
 }
 
 /* Name     : insertItemHeaderList                                           */
@@ -181,7 +255,7 @@ Position findPreviousItemList(const List p_list, const ElemType item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_item      inserted item                                      */
 /* Output   : TRUE when inserted successfully, or FALSE                      */
-STATE insertItemHeaderList(List p_list, const Position p_item)
+STATE insertItemHeaderList(List p_header, const Position p_item)
 {
     
 }
@@ -191,7 +265,7 @@ STATE insertItemHeaderList(List p_list, const Position p_item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_item      inserted item                                      */
 /* Output   : TRUE when inserted successfully, or FALSE                      */
-STATE insertItemTailList(List p_list, const Position p_item)
+STATE insertItemTailList(List p_header, const Position p_item)
 {
     
 }
@@ -202,7 +276,7 @@ STATE insertItemTailList(List p_list, const Position p_item)
 /*            p_item      inserted item                                      */
 /*            item        specific one                                       */
 /* Output   : TRUE when inserted successfully, or FALSE                      */
-STATE insertItemList(List p_list, const Position p_item, const ElemType item)
+STATE insertItemList(List p_header, const Position p_item, const ElemType item)
 {
     
 }
@@ -211,7 +285,7 @@ STATE insertItemList(List p_list, const Position p_item, const ElemType item)
 /* Function : Get the header of the existed list                             */
 /* Input    : p_list      an list pointer                                    */
 /* Output   : Header pointer object                                          */
-Position getHeaderList(const List p_list)
+Position getHeaderList(const List p_header)
 {
     
 }
@@ -229,7 +303,7 @@ Position getFirstList(const List p_list)
 /* Function : Retreieve the list one by one                                  */
 /* Input    : p_list      an list pointer                                    */
 /* Output   : TRUE when retrieved successfully, or FALSE                     */
-STATE retrieveList(const Position p_list)
+STATE retrieveList(const Position p_header)
 {
     
 }
