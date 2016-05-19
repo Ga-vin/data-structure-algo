@@ -181,7 +181,9 @@ Position findItemList(const List p_header, const ElemType item)
 /* Output   : TRUE when delete successfully, or FALSE                        */
 STATE deleteItemHeaderList(List p_header, Position p_del_item)
 {
-    
+
+
+    return TRUE;
 }
 
 /* Name     : deleteItemTailList                                             */
@@ -191,7 +193,9 @@ STATE deleteItemHeaderList(List p_header, Position p_del_item)
 /* Output   : TRUE when delete successfully, or FALSE                        */
 STATE deleteItemTailList(List p_header, Position p_del_item)
 {
-    
+
+
+    return TRUE;
 }
 
 /* Name     : deleteItemList                                                 */
@@ -217,7 +221,8 @@ STATE deleteItemList(List p_header, const ElemType item)
 
         return FALSE;
     }
-    
+
+    /* If the link list pointer is last, just return TRUE */
     if ( !isLastList(p_header, p_list)) {
         p_temp = p_list->p_next;
         p_list->p_next = p_temp->p_next;
@@ -255,9 +260,30 @@ Position findPreviousItemList(const List p_header, const ElemType item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_item      inserted item                                      */
 /* Output   : TRUE when inserted successfully, or FALSE                      */
-STATE insertItemHeaderList(List p_header, const Position p_item)
+STATE insertItemHeaderList(List p_header, const ElemType item)
 {
+    Position p_node = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<insertItemHeaderList>:Object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+
+    /* Malloc new node for link list */
+    p_node = (Position)malloc(sizeof(LNode));
+    if ( !p_node) {
+        debugError("<insertItemHeaderList>:Malloc object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+    p_node->item = item;
+
+    /* Link new node to the link list */
+    p_node->p_next = p_header->p_next;
+    p_header->p_next = p_node;
+
+    return TRUE;
 }
 
 /* Name     : insertItemTailList                                             */
@@ -265,20 +291,69 @@ STATE insertItemHeaderList(List p_header, const Position p_item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_item      inserted item                                      */
 /* Output   : TRUE when inserted successfully, or FALSE                      */
-STATE insertItemTailList(List p_header, const Position p_item)
+STATE insertItemTailList(List p_header, const ElemType item)
 {
-    
+    Position p_node = LIST_NULL;
+    Position p_temp = LIST_NULL;
+
+    if ( !p_header) {
+        debugError("<insertItemTailList>:Object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+
+    /* Malloc new node for inserting */
+    p_node = (Position)malloc(sizeof(LNode));
+    if ( !p_node) {
+        debugError("<insertItemTailList>:Malloc object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+    p_node->item = item;
+
+    /* Find the last node of list */
+    p_temp = p_header;
+    while ( p_temp->p_next) {
+        p_temp = p_temp->p_next;
+    }
+
+    /* Link node into list */    
+    p_node->p_next = p_temp->p_next;
+    p_temp->p_next = p_node;
+
+    return TRUE;
 }
 
 /* Name     : insertItemList                                                 */
-/* Function : Insert item into the list position by specific item            */
+/* Function : Insert item into after the list position by specific item      */
 /* Input    : p_list      an list pointer                                    */
 /*            p_item      inserted item                                      */
 /*            item        specific one                                       */
 /* Output   : TRUE when inserted successfully, or FALSE                      */
 STATE insertItemList(List p_header, const Position p_item, const ElemType item)
 {
+    Position p_node = LIST_NULL;
     
+    if ( !p_header || !p_item) {
+        debugError("<insertItemList>:Object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+
+    /* Malloc new node */
+    p_node = (Position)malloc(sizeof(LNode));
+    if ( !p_node) {
+        debugError("<insertItemList>:Malloc object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
+    p_node->item = item;
+
+    /* Assume the p_item is a node of list p_header */
+    p_node->p_next = p_item->p_next;
+    p_item->p_next = p_node;
+
+    return TRUE;
 }
 
 /* Name     : getHeaderList                                                  */
@@ -287,7 +362,9 @@ STATE insertItemList(List p_header, const Position p_item, const ElemType item)
 /* Output   : Header pointer object                                          */
 Position getHeaderList(const List p_header)
 {
-    
+    Position p_node = LIST_NULL;
+
+    return p_node;
 }
 
 /* Name     : getFirstList                                                   */
@@ -296,14 +373,35 @@ Position getHeaderList(const List p_header)
 /* Output   : Pointer points to first one                                    */
 Position getFirstList(const List p_list)
 {
-    
+    Position p_node = LIST_NULL;
+
+    return p_node;
 }
 
 /* Name     : retrieveList                                                   */
 /* Function : Retreieve the list one by one                                  */
 /* Input    : p_list      an list pointer                                    */
 /* Output   : TRUE when retrieved successfully, or FALSE                     */
-STATE retrieveList(const Position p_header)
+STATE retrieveList(const List p_header)
 {
+    Position p_node  = LIST_NULL;
+    UINT32   counter = 0;
+
+    if ( !p_header) {
+        debugError("<retrieveList>:Object is NULL", GET_FILE, GET_LINE);
+
+        return FALSE;
+    }
     
+    p_node = p_header->p_next;
+    while ( p_node) {
+        if ( !((counter+1)%10)) {
+                putchar('\n');
+        }
+        fprintf(stdout, "Node[%d] : %d\t", counter++, p_node->item);
+        p_node = p_node->p_next;
+    }
+    putchar('\n');
+    
+    return TRUE;
 }

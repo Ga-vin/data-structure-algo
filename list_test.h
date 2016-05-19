@@ -5,4 +5,12 @@ void T_createList(void);
 
 void T_destroyList(void);
 
+void T_getLengthList(void);
+
+void T_insertItemHeaderList(void);
+
+void T_insertItemTailList(void);
+
+void T_insertItemList(void);
+
 #endif /* _EXT_LIST_TEST_H_ */

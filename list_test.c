@@ -4,6 +4,8 @@
 #include "list_test.h"
 #include "list.h"
 
+List g_list_header = LIST_NULL;
+
 void T_createList(void)
 {
     List p_header = LIST_NULL;
@@ -13,15 +15,16 @@ void T_createList(void)
     }
 
     p_header = createList();
-    if (!p_header) {
+    if ( !p_header) {
         fprintf(stdout, "<X> Create list fail.\n");
 
         return ;
     } else {
         fprintf(stdout, "[*] Create list successfully.\n");
 
-        p_header->item = 0xFFFFFFF;
+        p_header->item   = 0xFFFFFFF;
         p_header->p_next = NULL;
+        g_list_header    = p_header;
     }
 }
 
@@ -51,4 +54,20 @@ void T_destroyList(void)
     } else {
         fprintf(stdout, "<*> %s: T_destroyList-destroy successfully.\n", __FILE__);
     }
+}
+
+void T_getLengthList(void)
+{
+    if ( !g_list_header) {
+        fprintf(stdout, "[X] Global list header is NULL\n");
+
+        exit(EXIT_FAILURE);
+    }
+    
+    fprintf(stdout, "[*] Length of list is %d\n", getLengthList(g_list_header));
+}
+
+void T_insertItemHeaderList(void)
+{
+    
 }

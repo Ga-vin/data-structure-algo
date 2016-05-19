@@ -60,9 +60,12 @@ int main(int argc, char *argv[])
 
 #if    DEBUG_LIST_SWITCH > 2    
     T_createList();
-#endif /* DEBUG_LIST_SWITCH > 2 */
     
     T_destroyList();
+#endif /* DEBUG_LIST_SWITCH > 2 */
+
+    T_createList();
+    T_getLengthList();
     
     return 0;
 }
