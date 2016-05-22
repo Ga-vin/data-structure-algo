@@ -66,6 +66,12 @@ int main(int argc, char *argv[])
 
     T_createList();
     T_getLengthList();
+
+    T_isEmptyList();
+
+    T_insertItemList();
+    T_getLengthList();
+    T_retrieveList();
     
     return 0;
 }

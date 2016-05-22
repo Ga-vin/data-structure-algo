@@ -4,7 +4,8 @@
 #include "list_test.h"
 #include "list.h"
 
-List g_list_header = LIST_NULL;
+List _g_list_header = LIST_NULL;
+#define    MAX_BUF_SIZE    (20)
 
 void T_createList(void)
 {
@@ -24,7 +25,7 @@ void T_createList(void)
 
         p_header->item   = 0xFFFFFFF;
         p_header->p_next = NULL;
-        g_list_header    = p_header;
+        _g_list_header   = p_header;
     }
 }
 
@@ -58,16 +59,85 @@ void T_destroyList(void)
 
 void T_getLengthList(void)
 {
-    if ( !g_list_header) {
+    if ( !_g_list_header) {
         fprintf(stdout, "[X] Global list header is NULL\n");
 
         exit(EXIT_FAILURE);
     }
     
-    fprintf(stdout, "[*] Length of list is %d\n", getLengthList(g_list_header));
+    fprintf(stdout, "[*] Length of list is %d\n", getLengthList(_g_list_header));
+}
+
+void T_isEmptyList(void)
+{
+    if ( !_g_list_header) {
+        fprintf(stdout, "[X] Global list header is NULL : <%s>-%d\n", __FILE__, __LINE__);
+
+        return ;
+    }
+
+    if ( TRUE == isEmptyList(_g_list_header)) {
+        fprintf(stdout, "[*] List is empty\n");
+    } else {
+        fprintf(stdout, "[*] List is not empty\n");
+    }
 }
 
 void T_insertItemHeaderList(void)
 {
     
 }
+
+void T_insertItemTailList(void)
+{
+    
+}
+
+void T_insertItemList(void)
+{
+    UINT32 buffer[MAX_BUF_SIZE];
+    UINT32 index;
+    
+    if ( !_g_list_header) {
+        fprintf(stdout, "[X] Global list is NULL. <%s>-%d\n",
+                __FILE__, __LINE__);
+
+        return ;
+    }
+
+    for (index = 0; index != MAX_BUF_SIZE; ++index) {
+        buffer[index] = index * 10;
+        if ( TRUE != insertItemList(_g_list_header, _g_list_header, buffer[index])) {
+            fprintf(stdout, "[X] Insert item to list fail. <%s>-%d\n", __FILE__, __LINE__);
+
+            return ;
+        } else {
+            fprintf(stdout, "[*] Insert item to list successfully. <%s>-%d\n", __FILE__, __LINE__);
+        }
+    }
+}
+
+void T_retrieveList(void)
+{
+    fprintf(stdout, "[*] Retrieve list:\n");
+
+    if ( !_g_list_header) {
+        fprintf(stdout, "[X] Global list is NULL. <%s>-%d.\n",
+                __FILE__,
+                __LINE__);
+
+        return ;
+    }
+    
+    retrieveList(_g_list_header);
+}
+
+
+
+
+
+
+
+
+
+

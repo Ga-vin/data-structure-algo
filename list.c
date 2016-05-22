@@ -125,7 +125,7 @@ UINT32 getLengthList(const List p_header)
     UINT32   ui_counter = 0;
     Position p_list = LIST_NULL;
     
-    if (!p_list) {
+    if ( !p_header) {
         debugError("Object is NULL", GET_FILE, GET_LINE);
 
         return 0;
