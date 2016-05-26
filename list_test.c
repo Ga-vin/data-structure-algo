@@ -85,12 +85,48 @@ void T_isEmptyList(void)
 
 void T_insertItemHeaderList(void)
 {
+    UINT32 buffer[MAX_BUF_SIZE];
+    UINT32 index;
+
+    fputs("[*] Insert item to header of list.\n", stdout);
     
+    for (index = 0; index != MAX_BUF_SIZE; ++index) {
+        buffer[index] = (index + 1) * 11;
+    }
+
+    for (index = 0; index != MAX_BUF_SIZE; ++index) {
+        if ( TRUE != insertItemHeaderList(_g_list_header,
+                                          buffer[index])) {
+            fprintf(stdout, "[X] Insert item fail. <%s>-%d\n",
+                    __FILE__,
+                    __LINE__);
+
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 void T_insertItemTailList(void)
 {
+    UINT32 buffer[MAX_BUF_SIZE];
+    UINT32 index;
+
+    fputs("[*] Insert item to tail of list.\n", stdout);
     
+    for (index = 0; index != MAX_BUF_SIZE; ++index) {
+        buffer[index] = (index + 1) * 100;
+    }
+
+    for (index = 0; index != MAX_BUF_SIZE; ++index) {
+        if ( TRUE != insertItemTailList(_g_list_header,
+                                          buffer[index])) {
+            fprintf(stdout, "[X] Insert item fail. <%s>-%d\n",
+                    __FILE__,
+                    __LINE__);
+
+            exit(EXIT_FAILURE);
+        }
+    }    
 }
 
 void T_insertItemList(void)
@@ -132,7 +168,28 @@ void T_retrieveList(void)
     retrieveList(_g_list_header);
 }
 
+void T_clearList(void)
+{
+    if ( !_g_list_header) {
+        fprintf(stdout, "[X] List header is NULL. <%s>-%d\n",
+                __FILE__,
+                __LINE__);
 
+        exit(EXIT_FAILURE);
+    }
+
+    if ( FALSE == clearList(_g_list_header)) {
+        fprintf(stdout, "[X] Clear list fail.<%s>-%d\n",
+                __FILE__,
+                __LINE__);
+
+        exit(EXIT_FAILURE);
+    } else {
+        if ( !getLengthList(_g_list_header)) {
+            fprintf(stdout, "[*] Clear list successfully.\n");            
+        }
+    }
+}
 
 
 

@@ -72,6 +72,18 @@ int main(int argc, char *argv[])
     T_insertItemList();
     T_getLengthList();
     T_retrieveList();
+
+    T_clearList();
+    
+    T_insertItemHeaderList();
+    T_getLengthList();
+    T_retrieveList();
+
+    T_clearList();
+
+    T_insertItemTailList();
+    T_getLengthList();
+    T_retrieveList();
     
     return 0;
 }
