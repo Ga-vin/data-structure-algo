@@ -7,6 +7,13 @@
 List _g_list_header = LIST_NULL;
 #define    MAX_BUF_SIZE    (20)
 
+static void cleanLine(void)
+{
+    while ( '\n' != getchar()) {
+        ;
+    }
+}
+
 void T_createList(void)
 {
     List p_header = LIST_NULL;
@@ -191,10 +198,36 @@ void T_clearList(void)
     }
 }
 
+void T_deleteItemHeaderList(void)
+{
+    int      user_get;
+    ElemType value_to_be_deleted;
+    
+    if ( !_g_list_header) {
+        fprintf(stdout, "Gloabl list header is NULL: <%s>-%d\n",
+                __FILE__,
+                __LINE__);
 
+        return ;
+    }
 
+    do {
+        if ( TRUE != deleteItemHeaderList(_g_list_header, &value_to_be_deleted)) {
+            fprintf(stdout, "<T_deleteItemHeaderList> delete fail: <%s>-%d\n",
+                    __FILE__,
+                    __LINE__);
 
+            return ;
+        }
 
+        T_getLengthList();
+        T_retrieveList();
 
+        puts("Do you want to continue to delete? <4 to quit>");
+        scanf("%d", &user_get);
+        cleanLine();
+    } while ( 4 != user_get);
 
-
+    T_getLengthList();
+    T_retrieveList();
+}

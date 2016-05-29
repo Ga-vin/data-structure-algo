@@ -179,9 +179,28 @@ Position findItemList(const List p_header, const ElemType item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_del_item  will be deleted item                               */
 /* Output   : TRUE when delete successfully, or FALSE                        */
-STATE deleteItemHeaderList(List p_header, Position p_del_item)
+STATE deleteItemHeaderList(List p_header, ElemType *p_del_item)
 {
+    Position p_temp = LIST_NULL;
+    
+    if ( !p_header) {
+        debugError("<deleteItemHeaderList> object is NULL", GET_FILE,
+                   GET_LINE);
 
+        return FALSE;
+    }
+
+    p_temp = p_header->p_next;
+    if ( !p_temp) {
+        debugError("<deleteItemHeaderList> next is NULL",
+                   GET_FILE,
+                   GET_LINE);
+
+        return FALSE;
+    }
+    *p_del_item = p_temp->item;
+    p_header->p_next = p_temp->p_next;
+    free(p_temp);
 
     return TRUE;
 }
@@ -191,9 +210,17 @@ STATE deleteItemHeaderList(List p_header, Position p_del_item)
 /* Input    : p_list      an list pointer                                    */
 /*            p_del_item  will be deleted item                               */
 /* Output   : TRUE when delete successfully, or FALSE                        */
-STATE deleteItemTailList(List p_header, Position p_del_item)
+STATE deleteItemTailList(List p_header, ElemType *p_del_item)
 {
+    if ( !p_header) {
+        debugError("<deleteItemTailList> header is NULL",
+                   GET_FILE,
+                   GET_LINE);
 
+        return FALSE;
+    }
+
+    
 
     return TRUE;
 }
@@ -376,6 +403,35 @@ Position getFirstList(const List p_list)
     Position p_node = LIST_NULL;
 
     return p_node;
+}
+
+/* Name     : findLastList                                                   */
+/* Function : Find the last node of the list                                 */
+/* Input    : p_list      an list pointer                                    */
+/* Output   : Last node when found, or else LIST_NULL                        */
+Position findLastList(const List p_header)
+{
+    Position p_temp = LIST_NULL;
+    
+    if ( !p_header) {
+        debugError("<findLastList> header is NULL",
+                   GET_FILE,
+                   GET_LINE);
+
+        return LIST_NULL;
+    }
+
+    p_temp = p_header->p_next;
+    while (p_temp) {
+        if ( LIST_NULL != p_temp->p_next) {
+            p_temp = p_temp->p_next;
+            continue;
+        } else {
+            return p_temp;
+        }
+    }
+
+    return p_temp;
 }
 
 /* Name     : retrieveList                                                   */

@@ -38,8 +38,8 @@ BOOL     isEmptyList(const List p_list);
 BOOL     isLastList(const List p_list, const Position p_item);
 UINT32   getLengthList(const List p_list);
 Position findItemList(const List p_list, const ElemType item);
-STATE    deleteItemHeaderList(List p_list, Position p_del_item);
-STATE    deleteItemTailList(List p_list, Position p_del_item);
+STATE    deleteItemHeaderList(List p_list, ElemType *p_del_item);
+STATE    deleteItemTailList(List p_list, ElemType *p_del_item);
 STATE    deleteItemList(List p_list, const ElemType item);
 Position findPreviousItemList(const List p_list, const ElemType item);
 STATE    insertItemHeaderList(List p_list, const ElemType item);
@@ -47,7 +47,7 @@ STATE    insertItemTailList(List p_list, const ElemType item);
 STATE    insertItemList(List p_list, const Position p_item, const ElemType item);
 Position getHeaderList(const List p_list);
 Position getFirstList(const List p_list);
+Position findLastList(const List p_list);
 STATE    retrieveList(const List p_list);
-
 
 #endif /* __EXT_LIST_H_ */

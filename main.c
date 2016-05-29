@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
 
     T_isEmptyList();
 
+#if 0    
     T_insertItemList();
     T_getLengthList();
     T_retrieveList();
@@ -78,12 +79,15 @@ int main(int argc, char *argv[])
     T_insertItemHeaderList();
     T_getLengthList();
     T_retrieveList();
+#endif    
 
     T_clearList();
 
     T_insertItemTailList();
     T_getLengthList();
     T_retrieveList();
+
+    T_deleteItemHeaderList();
     
     return 0;
 }
