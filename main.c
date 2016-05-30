@@ -88,6 +88,11 @@ int main(int argc, char *argv[])
     T_retrieveList();
 
     T_deleteItemHeaderList();
+    T_findLastList();
+
+    T_deleteItemTailList();
+    
+    T_destroyList();
     
     return 0;
 }

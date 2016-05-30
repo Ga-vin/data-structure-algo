@@ -19,4 +19,10 @@ void T_insertItemList(void);
 
 void T_clearList(void);
 
+void T_findLastList(void);
+
+void T_deleteItemHeaderList(void);
+
+void T_deleteItemTailList(void);
+
 #endif /* _EXT_LIST_TEST_H_ */

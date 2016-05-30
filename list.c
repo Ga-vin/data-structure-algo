@@ -212,6 +212,9 @@ STATE deleteItemHeaderList(List p_header, ElemType *p_del_item)
 /* Output   : TRUE when delete successfully, or FALSE                        */
 STATE deleteItemTailList(List p_header, ElemType *p_del_item)
 {
+    Position p_prev = LIST_NULL;
+    Position p_next = LIST_NULL;
+    
     if ( !p_header) {
         debugError("<deleteItemTailList> header is NULL",
                    GET_FILE,
@@ -220,7 +223,27 @@ STATE deleteItemTailList(List p_header, ElemType *p_del_item)
         return FALSE;
     }
 
-    
+    if ( TRUE != isEmptyList(p_header)) {
+        p_prev = p_header;
+        p_next = p_header->p_next;
+
+        while ( LIST_NULL != p_next->p_next) {
+            p_prev = p_next;
+            p_next = p_next->p_next;
+        }
+
+        *p_del_item    = p_next->item;
+        p_prev->p_next = LIST_NULL;
+        free(p_next);
+
+        return TRUE;
+    } else {
+        debugError("<deleteItemTailList> list is empty: <%s>-%d\n",
+                   GET_FILE,
+                   GET_LINE);
+
+        return FALSE;
+    }
 
     return TRUE;
 }
