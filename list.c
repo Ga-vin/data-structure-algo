@@ -141,6 +141,74 @@ UINT32 getLengthList(const List p_header)
     return ui_counter;
 }
 
+/* Name     : getItemByIndexList                                             */
+/* Function : Get the item by specific index                                 */
+/* Input    : p_list    an list pointer
+              index     specific location
+              item      get value member                                     */
+/* Output   : When get it, TRUE will be returned, or else FALSE              */
+STATE getItemByIndexList(const List p_header, UINT32 index, ElemType *p_value)
+{
+    Position p_temp = LIST_NULL;
+    UINT32   i = 1;
+
+    if ( !p_header) {
+        debugError("<getItemByIndexList> header is NULL",
+                   GET_FILE,
+                   GET_LINE);
+
+        return FALSE;
+    }
+
+    p_temp = p_header->p_next;
+    while ( (LIST_NULL != p_temp) && i < index) {
+        p_temp = p_temp->p_next;
+        ++i;
+    }
+
+    if ( !p_temp || i > index) {
+        return FALSE;
+    }
+
+    *p_value = p_temp->item;
+
+    return TRUE;
+}
+
+/* Name     : getIndexByItemList                                             */
+/* Function : Get index by specific item in the list                         */
+/* Input    : p_list    an list pointer
+              value     specific item
+              p_index   get value member                                     */
+/* Output   : When find it, TRUE will be returned, or else FALSE             */
+STATE getIndexByItemList(const List p_header, UINT32 value, UINT32 *p_index)
+{
+    Position p_temp  = LIST_NULL;
+    UINT32   counter = 0;
+
+    if ( !p_header) {
+        debugError("<getIndexByItemList> header is NULL",
+                   GET_FILE,
+                   GET_LINE);
+
+        return FALSE;
+    }
+
+    p_temp = p_header->p_next;
+    while ( p_temp) {
+        ++counter;
+        if ( value == p_temp->item) {
+            *p_index = counter;
+
+            return TRUE;
+        }
+        p_temp = p_temp->p_next;
+    }
+
+    *p_index = 0xFFFF;
+    return FALSE;
+}
+
 /* Name     : findItemList                                                   */
 /* Function : Find the object with its value member is item                  */
 /* Input    : p_list    an list pointer                                      */

@@ -37,6 +37,8 @@ STATE    clearList(List p_list);
 BOOL     isEmptyList(const List p_list);
 BOOL     isLastList(const List p_list, const Position p_item);
 UINT32   getLengthList(const List p_list);
+STATE    getItemByIndexList(const List p_list, UINT32 index, ElemType *p_value);
+STATE    getIndexByItemList(const List p_list, UINT32 value, UINT32 *p_index);
 Position findItemList(const List p_list, const ElemType item);
 STATE    deleteItemHeaderList(List p_list, ElemType *p_del_item);
 STATE    deleteItemTailList(List p_list, ElemType *p_del_item);
