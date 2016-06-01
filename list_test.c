@@ -277,10 +277,87 @@ void T_deleteItemTailList(void)
     } while ( 4 != user_get);
 }
 
+void T_getItemByIndexList(void)
+{
+    UINT32   index;
+    ElemType value = 0;
+    if ( !_g_list_header) {
+        fprintf(stdout, "<T_getItemByIndex> global is NULL. %s-%d\n",
+                __FILE__,
+                __LINE__);
 
+        exit(EXIT_FAILURE);
+    }
 
+    if ( getLengthList(_g_list_header) > 0) {
+        index = 3;
+        if ( FALSE == getItemByIndexList(_g_list_header,
+                                         index,
+                                         &value)) {
+            fprintf(stdout, "<T_getItemByIndex> get item fail. %s-%d\n",
+                    __FILE__,
+                    __LINE__);
 
+            exit(EXIT_FAILURE);
+        } else {
+            fprintf(stdout, "Index<%d> value is %d\n", index, value);
+        }
 
+        index = 6;
+        if ( FALSE == getItemByIndexList(_g_list_header,
+                                         index,
+                                         &value)) {
+            fprintf(stdout, "<T_getItemByIndex> get item fail. %s-%d\n",
+                    __FILE__,
+                    __LINE__);
 
+            exit(EXIT_FAILURE);
+        } else {
+            fprintf(stdout, "Index<%d> value is %d\n", index, value);
+        }        
+    }
+}
 
+void T_getIndexByItemList(void)
+{
+    UINT32 index;
+    UINT32 value = 0;
 
+    if ( !_g_list_header) {
+        fprintf(stdout, "<T_getIndexByItemList> global is NULL. %s-%d\n",
+                __FILE__,
+                __LINE__);
+
+        exit(EXIT_FAILURE);
+    }
+
+    if ( getLengthList(_g_list_header) > 0) {
+        value = 1000;
+        if ( TRUE == getIndexByItemList(_g_list_header,
+                                        value,
+                                        &index)) {
+            fprintf(stdout, "Value %d's index is %d.\n",
+                    value, index);
+        } else {
+            fprintf(stderr, "<T_getIndexByItemList> get index fail. %s-%d\n",
+                    __FILE__,
+                    __LINE__);
+
+            exit(EXIT_FAILURE);
+        }
+
+        value = 1020;
+        if ( TRUE == getIndexByItemList(_g_list_header,
+                                        value,
+                                        &index)) {
+            fprintf(stdout, "Value %d's index is %d.\n",
+                    value, index);
+        } else {
+            fprintf(stderr, "<T_getIndexByItemList> get index fail. %s-%d\n",
+                    __FILE__,
+                    __LINE__);
+
+            exit(EXIT_FAILURE);
+        }        
+    }
+}

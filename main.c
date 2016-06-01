@@ -91,6 +91,10 @@ int main(int argc, char *argv[])
     T_findLastList();
 
     T_deleteItemTailList();
+
+    T_getItemByIndexList();
+
+    T_getIndexByItemList();
     
     T_destroyList();
     

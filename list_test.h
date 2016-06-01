@@ -25,4 +25,8 @@ void T_deleteItemHeaderList(void);
 
 void T_deleteItemTailList(void);
 
+void T_getItemByIndexList(void);
+
+void T_getIndexByItemList(void);
+
 #endif /* _EXT_LIST_TEST_H_ */
