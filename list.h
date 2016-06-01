@@ -47,6 +47,7 @@ Position findPreviousItemList(const List p_list, const ElemType item);
 STATE    insertItemHeaderList(List p_list, const ElemType item);
 STATE    insertItemTailList(List p_list, const ElemType item);
 STATE    insertItemList(List p_list, const Position p_item, const ElemType item);
+STATE    insertItemByIndexList(List p_header, UINT32 index, ElemType item);
 Position getHeaderList(const List p_list);
 Position getFirstList(const List p_list);
 Position findLastList(const List p_list);

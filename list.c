@@ -474,6 +474,35 @@ STATE insertItemList(List p_header, const Position p_item, const ElemType item)
     return TRUE;
 }
 
+/* Name     : insertItemByIndexList                                          */
+/* Function : Insert item into specific locatioin                            */
+/* Input    : p_list      an list pointer
+              index       specific location
+              value       specific value to be inserted 
+           */
+/* Output   : When inserted successfully, return TRUE, or else FALSE         */
+STATE insertItemByIndexList(List p_header, UINT32 index, ElemType item)
+{
+    Position p_temp = LIST_NULL;
+    UINT32   i;
+
+    if ( !p_header) {
+        debugError("<insertItemByIndexList> header is NULL",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( (index-1) > getLengthList(p_header)) {
+        debugError("<insertItemByIndexList> index exceeds length",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+}
+
 /* Name     : getHeaderList                                                  */
 /* Function : Get the header of the existed list                             */
 /* Input    : p_list      an list pointer                                    */
