@@ -357,7 +357,39 @@ void T_getIndexByItemList(void)
                     __FILE__,
                     __LINE__);
 
-            exit(EXIT_FAILURE);
+            // exit(EXIT_FAILURE);
+            return ;
         }        
     }
+}
+
+void T_insertItemByIndexList(void)
+{
+    if ( !_g_list_header) {
+        fprintf(stdout, "<T_insertItemByIndexList> global is NULL. %s-%d\n",
+                __FILE__,
+                __LINE__);
+
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(stdout, "We will insert item 1111 into location of 5.\n");
+    if ( TRUE == insertItemByIndexList(_g_list_header,
+                                       5,
+                                       1111)) {
+        fprintf(stdout, "Insert successfully.\n");
+    } else {
+        fprintf(stdout, "Insert 1111 into location of 5 fail.\n");
+    }
+    T_retrieveList();
+
+    fprintf(stdout, "We will insert item 2222 into location of 10.\n");
+    if ( TRUE == insertItemByIndexList(_g_list_header,
+                                       10,
+                                       2222)) {
+        fprintf(stdout, "Insert successfully.\n");
+    } else {
+        fprintf(stdout, "Insert 2222 into location of 10 fail.\n");
+    }
+    T_retrieveList();
 }

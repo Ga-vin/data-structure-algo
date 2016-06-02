@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
     T_getItemByIndexList();
 
     T_getIndexByItemList();
+
+    T_insertItemByIndexList();
     
     T_destroyList();
     

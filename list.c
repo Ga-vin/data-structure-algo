@@ -484,7 +484,9 @@ STATE insertItemList(List p_header, const Position p_item, const ElemType item)
 STATE insertItemByIndexList(List p_header, UINT32 index, ElemType item)
 {
     Position p_temp = LIST_NULL;
-    UINT32   i;
+    Position p_node = LIST_NULL;
+    Position p_last = LIST_NULL;
+    UINT32   i = 1;
 
     if ( !p_header) {
         debugError("<insertItemByIndexList> header is NULL",
@@ -501,6 +503,33 @@ STATE insertItemByIndexList(List p_header, UINT32 index, ElemType item)
 
         return (FALSE);
     }
+
+    p_temp = p_header->p_next;
+    p_last = p_header;
+    while ( p_temp && i < index) {
+        p_last = p_temp;
+        p_temp = p_temp->p_next;
+        ++i;
+    }
+
+    if ( !p_temp || i > index) {
+        return (FALSE);
+    }
+
+    p_node = (Position)malloc(sizeof(LNode));
+    if ( !p_node) {
+        debugError("<insertItemByIndexList> malloc fail",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+    p_node->item = item;
+
+    p_node->p_next = p_temp;
+    p_last->p_next = p_node;
+
+    return (TRUE);
 }
 
 /* Name     : getHeaderList                                                  */
