@@ -392,4 +392,14 @@ void T_insertItemByIndexList(void)
         fprintf(stdout, "Insert 2222 into location of 10 fail.\n");
     }
     T_retrieveList();
+
+    fprintf(stdout, "We will insert item 3333 into location of %d.\n", getLengthList(_g_list_header));
+    if ( TRUE == insertItemByIndexList(_g_list_header,
+                                       getLengthList(_g_list_header),
+                                       3333)) {
+        fprintf(stdout, "Insert successfully.\n");
+    } else {
+        fprintf(stdout, "Insert 3333 into location of %d fail.\n", getLengthList(_g_list_header));
+    }
+    T_retrieveList();
 }
