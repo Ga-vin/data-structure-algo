@@ -43,6 +43,7 @@ Position findItemList(const List p_list, const ElemType item);
 STATE    deleteItemHeaderList(List p_list, ElemType *p_del_item);
 STATE    deleteItemTailList(List p_list, ElemType *p_del_item);
 STATE    deleteItemList(List p_list, const ElemType item);
+STATE    deleteItemByIndexList(List p_header, UINT32 index, ElemType *p_del_item);
 Position findPreviousItemList(const List p_list, const ElemType item);
 STATE    insertItemHeaderList(List p_list, const ElemType item);
 STATE    insertItemTailList(List p_list, const ElemType item);

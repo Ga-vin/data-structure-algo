@@ -347,7 +347,34 @@ STATE deleteItemList(List p_header, const ElemType item)
         free(p_temp);
     }
 
-    return TRUE;
+    return (TRUE);
+}
+
+/* Name     : deleteItemByIndexList                                          */
+/* Function : Delete item with specific location or index                    */
+/* Input    : p_list      an list pointer
+              index       specific locatioin
+              p_delitem   store deleted item                                 */
+/* Output   : TRUE when deleted successfully, or FALSE                       */
+STATE deleteItemByIndexList(List p_header, UINT32 index, ElemType *p_del_item)
+{
+    if ( !p_header) {
+        debugError("<deleteItemByIndexList> global is NULL.\n",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( index > getLengthList(p_header)) {
+        debugError("<deleteItemByIndexList> index exceeds length.",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    return (TRUE);
 }
 
 /* Name     : findPreviousItemList                                           */
