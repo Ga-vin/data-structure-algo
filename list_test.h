@@ -31,4 +31,6 @@ void T_getIndexByItemList(void);
 
 void T_insertItemByIndexList(void);
 
+void T_sortList(void);
+
 #endif /* _EXT_LIST_TEST_H_ */

@@ -403,3 +403,22 @@ void T_insertItemByIndexList(void)
     }
     T_retrieveList();
 }
+
+void T_sortList(void)
+{
+    if ( !_g_list_header) {
+        fprintf(stderr, "<T_sortList> global is NULL. %s-%d\n",
+                __FILE__,
+                __LINE__);
+
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(stdout, "\n------------------------------ Sort List With Ascending Order --------------------------\n");
+    sortList(_g_list_header, ASCENDING);
+    T_retrieveList();
+
+    fprintf(stdout, "\n------------------------------ Sort List With Descending Order --------------------------\n");
+    sortList(_g_list_header, DESCENDING);
+    T_retrieveList();    
+}

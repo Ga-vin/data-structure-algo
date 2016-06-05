@@ -28,6 +28,11 @@ typedef LNode     *PtrToNode;
 typedef PtrToNode  List;
 typedef PtrToNode  Position;
 
+typedef enum _SortOrder_ {
+    ASCENDING  = 1,
+    DESCENDING = 2,
+} SortOrder;
+
 /* *****************************************************************************
  * New definition of new function protocols
  ******************************************************************************/
@@ -53,5 +58,6 @@ Position getHeaderList(const List p_list);
 Position getFirstList(const List p_list);
 Position findLastList(const List p_list);
 STATE    retrieveList(const List p_list);
+STATE    sortList(List p_list, SortOrder order);
 
 #endif /* __EXT_LIST_H_ */
