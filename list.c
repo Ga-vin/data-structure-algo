@@ -646,10 +646,7 @@ STATE retrieveList(const List p_header)
 STATE sortList(List p_header, SortOrder order)
 {
     Position p_prev      = LIST_NULL;
-    Position p_prev_prev = LIST_NULL;
     Position p_next      = LIST_NULL;
-    Position p_next_prev = LIST_NULL;
-    Position p_temp      = LIST_NULL;
     ElemType value;
     BOOL     flag        = FALSE;
     
@@ -663,34 +660,29 @@ STATE sortList(List p_header, SortOrder order)
 
     if ( ASCENDING == order || DESCENDING == order) {
         p_prev      = p_header->p_next;
-        p_prev_prev = p_header;
         while ( p_prev->p_next) {
             p_next      = p_prev->p_next;
-            p_next_prev = p_prev;
             while ( p_next) {
                 if ( ASCENDING == order) {
                     if (p_prev->item > p_next->item) {
-                        /* Swap */
                         flag = TRUE;
                     }
                 } else if (DESCENDING == order) {
                     if (p_prev->item < p_next->item) {
-                        /* Swap */
                         flag = TRUE;
                     }
                 }
 
                 if ( TRUE == flag) {
+                    flag = FALSE;
                     value        = p_prev->item;
                     p_prev->item = p_next->item;
                     p_next->item = value;
                 }
 
-                p_next_prev = p_next;
-                p_next      = p_next_prev;
+                p_next      = p_next->p_next;
             }
 
-            p_prev_prev = p_prev;
             p_prev      = p_prev->p_next;
         }
     } else {
