@@ -59,5 +59,6 @@ Position getFirstList(const List p_list);
 Position findLastList(const List p_list);
 STATE    retrieveList(const List p_list);
 STATE    sortList(List p_list, SortOrder order);
+STATE    mergeList(const List p_header_a, const List p_header_b, List p_header_new);
 
 #endif /* __EXT_LIST_H_ */

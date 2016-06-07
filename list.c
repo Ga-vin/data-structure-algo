@@ -690,8 +690,31 @@ STATE sortList(List p_header, SortOrder order)
                    GET_FILE,
                    GET_LINE);
 
-        return FALSE;
+        return (FALSE);
     }
 
-    return TRUE;
+    return (TRUE);
+}
+
+/* Name     : mergeList                                                      */
+/* Function : Merge two list with specific order into a new list             */
+/* Input    : p_header_a   list object to be merged
+              p_header_b   list object to be merged
+              p_header_new new list to be stored result                      */
+/* Output   : TRUE when merged successfully, or FALSE                        */
+STATE mergeList(const List p_header_a,
+                const List p_header_b,
+                List p_header_new)
+{
+    if ( !p_header_a || !p_header_b) {
+        debugError("<mergeList> header object is NULL.",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( !p_header_new) {
+        
+    }
 }
