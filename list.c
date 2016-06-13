@@ -706,6 +706,10 @@ STATE mergeList(const List p_header_a,
                 const List p_header_b,
                 List p_header_new)
 {
+    Position pa = LIST_NULL;
+    Position pb = LIST_NULL;
+    Position pc = LIST_NULL;
+    
     if ( !p_header_a || !p_header_b) {
         debugError("<mergeList> header object is NULL.",
                    GET_FILE,
@@ -713,6 +717,8 @@ STATE mergeList(const List p_header_a,
 
         return (FALSE);
     }
+    pa = p_header_a->p_next;
+    pb = p_header_b->p_next;
 
     if ( !p_header_new) {
         debugError("<mergeList> new object is NULL",
@@ -730,8 +736,9 @@ STATE mergeList(const List p_header_a,
         p_header_new->item   = 0xFFFFFFFF;
         p_header_new->p_next = LIST_NULL;
     }
+    pc = p_header_new;
 
-    if ( FALSE == sortList(p_header_a, ASCENDING)) {
+    if ( FALSE == sortList(pa, ASCENDING)) {
         debugError("<mergeList> sort list error",
                    GET_FILE,
                    GET_LINE);
@@ -739,7 +746,7 @@ STATE mergeList(const List p_header_a,
         return (FALSE);
     }
 
-    if ( FALSE == sortList(p_header_b, ASCENDING)) {
+    if ( FALSE == sortList(pb, ASCENDING)) {
         debugError("<mergeList> sort list error",
                    GET_FILE,
                    GET_LINE);
@@ -747,5 +754,24 @@ STATE mergeList(const List p_header_a,
         return (FALSE);
     }
 
-    
+    while ( pa && pb) {
+        if ( pa->item <= pb->item) {
+            pc->p_next = pa;
+            pc         = pa;
+            pa         = pa->p_next;
+        } else {
+            pc->p_next = pb;
+            pc         = pb;
+            pb         = pb->p_next;
+        }
+    }
+
+    /* Insert rest of list */
+    pc->p_next = pa ? pa : pb;
+
+    /* Release two pointer */
+    free(pa);
+    free(pb);
+
+    return (TRUE);
 }

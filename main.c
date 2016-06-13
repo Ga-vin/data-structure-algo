@@ -79,7 +79,6 @@ int main(int argc, char *argv[])
     T_insertItemHeaderList();
     T_getLengthList();
     T_retrieveList();
-#endif    
 
     T_clearList();
 
@@ -101,6 +100,9 @@ int main(int argc, char *argv[])
     T_sortList();
     
     T_destroyList();
+#endif    
+
+    T_mergeList();
     
     return 0;
 }

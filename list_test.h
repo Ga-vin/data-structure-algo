@@ -33,4 +33,6 @@ void T_insertItemByIndexList(void);
 
 void T_sortList(void);
 
+void T_mergeList(void);
+
 #endif /* _EXT_LIST_TEST_H_ */

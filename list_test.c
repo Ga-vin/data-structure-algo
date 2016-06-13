@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "list_test.h"
 #include "list.h"
 
@@ -421,4 +422,77 @@ void T_sortList(void)
     fprintf(stdout, "\n------------------------------ Sort List With Descending Order --------------------------\n");
     sortList(_g_list_header, DESCENDING);
     T_retrieveList();    
+}
+
+#define MAX_RANDOM_NUM    (10)
+void T_mergeList(void)
+{
+    List     p_list_a = LIST_NULL;
+    List     p_list_b = LIST_NULL;
+    List     p_list_c = LIST_NULL;
+    size_t   index;
+    ElemType value;
+
+    srand(time(0));
+    
+    /* Create 3 different list first */
+    p_list_a = createList();
+    if ( LIST_NULL == p_list_a) {
+        fprintf(stdout, "Create list A fail.\n");
+
+        exit(EXIT_FAILURE);
+    }
+
+    p_list_b = createList();
+    if ( LIST_NULL == p_list_b) {
+        fprintf(stdout, "Create List B fail.\n");
+
+        exit(EXIT_FAILURE);
+    }
+
+    p_list_c = createList();
+    if ( LIST_NULL == p_list_c) {
+        fprintf(stdout, "Create List C fail.\n");
+
+        exit(EXIT_FAILURE);
+    }
+
+    /* Insert 10 data into list-A and list-B */
+    for (index = 0; index != MAX_RANDOM_NUM; ++index) {
+        value = rand()%100 + 1;
+        if ( TRUE != insertItemTailList(p_list_a, value)) {
+            fprintf(stdout, "Insert item %d into list-a fail.\n", value);
+        }
+
+        value = rand()%100 + 1;
+        if ( TRUE != insertItemTailList(p_list_b, value)) {
+            fprintf(stdout, "Insert item %d into list-b fail.\n", value);
+        }
+    }
+
+    if ( TRUE != sortList(p_list_a, ASCENDING)) {
+        fprintf(stdout, "Sorted List-A fail.\n");
+    }
+
+    if ( TRUE != sortList(p_list_b, ASCENDING)) {
+        fprintf(stdout, "Sorted List-B fail.\n");
+    }
+
+    fprintf(stdout, "\nAll items of List-A is: \n");
+    retrieveList(p_list_a);
+    fprintf(stdout, "\nAll items of List-B is: \n");
+    retrieveList(p_list_b);
+    fprintf(stdout, "\nBefore merge, All items of List-C is: \n");
+    retrieveList(p_list_c);
+
+    if ( TRUE != mergeList(p_list_a, p_list_b, p_list_c)) {
+        fprintf(stdout, "Merge List-A and List-B into List-C fail.\n");
+    }
+
+    fprintf(stdout, "\nAfter merge, all items of List-C is: \n");
+    retrieveList(p_list_c);
+
+    destroyList(p_list_a);
+    destroyList(p_list_b);
+    destroyList(p_list_c);
 }
