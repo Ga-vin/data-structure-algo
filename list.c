@@ -715,6 +715,37 @@ STATE mergeList(const List p_header_a,
     }
 
     if ( !p_header_new) {
-        
+        debugError("<mergeList> new object is NULL",
+                   GET_FILE,
+                   GET_LINE);
+
+        p_header_new = createList();
+        if ( LIST_NULL == p_header_new) {
+            debugError("<mergeList> list header is NULL",
+                       GET_FILE,
+                       GET_LINE);
+
+            return (FALSE);
+        }
+        p_header_new->item   = 0xFFFFFFFF;
+        p_header_new->p_next = LIST_NULL;
     }
+
+    if ( FALSE == sortList(p_header_a, ASCENDING)) {
+        debugError("<mergeList> sort list error",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( FALSE == sortList(p_header_b, ASCENDING)) {
+        debugError("<mergeList> sort list error",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    
 }
