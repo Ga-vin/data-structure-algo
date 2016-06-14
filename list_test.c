@@ -470,6 +470,7 @@ void T_mergeList(void)
         }
     }
 
+#ifdef __DEBUG_SORT_LIST_    
     if ( TRUE != sortList(p_list_a, ASCENDING)) {
         fprintf(stdout, "Sorted List-A fail.\n");
     }
@@ -477,6 +478,7 @@ void T_mergeList(void)
     if ( TRUE != sortList(p_list_b, ASCENDING)) {
         fprintf(stdout, "Sorted List-B fail.\n");
     }
+#endif /* __DEBUG_SORT_LIST_ */    
 
     fprintf(stdout, "\nAll items of List-A is: \n");
     retrieveList(p_list_a);

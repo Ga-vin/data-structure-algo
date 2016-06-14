@@ -717,8 +717,6 @@ STATE mergeList(const List p_header_a,
 
         return (FALSE);
     }
-    pa = p_header_a->p_next;
-    pb = p_header_b->p_next;
 
     if ( !p_header_new) {
         debugError("<mergeList> new object is NULL",
@@ -738,21 +736,23 @@ STATE mergeList(const List p_header_a,
     }
     pc = p_header_new;
 
-    if ( FALSE == sortList(pa, ASCENDING)) {
+    if ( TRUE != sortList(p_header_a, ASCENDING)) {
         debugError("<mergeList> sort list error",
                    GET_FILE,
                    GET_LINE);
 
         return (FALSE);
     }
+    pa = p_header_a->p_next;
 
-    if ( FALSE == sortList(pb, ASCENDING)) {
+    if ( TRUE != sortList(p_header_b, ASCENDING)) {
         debugError("<mergeList> sort list error",
                    GET_FILE,
                    GET_LINE);
 
         return (FALSE);
     }
+    pb = p_header_b->p_next;
 
     while ( pa && pb) {
         if ( pa->item <= pb->item) {
