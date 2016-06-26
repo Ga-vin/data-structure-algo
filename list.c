@@ -7,7 +7,7 @@
 /* Modified  :                                                               */
 /* ************************************************************************* */
 #include <stdio.h>
-#include <stdlib.h>
+n#include <stdlib.h>
 #include <string.h>
 #include "list.h"
 
@@ -767,7 +767,7 @@ STATE mergeList(const List p_header_a,
     }
 
     /* Insert rest of list */
-    pc->p_next = pa ? pa : pb;
+    pc->p_next = (pa ? pa : pb);
 
     /* Release two pointer */
     free(pa);
