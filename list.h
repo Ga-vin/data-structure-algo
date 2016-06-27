@@ -14,8 +14,8 @@
 /* *****************************************************************************
  * New definition of new constances
  ******************************************************************************/
-#define    LIST_NULL    (NULL)
-#define    LIST_EMPTY   (0)
+
+
 /* *****************************************************************************
  * New definition of new structure
  ******************************************************************************/
@@ -27,11 +27,6 @@ typedef struct LNODE {
 typedef LNode     *PtrToNode;
 typedef PtrToNode  List;
 typedef PtrToNode  Position;
-
-typedef enum _SortOrder_ {
-    ASCENDING  = 1,
-    DESCENDING = 2,
-} SortOrder;
 
 /* *****************************************************************************
  * New definition of new function protocols

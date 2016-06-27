@@ -7,21 +7,10 @@
 /* Modified  :                                                               */
 /* ************************************************************************* */
 #include <stdio.h>
-n#include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include "list.h"
 
-#define    GET_FILE    (__FILE__)
-#define    GET_LINE    (__LINE__)
-
-static void debugError(const char *str,
-                       const char *p_file_name,
-                       INT32 line)
-{
-    fprintf(stdout, "[X] <Error> : %s in %s-%d.\n", str,
-            p_file_name,
-            line);
-}
 
 /* Name     : createList                                                     */
 /* Function : Create a new header of list                                    */

@@ -1,6 +1,8 @@
 #ifndef    __EX_COMMON_H_
 #define    __EX_COMMON_H_
 
+#include <stdio.h>
+
 typedef    unsigned int    UINT32;
 typedef    unsigned short  UINT16;
 typedef    unsigned char   UINT8;
@@ -34,5 +36,18 @@ typedef    INT32           BOOL;
 #ifndef    EMPTY
 #define    EMPTY       (-2)
 #endif /* EMPTY */
+
+#define    GET_FILE    (__FILE__)
+#define    GET_LINE    (__LINE__)
+
+#define    LIST_NULL   (NULL)
+#define    LIST_EMPTY  (0)
+
+typedef enum _SortOrder_ {
+    ASCENDING  = 1,
+    DESCENDING = 2,
+} SortOrder;
+
+void debugError(const char *str, const char *p_file_name, INT32 line);
 
 #endif /* __EX_COMMON_H_ */
