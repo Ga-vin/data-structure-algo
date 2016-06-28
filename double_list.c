@@ -66,8 +66,8 @@ UINT32 getLengthDoubleList(const DoubleList p_header)
     
 }
 
-/* Name     : getItemByIndexDoubleList                                       */
-/* Function : Get the item by specific index                                 */
+/* Name     : getIndexByItemDoubleList                                       */
+/* Function : Get the index by specific item                                 */
 /* Input    : p_header    an list pointer
               index     specific location
               item      get value member                                     */
@@ -79,6 +79,12 @@ STATE getIndexByItemDoubleList(const DoubleList p_header,
     
 }
 
+/* Name     : getItemByIndexDoubleList                                       */
+/* Function : Get the item by specific index                                 */
+/* Input    : p_header    an list pointer
+              index     specific location
+              item      get value member                                     */
+/* Output   : When get it, TRUE will be returned, or else FALSE              */
 STATE getItemByIndexDoubleList(const DoubleList p_header,
                                UINT32           index,
                                ElemType        *p_item)
@@ -86,12 +92,22 @@ STATE getItemByIndexDoubleList(const DoubleList p_header,
     
 }
 
+/* Name     : findItemDoubleList                                             */
+/* Function : Find specific item by item                                     */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When find it, TRUE will be returned, or else FALSE             */
 Position findItemDoubleList(const DoubleList p_header,
                             ElemType         item)
 {
     
 }
 
+/* Name     : deleteItemHeaderDoubleList                                     */
+/* Function : Find specific item by item                                     */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When find it, TRUE will be returned, or else FALSE             */
 STATE deleteItemHeaderDoubleList(DoubleList p_header,
                                  ElemType  *p_item)
 {
