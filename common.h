@@ -42,6 +42,7 @@ typedef    INT32           BOOL;
 
 #define    LIST_NULL   (NULL)
 #define    LIST_EMPTY  (0)
+#define    LIST_INVALID_VALUE    (0xFFFFFFFF)
 
 typedef enum _SortOrder_ {
     ASCENDING  = 1,

@@ -17,7 +17,21 @@
 /* Output   : New double list pointer                                        */
 DoubleList createDoubleList(void)
 {
-    
+    DoubleList p_node = LIST_NULL;
+
+    p_node = (DoubleList)malloc(sizeof(DoubleLNode));
+    if ( !p_node) {
+        debugError("createDoubleList",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (LIST_NULL);
+    }
+    p_node->item  = LIST_INVALID_VALUE;
+    p_node->next  = NULL;
+    p_node->prior = NULL;
+
+    return (p_node);
 }
 
 /* Name     : destroyDoubleList                                              */
@@ -26,6 +40,10 @@ DoubleList createDoubleList(void)
 /* Output   : TRUE destroy successfully FALSE error                          */
 STATE destroyDoubleList(DoubleList p_header)
 {
+    if ( !p_header) {
+        return (FALSE);
+    }
+
     
 }
 
@@ -35,7 +53,14 @@ STATE destroyDoubleList(DoubleList p_header)
 /* Output   : TRUE clear successfully FALSE error                            */
 STATE clearDoubleList(DoubleList p_header)
 {
-    
+    if ( !p_header) {
+        return (FALSE);
+    }
+
+    p_header->next  = LIST_NULL;
+    p_header->prior = LIST_NULL;
+
+    return (TRUE);
 }
 
 /* Name     : isEmptyDoubleList                                              */
@@ -44,7 +69,16 @@ STATE clearDoubleList(DoubleList p_header)
 /* Output   : TRUE if it is empty, or FALSE                                  */
 BOOL isEmptyDoubleList(const DoubleList p_header)
 {
-    
+    if ( !p_header) {
+        return (TRUE);
+    } else {
+        if ( !(p_header->next) &&
+             !(p_header->prior)) {
+            return (TRUE);
+        } else {
+            return (FALSE);
+        }
+    }
 }
 
 /* Name     : isLastDoubleList                                               */
