@@ -40,11 +40,28 @@ DoubleList createDoubleList(void)
 /* Output   : TRUE destroy successfully FALSE error                          */
 STATE destroyDoubleList(DoubleList p_header)
 {
+    DoubleList p_temp = LIST_NULL;
+    DoubleList p_ptr  = LIST_NULL;
+    
     if ( !p_header) {
         return (FALSE);
     }
 
+    /* 先释放头节点 */
+    p_ptr          = p_header->next;
+    p_header->next = LIST_NULL;
+    free(p_header);
+    p_header       = LIST_NULL;
     
+    while ( p_ptr) {
+        p_temp       = p_ptr->next;  /* 保存下一个节点的指针                    */
+        p_ptr->next  = LIST_NULL;    /* 前向后向都指空，成为单独一个节点          */
+        p_ptr->prior = LIST_NULL;
+        free(p_ptr);                 /* 释放该独立的节点                       */
+        p_ptr        = p_temp;
+    }
+
+    return (TRUE);
 }
 
 /* Name     : clearDoubleList                                                */
@@ -59,6 +76,7 @@ STATE clearDoubleList(DoubleList p_header)
 
     p_header->next  = LIST_NULL;
     p_header->prior = LIST_NULL;
+    p_header        = LIST_NULL;
 
     return (TRUE);
 }
@@ -70,7 +88,7 @@ STATE clearDoubleList(DoubleList p_header)
 BOOL isEmptyDoubleList(const DoubleList p_header)
 {
     if ( !p_header) {
-        return (TRUE);
+        return (FALSE);
     } else {
         if ( !(p_header->next) &&
              !(p_header->prior)) {

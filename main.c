@@ -6,9 +6,11 @@
 #include "pointer.h"
 #include "pointer_test.h"
 #include "list_test.h"
+#include "double_list_test.h"
 
-#define    DEBUG_WHICH_ONE    (2)
-#define    DEBUG_LIST_SWITCH  (2)
+#define    DEBUG_WHICH_ONE     (2)
+#define    DEBUG_LIST_SWITCH   (2)
+#define    DEBUG_D_LIST_SWITCH (0)
 
 int main(int argc, char *argv[])
 {
@@ -64,10 +66,12 @@ int main(int argc, char *argv[])
     T_destroyList();
 #endif /* DEBUG_LIST_SWITCH > 2 */
 
+#if 0    
     T_createList();
     T_getLengthList();
 
     T_isEmptyList();
+#endif    
 
 #if 0    
     T_insertItemList();
@@ -102,7 +106,19 @@ int main(int argc, char *argv[])
     T_destroyList();
 #endif    
 
+#if 0    
     T_mergeList();
+#endif
+
+    T_createDoubleList();
+
+    T_isEmptyDoubleList();
+
+    T_clearDoubleList();
+
+    T_isEmptyDoubleList();
+
+    T_destroyDoubleList();
     
     return 0;
 }
