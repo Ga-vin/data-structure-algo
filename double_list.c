@@ -136,7 +136,25 @@ BOOL isLastDoubleList(const DoubleList p_header, const Position p_item)
 /* Output   : Length of list                                                 */
 UINT32 getLengthDoubleList(const DoubleList p_header)
 {
-    
+    DoubleList p_temp  = LIST_NULL;
+    UINT32     counter = 0;
+
+    if ( !p_header) {
+        debugError("<getLengthDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return 0;
+    }
+
+    p_temp = p_header->next;
+    while ( p_temp) {
+        counter++;
+
+        p_temp = p_temp->next;
+    }
+
+    return (counter);
 }
 
 /* Name     : getIndexByItemDoubleList                                       */
@@ -149,7 +167,33 @@ STATE getIndexByItemDoubleList(const DoubleList p_header,
                                ElemType         item,
                                UINT32          *p_index)
 {
-    
+    DoubleList p_temp  = LIST_NULL;
+    UINT32     counter = 0;
+
+    if ( p_header) {
+        debugError("<getIndexByItemDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_temp = p_header->next;
+    while ( p_temp &&
+            (p_temp->item != item)) {
+        counter++;
+        p_temp = p_temp->next;            
+    }
+
+    if ( p_temp->item == item) {
+        *p_index = counter;
+
+        return (TRUE);
+    } else {
+        *p_index = 0;
+
+        return (FALSE);
+    }
 }
 
 /* Name     : getItemByIndexDoubleList                                       */
