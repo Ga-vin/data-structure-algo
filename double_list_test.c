@@ -8,7 +8,7 @@ static DoubleList    _G_list_header = LIST_NULL;
 
 void T_createDoubleList(void)
 {
-    _G_list_header = createDoubleList();
+    _G_list_header = createNodeDoubleList();
     if ( !_G_list_header) {
         fprintf(stderr, "[x] Create double list node error. [%s]- [%d]. \n",
                 GET_FILE,

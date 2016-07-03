@@ -32,7 +32,7 @@ typedef PtrDNode        Position;
 /* *****************************************************************************
  * New definition of new function protocols
  ******************************************************************************/
-DoubleList    createDoubleList(void);
+DoubleList    createNodeDoubleList(void);
 STATE         destroyDoubleList(DoubleList p_header);
 STATE         clearDoubleList(DoubleList p_header);
 

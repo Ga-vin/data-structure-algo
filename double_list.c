@@ -15,7 +15,7 @@
 /* Function : Create a new header of double list                             */
 /* Input    : None                                                           */
 /* Output   : New double list pointer                                        */
-DoubleList createDoubleList(void)
+DoubleList createNodeDoubleList(void)
 {
     DoubleList p_node = LIST_NULL;
 
@@ -106,7 +106,28 @@ BOOL isEmptyDoubleList(const DoubleList p_header)
 /* Output   : TRUE if it is last, or FALSE                                   */
 BOOL isLastDoubleList(const DoubleList p_header, const Position p_item)
 {
-    
+    DoubleList p_temp = LIST_NULL;
+    DoubleList p_last = LIST_NULL;
+
+    if ( !p_header) {
+        debugError("<isLastDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return FALSE;
+    }
+
+    p_temp = p_header->next;
+    while ( p_temp) {
+        p_last = p_temp;
+        p_temp = p_temp->next;
+    }
+
+    if ( p_last->item == p_item->item) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 /* Name     : getLengthDoubleList                                            */
