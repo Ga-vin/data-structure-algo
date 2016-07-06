@@ -70,13 +70,26 @@ STATE destroyDoubleList(DoubleList p_header)
 /* Output   : TRUE clear successfully FALSE error                            */
 STATE clearDoubleList(DoubleList p_header)
 {
+    DoubleList p_ptr  = LIST_NULL;
+    DoubleList p_temp = LIST_NULL;
+    
     if ( !p_header) {
         return (FALSE);
     }
 
+    p_ptr = p_header->next;
+
+    while ( p_ptr) {
+        p_temp = p_ptr->next;
+        p_ptr->next  = LIST_NULL;
+        p_ptr->prior = LIST_NULL;
+        free(p_ptr);
+
+        p_ptr = p_temp;
+    }
+
     p_header->next  = LIST_NULL;
-    p_header->prior = LIST_NULL;
-    p_header        = LIST_NULL;
+    p_header->prior = LIST_NULL;    
 
     return (TRUE);
 }
@@ -144,7 +157,7 @@ UINT32 getLengthDoubleList(const DoubleList p_header)
                    GET_FILE,
                    GET_LINE);
 
-        return 0;
+        return (0);
     }
 
     p_temp = p_header->next;
@@ -206,7 +219,42 @@ STATE getItemByIndexDoubleList(const DoubleList p_header,
                                UINT32           index,
                                ElemType        *p_item)
 {
-    
+    DoubleList p_ptr = LIST_NULL;
+    UINT32     i;
+
+    if ( !p_header) {
+        debugError("<getItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+        debugError("<getItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    i = 0;
+    p_ptr = p_header->next;
+    while ( (p_ptr) &&
+            (i < index)) {
+        p_ptr = p_ptr->next;
+        ++i;
+    }
+
+    if ( !p_ptr || i >= index) {
+        *p_item = 0;
+        
+        return (FALSE);
+    } else {
+        *p_item = p_ptr->item;
+
+        return (TRUE);
+    }
 }
 
 /* Name     : findItemDoubleList                                             */
