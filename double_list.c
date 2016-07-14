@@ -335,7 +335,7 @@ STATE deleteItemTailDoubleList(DoubleList p_header,
                                ElemType  *p_item)
 {
     Position p_curr = LIST_NULL;
-    Position p_next = LIST_NULL;
+    Position p_last = LIST_NULL;
     
     if ( !p_header) {
         debugError("<deleteItemTailDoubleList>",
@@ -347,28 +347,110 @@ STATE deleteItemTailDoubleList(DoubleList p_header,
 
     p_curr = p_header->next;
     while ( p_curr) {
-        if ( p_curr->next && ( TRUE == isLastDoubleList(p_header, p_curr->next))) {
-            p_next = p_curr->next;
-            *p_item = p_next->item;
-            p_curr->next = LIST_NULL;
-            free(p_next);
-            p_next = LIST_NULL;
+        if ( p_curr->next ) {
+            p_last = p_curr;
+            p_curr = p_curr->next;
+            continue;
+        } else if ( TRUE == isLastDoubleList(p_header, p_curr)) {
+            *p_item      = p_curr->item;
+
+            p_last->next = LIST_NULL;
+            free(p_curr);
+            p_curr       = LIST_NULL;
 
             return (TRUE);
+        } else {
+            *p_item = 0;
+            return (FALSE);
         }
     }
 }
 
 STATE deleteItemDoubleList(DoubleList p_header, ElemType item)
 {
+    Position p_curr = LIST_NULL;
+    Position p_last = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<deleteItemDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_curr = p_header->next;
+    p_last = p_header;
+    while ( p_curr) {
+        if ( item == p_curr->item) {
+            if ( TRUE == isLastDoubleList(p_header, p_curr)) {
+                p_last->next = LIST_NULL;
+                free(p_curr);
+                p_curr       = LIST_NULL;
+            } else {
+                p_curr->next->prior = p_last;
+                p_last->next        = p_curr->next;
+                free(p_curr);
+                p_curr              = LIST_NULL;
+            }
+
+            return (TRUE);
+        }
+
+        p_curr = p_curr->next;
+    }
+
+    return (FALSE);
 }
 
 STATE deleteItemByIndexDoubleList(DoubleList p_header,
                                   UINT32     index,
                                   ElemType  *p_item)
 {
+    Position p_last  = LIST_NULL;
+    Position p_curr  = LIST_NULL;
+    UINT32   counter = 0;
+    UINT32   length  = 0;
     
+    if ( !p_header) {
+        debugError("<deleteItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    length = getLengthDoubleList(p_header);
+    if ( index > length) {
+        debugError("<deleteItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_curr = p_header->next;
+    p_last = p_header;
+    while ( p_curr && (counter < (index - 1))) {
+        p_last = p_curr;
+        p_curr = p_curr->next;
+
+        ++counter;
+    }
+
+    *p_item = p_curr->item;
+    if ( TRUE == isLastDoubleList(p_header, p_curr)) {
+        p_last->next = LIST_NULL;
+        free(p_curr);
+        p_curr = LIST_NULL;
+    } else {
+        p_curr->next->prior = p_last;
+        p_last->next = p_curr->next;
+        free(p_curr);
+        p_curr = LIST_NULL;
+    }
+
+    return (TRUE);
 }
 
 STATE insertItemHeaderDoubleList(DoubleList p_header,
