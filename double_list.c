@@ -265,7 +265,26 @@ STATE getItemByIndexDoubleList(const DoubleList p_header,
 Position findItemDoubleList(const DoubleList p_header,
                             ElemType         item)
 {
-    
+    Position p_temp = LIST_NULL;
+
+    if ( !p_header) {
+        debugError("<findItemDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (LIST_NULL);
+    }
+
+    p_temp = p_header->next;
+    while ( p_temp && (item != p_temp->item)) {
+        p_temp = p_temp->next;
+    }
+
+    if ( item == p_temp->item) {
+        return (p_temp);
+    } else {
+        return (LIST_NULL);
+    }
 }
 
 /* Name     : deleteItemHeaderDoubleList                                     */
@@ -276,13 +295,68 @@ Position findItemDoubleList(const DoubleList p_header,
 STATE deleteItemHeaderDoubleList(DoubleList p_header,
                                  ElemType  *p_item)
 {
+    Position p_curr = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<deleteItemHeaderDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( p_header->next) {
+        p_curr = p_header->next;
+        if ( p_curr->next) {
+            *p_item             = p_curr->item;
+
+            p_header->next      = p_curr->next;
+            p_curr->next->prior = p_header;
+
+            free(p_curr);
+
+            return (TRUE);
+        } else {
+            *p_item = p_curr->item;
+            p_header->next = LIST_NULL;
+
+            free(p_curr);
+
+            return (TRUE);
+        }
+    } else {
+        *p_item = 0;
+
+        return (FALSE);
+    }
 }
 
 STATE deleteItemTailDoubleList(DoubleList p_header,
                                ElemType  *p_item)
 {
+    Position p_curr = LIST_NULL;
+    Position p_next = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<deleteItemTailDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_curr = p_header->next;
+    while ( p_curr) {
+        if ( p_curr->next && ( TRUE == isLastDoubleList(p_header, p_curr->next))) {
+            p_next = p_curr->next;
+            *p_item = p_next->item;
+            p_curr->next = LIST_NULL;
+            free(p_next);
+            p_next = LIST_NULL;
+
+            return (TRUE);
+        }
+    }
 }
 
 STATE deleteItemDoubleList(DoubleList p_header, ElemType item)
