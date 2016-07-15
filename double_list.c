@@ -456,26 +456,151 @@ STATE deleteItemByIndexDoubleList(DoubleList p_header,
 STATE insertItemHeaderDoubleList(DoubleList p_header,
                                  ElemType   item)
 {
+    DoubleList p_node = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<insertItemHeaderDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_node = createNodeDoubleList();
+    if ( !p_node) {
+        debugError("<insertItemHeaderDoubleList-NULL>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_node->item  = item;
+    p_node->next  = p_header->next;
+    p_node->prior = p_header;
+
+    return (TRUE);
 }
 
 STATE insertItemTailDoubleList(DoubleList p_header,
                                ElemType   item)
 {
+    DoubleList p_node = LIST_NULL;
+    Position   p_curr = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<insertItemTailDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_node = createNodeDoubleList();
+    if ( !p_node) {
+        debugError("<insertItemTailDoubleList-NULL>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+    p_node->item = item;
+    p_node->next = LIST_NULL;
+
+    p_curr = p_header->next;
+    while ( p_curr) {
+        if ( TRUE == isLastDoubleList(p_header, p_curr)) {
+            p_curr->next  = p_node;
+            p_node->prior = p_curr;
+
+            return (TRUE);
+        }
+
+        p_curr = p_curr->next;
+    }
+
+    return (FALSE);
 }
 
-STATE insertItemDoubleList(DoubleList p_hedaer,
-                           ElemType   item)
+STATE insertItemDoubleList(DoubleList p_header,
+                           ElemType   item,
+                           InsertPos  position)
 {
-    
+    switch ( position) {
+    case INS_HEADER:
+        return insertItemHeaderDoubleList(p_header, item);
+
+        break;
+
+    case INS_TAIL:
+        return insertItemTailDoubleList(p_header, item);
+
+        break;
+
+    default:
+        debugError("<insertItemDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
 }
 
 STATE insertItemByIndexDoubleList(DoubleList p_header,
                                   UINT32     index,
                                   ElemType   item)
 {
+    Position   p_curr = LIST_NULL;
+    Position   p_last = LIST_NULL;
+    DoubleList p_node = LIST_NULL;
+    UINT32     counts = 0;
+    UINT32     i      = 0;
     
+    if ( !p_header) {
+        debugError("<insertItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    counts = getLengthDoubleList(p_header);
+    if ( index > counts) {
+        debugError("<insertItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    i = 0;
+    p_curr = p_header->next;
+    p_last = p_header;
+    while ( p_curr && i < index) {
+        p_last = p_curr;
+        p_curr = p_curr->next;
+    }
+
+    p_node = createNodeDoubleList();
+    if ( !p_node)  {
+        debugError("<insertItemByIndexDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+    p_node->item = item;
+
+    if ( (!p_curr) || (i == index)) {
+        return (FALSE);
+    } else {
+        p_node->next = p_curr;
+        p_curr->prior = p_node;
+        p_last->next  = p_node;
+        p_node->prior = p_last;
+
+        return (TRUE);
+    }
 }
 
 Position getLastDoubleList(const DoubleList p_header)

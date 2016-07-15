@@ -29,6 +29,11 @@ typedef DoubleLNode    *PtrDNode;
 typedef DoubleLNode    *DoubleList;
 typedef PtrDNode        Position;
 
+typedef enum __INSERT_POS {
+    INS_HEADER    = 0x1,
+    INS_TAIL      = 0x2,
+} InsertPos;
+
 /* *****************************************************************************
  * New definition of new function protocols
  ******************************************************************************/
@@ -51,7 +56,7 @@ STATE         deleteItemByIndexDoubleList(DoubleList p_header, UINT32 index, Ele
 
 STATE         insertItemHeaderDoubleList(DoubleList p_header, ElemType item);
 STATE         insertItemTailDoubleList(DoubleList p_header, ElemType item);
-STATE         insertItemDoubleList(DoubleList p_header, ElemType item);
+STATE         insertItemDoubleList(DoubleList p_header, ElemType item, InsertPos position);
 STATE         insertItemByIndexDoubleList(DoubleList p_header, UINT32 index, ElemType item);
 
 Position      getLastDoubleList(const DoubleList p_header);
