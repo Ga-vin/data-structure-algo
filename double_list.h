@@ -14,7 +14,7 @@
 /* *****************************************************************************
  * New definition of new constances
  ******************************************************************************/
-
+void (*p_func)(ElemType item);
 
 /* *****************************************************************************
  * New definition of new structure
@@ -34,9 +34,15 @@ typedef enum __INSERT_POS {
     INS_TAIL      = 0x2,
 } InsertPos;
 
+typedef enum __RETRIEVE_DIR {
+    RET_FORWARD   = 0x1,
+    RET_BACKWARD  = 0x2,
+} RetrieveDir;
+
 /* *****************************************************************************
  * New definition of new function protocols
  ******************************************************************************/
+void          _printItem(ElemType item);
 DoubleList    createNodeDoubleList(void);
 STATE         destroyDoubleList(DoubleList p_header);
 STATE         clearDoubleList(DoubleList p_header);
@@ -60,17 +66,10 @@ STATE         insertItemDoubleList(DoubleList p_header, ElemType item, InsertPos
 STATE         insertItemByIndexDoubleList(DoubleList p_header, UINT32 index, ElemType item);
 
 Position      getLastDoubleList(const DoubleList p_header);
-STATE         retrieveDoubleList(const DoubleList p_header);
+STATE         retrieveDoubleList(const DoubleList p_header, void (*p_func)(ElemType item), RetrieveDir direct);
 STATE         sortDoubleList(DoubleList p_header, SortOrder order);
 STATE         mergeDoubleList(DoubleList p_list_a,
                               DoubleList p_list_b,
                               DoubleList p_list_c);
 
 #endif /* __DOUBLE_LIST_H_ */
-
-
-
-
-
-
-

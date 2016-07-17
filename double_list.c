@@ -11,6 +11,27 @@
 #include <stdlib.h>
 #include "double_list.h"
 
+static void _swap(ElemType *p_item_left, ElemType *p_item_right)
+{
+    ElemType tmp;
+
+    tmp           = *p_item_left;
+    *p_item_left  = *p_item_right;
+    *p_item_right = tmp;
+}
+
+void _printItem(ElemType item)
+{
+    static UINT32 counter = 0;
+
+    ++counter;
+    if ( !(counter % 10)) {
+        putchar('\n');
+    }
+    
+    fprintf(stdout, "[0x%X] ", item);
+}
+
 /* Name     : createDoubleList                                               */
 /* Function : Create a new header of double list                             */
 /* Input    : None                                                           */
@@ -331,6 +352,11 @@ STATE deleteItemHeaderDoubleList(DoubleList p_header,
     }
 }
 
+/* Name     : deleteItemTailDoubleList                                       */
+/* Function : Delete last node of double list                                */
+/* Input    : p_header  an list pointer
+              item      deleted value member                                 */
+/* Output   : When deleted successfully, TRUE will be returned, or else FALSE*/
 STATE deleteItemTailDoubleList(DoubleList p_header,
                                ElemType  *p_item)
 {
@@ -364,8 +390,15 @@ STATE deleteItemTailDoubleList(DoubleList p_header,
             return (FALSE);
         }
     }
+
+    return (TRUE);
 }
 
+/* Name     : deleteItemDoubleList                                           */
+/* Function : Delete specific node which value is equal of double list       */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When deleted successfully, TRUE will be returned, or else FALSE*/
 STATE deleteItemDoubleList(DoubleList p_header, ElemType item)
 {
     Position p_curr = LIST_NULL;
@@ -403,6 +436,11 @@ STATE deleteItemDoubleList(DoubleList p_header, ElemType item)
     return (FALSE);
 }
 
+/* Name     : deleteItemByIndexDoubleList                                    */
+/* Function : Delete specific node which value is equal of double list       */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When deleted successfully, TRUE will be returned, or else FALSE*/
 STATE deleteItemByIndexDoubleList(DoubleList p_header,
                                   UINT32     index,
                                   ElemType  *p_item)
@@ -453,6 +491,11 @@ STATE deleteItemByIndexDoubleList(DoubleList p_header,
     return (TRUE);
 }
 
+/* Name     : insertItemHeaderDoubleList                                     */
+/* Function : Insert node into header of double list                         */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When inserted successfully, TRUE will be returned, or else FALSE*/
 STATE insertItemHeaderDoubleList(DoubleList p_header,
                                  ElemType   item)
 {
@@ -482,6 +525,11 @@ STATE insertItemHeaderDoubleList(DoubleList p_header,
     return (TRUE);
 }
 
+/* Name     : insertItemTailDoubleList                                       */
+/* Function : Insert node into tail of double list                           */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When inserted successfully, TRUE will be returned, or else FALSE*/
 STATE insertItemTailDoubleList(DoubleList p_header,
                                ElemType   item)
 {
@@ -522,6 +570,11 @@ STATE insertItemTailDoubleList(DoubleList p_header,
     return (FALSE);
 }
 
+/* Name     : insertItemDoubleList                                           */
+/* Function : Insert node into header or tail of double list                 */
+/* Input    : p_header  an list pointer
+              item      specific value member                                */
+/* Output   : When inserted successfully, TRUE will be returned, or else FALSE*/
 STATE insertItemDoubleList(DoubleList p_header,
                            ElemType   item,
                            InsertPos  position)
@@ -546,6 +599,12 @@ STATE insertItemDoubleList(DoubleList p_header,
     }
 }
 
+/* Name     : insertItemByIndexDoubleList                                    */
+/* Function : Insert node specific position of double list                   */
+/* Input    : p_header  an list pointer
+              index     specific position      
+              item      specific value member                                */
+/* Output   : When inserted successfully, TRUE will be returned, or else FALSE*/
 STATE insertItemByIndexDoubleList(DoubleList p_header,
                                   UINT32     index,
                                   ElemType   item)
@@ -603,25 +662,147 @@ STATE insertItemByIndexDoubleList(DoubleList p_header,
     }
 }
 
+/* Name     : getLastDoubleList                                              */
+/* Function : Acquire last node of double list                               */
+/* Input    : p_header  an list pointer                                      */
+/* Output   : When find it, the pointer of last node will returned, or NULL  */
 Position getLastDoubleList(const DoubleList p_header)
 {
+    Position p_curr = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<getLastDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (LIST_NULL);
+    }
+
+    p_curr = p_header;
+    if ( !p_curr->next) {
+        return (LIST_NULL);
+    }
+    
+    p_curr = p_curr->next;
+    while ( p_curr->next) {
+        p_curr = p_curr->next;
+    }
+
+    return (p_curr);
 }
 
-STATE retrieveDoubleList(const DoubleList p_header)
+/* Name     : retrieveDoubleList                                             */
+/* Function : Retrieve every node of the double list                         */
+/* Input    : p_header  an list pointer                                      */
+/* Output   : When retrieve all nodes, TRUE will be returned, or else FALSE  */
+STATE retrieveDoubleList(const DoubleList p_header,
+                         void (*p_func)(ElemType item),
+                         RetrieveDir      direct)
 {
+    Position p_curr = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<retrieveDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( !p_func) {
+        debugError("<retrieveDoubleList>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    switch ( direct) {
+    case RET_FORWARD:
+        p_curr = p_header->next;
+        while ( p_curr) {
+            (*p_func)(p_curr->item);
+            p_curr = p_curr->next;
+        }
+        break;
+    case RET_BACKWARD:
+        p_curr = getLastDoubleList(p_header);
+        while ( p_curr) {
+            (*p_func)(p_curr->item);
+            p_curr = p_curr->prior;
+        }
+        break;
+    default:
+        debugError("<retrieveDoubleList-Direction>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    return (TRUE);
 }
 
+/* Name     : sortDoubleList                                                 */
+/* Function : Sort double list with specific order                           */
+/* Input    : p_header  an list pointer
+              order     sort order                                           */
+/* Output   : When sorted successfully, TRUE will be returned, or else FALSE */
 STATE sortDoubleList(DoubleList p_header,
                      SortOrder  order)
 {
+    Position p_curr = LIST_NULL;
+    Position p_next = LIST_NULL;
     
+    if ( !p_header) {
+        debugError("<sortDoubleList-OBJECT>",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    p_curr = p_header->next;
+    while ( p_curr) {
+        p_next = p_curr->next;
+        while ( p_next) {
+            switch ( order) {
+            case ASCENDING:
+                if ( p_curr->item > p_next->item) {
+                    _swap(&p_curr->item, &p_next->item);
+                }
+                break;
+            case DESCENDING:
+                if ( p_curr->item < p_next->item) {
+                    _swap(&p_curr->item, &p_next->item);
+                }
+                break;
+            default:
+                debugError("<sortDoubleList-SORT>",
+                           GET_FILE,
+                           GET_LINE);
+
+                return (FALSE);
+            }
+
+            p_next = p_next->next;
+        }
+        p_curr = p_curr->next;
+    }
+
+    return (TRUE);
 }
 
+/* Name     : mergeDoubleList                                                */
+/* Function : Merge two double lists into another one                        */
+/* Input    : p_list_a  list pointer
+              p_list_b  list pointer
+              p_list_c  merge to list pointer                                */
+/* Output   : When merged successfully, TRUE will be returned, or else FALSE */
 STATE mergeDoubleList(DoubleList p_list_a,
                       DoubleList p_list_b,
                       DoubleList p_list_c)
 {
     
+    return (TRUE);
 }
