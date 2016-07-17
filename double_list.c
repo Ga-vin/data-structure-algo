@@ -11,6 +11,11 @@
 #include <stdlib.h>
 #include "double_list.h"
 
+/* Name     : _swap                                                          */
+/* Function : Swap the value of two item by reference                        */
+/* Input    : p_item_left   to be swpped left value
+              p_item_right  to be swapped right value                        */
+/* Output   : NONE                                                           */
 static void _swap(ElemType *p_item_left, ElemType *p_item_right)
 {
     ElemType tmp;
@@ -20,12 +25,16 @@ static void _swap(ElemType *p_item_left, ElemType *p_item_right)
     *p_item_right = tmp;
 }
 
+/* Name     : _printItem                                                     */
+/* Function : Print item of each node in the double list                     */
+/* Input    : item   to be print on the screen                               */
+/* Output   : NONE                                                           */
 void _printItem(ElemType item)
 {
     static UINT32 counter = 0;
 
     ++counter;
-    if ( !(counter % 10)) {
+    if ( !(counter % 11)) {
         putchar('\n');
     }
     
@@ -98,13 +107,14 @@ STATE clearDoubleList(DoubleList p_header)
         return (FALSE);
     }
 
-    p_ptr = p_header->next;
+    p_ptr            = p_header->next;
 
     while ( p_ptr) {
-        p_temp = p_ptr->next;
+        p_temp       = p_ptr->next;
         p_ptr->next  = LIST_NULL;
         p_ptr->prior = LIST_NULL;
         free(p_ptr);
+        p_ptr        = LIST_NULL;
 
         p_ptr = p_temp;
     }
@@ -140,8 +150,10 @@ BOOL isEmptyDoubleList(const DoubleList p_header)
 /* Output   : TRUE if it is last, or FALSE                                   */
 BOOL isLastDoubleList(const DoubleList p_header, const Position p_item)
 {
+#ifdef __DEBUG_LAST_    
     DoubleList p_temp = LIST_NULL;
     DoubleList p_last = LIST_NULL;
+#endif /* __DEBUG_LAST_ */
 
     if ( !p_header) {
         debugError("<isLastDoubleList>",
@@ -151,6 +163,13 @@ BOOL isLastDoubleList(const DoubleList p_header, const Position p_item)
         return FALSE;
     }
 
+    if ( p_item && ( LIST_NULL == p_item->next))  {
+        return (TRUE);
+    } else {
+        return (FALSE);
+    }
+    
+#ifdef __DEBUG_LAST_    
     p_temp = p_header->next;
     while ( p_temp) {
         p_last = p_temp;
@@ -162,6 +181,7 @@ BOOL isLastDoubleList(const DoubleList p_header, const Position p_item)
     } else {
         return FALSE;
     }
+#endif /* __DEBUG_LAST_ */    
 }
 
 /* Name     : getLengthDoubleList                                            */
@@ -518,9 +538,10 @@ STATE insertItemHeaderDoubleList(DoubleList p_header,
         return (FALSE);
     }
 
-    p_node->item  = item;
-    p_node->next  = p_header->next;
-    p_node->prior = p_header;
+    p_node->item   = item;
+    p_node->next   = p_header->next;
+    p_node->prior  = p_header;
+    p_header->next = p_node;
 
     return (TRUE);
 }

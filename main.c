@@ -111,10 +111,16 @@ int main(int argc, char *argv[])
 #endif
 
     T_createDoubleList();
+#if 0
+    T_insertItemHeaderDoubelList();
 
-    T_isEmptyDoubleList();
+    T_insertItemTailDoubleList();
 
     T_clearDoubleList();
+#endif
+    T_isEmptyDoubleList();
+
+    T_insertItemDoubleList();
 
     T_isEmptyDoubleList();
 
