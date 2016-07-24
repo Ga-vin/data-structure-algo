@@ -191,7 +191,28 @@ void T_deleteItemDoubleList(void)
 
 void T_deleteItemByIndexDoubleList(void)
 {
-    
+    UINT32   index_buf[3] = {2, 4, 6};
+    ElemType value;
+    UINT32   i;
+
+    fprintf(stdout, "=====================Test Delete Item By Index===================\n");
+    for (i = 0; i != 3; ++i) {
+        if ( FALSE == deleteItemByIndexDoubleList(_G_list_header,
+                                                  index_buf[i],
+                                                  &value)) {
+            fprintf(stderr, "Delete item at %d error. \n", index_buf[i]);
+        } else {
+            fprintf(stdout, "Delete item 0x%X at %d\n", value, index_buf[i]);
+            retrieveDoubleList(_G_list_header, _printItem, RET_FORWARD);
+            _newLine();
+        }
+    }
+
+    fprintf(stdout, "Delete all items.\n");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
 }
 
 void T_insertItemHeaderDoubelList(void)
