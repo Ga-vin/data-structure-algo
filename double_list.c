@@ -31,10 +31,10 @@ static void _swap(ElemType *p_item_left, ElemType *p_item_right)
 /* Output   : NONE                                                           */
 void _printItem(ElemType item)
 {
-    static UINT32 counter = 0;
+    UINT32 counter = 0;
 
     ++counter;
-    if ( !(counter % 11)) {
+    if ( !((counter+1) % 10)) {
         putchar('\n');
     }
     
@@ -450,6 +450,7 @@ STATE deleteItemDoubleList(DoubleList p_header, ElemType item)
             return (TRUE);
         }
 
+        p_last = p_curr;
         p_curr = p_curr->next;
     }
 

@@ -102,17 +102,91 @@ void T_findItemDoubleList(void)
 
 void T_deleteItemHeaderDoubleList(void)
 {
+    ElemType value = 0;
+    UINT32   i;
+
+    if ( !_G_list_header) {
+        return ;
+    }
     
+    fprintf(stdout, "\n================Test Delete Item From Header of Double List================\n");
+    for (i = 0; i != 5; ++i) {
+        if ( FALSE == deleteItemHeaderDoubleList(_G_list_header,
+                                                 &value)) {
+            fprintf(stderr, "[x] Delete item from header error.\n");
+
+            return ;
+        } else {
+            fprintf(stdout, "[*] Deleted item is <0x%x>\n", value);
+            retrieveDoubleList(_G_list_header,
+                               _printItem,
+                               RET_FORWARD);
+            _newLine();
+        }
+    }
+
+    fprintf(stdout, "Has deleted 5 items \n");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
 }
 
 void T_deleteItemTailDoubleList(void)
 {
+    ElemType value = 0;
+    UINT32   i;
+
+    if ( !_G_list_header) {
+        return ;
+    }
     
+    fprintf(stdout, "\n================Test Delete Item From Tail of Double List================\n");
+    for (i = 0; i != 5; ++i) {
+        if ( FALSE == deleteItemTailDoubleList(_G_list_header,
+                                                 &value)) {
+            fprintf(stderr, "[x] Delete item from tail error.\n");
+
+            return ;
+        } else {
+            fprintf(stdout, "[*] Deleted item is <0x%x>\n", value);
+            retrieveDoubleList(_G_list_header,
+                               _printItem,
+                               RET_FORWARD);
+            _newLine();
+        }
+    }
+
+    fprintf(stdout, "Has deleted 5 items \n");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();    
 }
 
 void T_deleteItemDoubleList(void)
 {
-    
+    ElemType buf[5] = {0};
+    UINT32   i;
+
+    srand(time(0));
+
+    for (i = 0; i != 5; ++i) {
+        buf[i] = rand() % 30 + 1;
+    }
+
+    for (i = 0; i != 5; ++i) {
+        if ( FALSE == deleteItemDoubleList(_G_list_header,
+                                           buf[i])) {
+            fprintf(stderr, "Item 0x%X can not be found in list.\n", buf[i]);
+        } else {
+            fprintf(stdout, "Item[0x%X] has been deleted from list.\n", buf[i]);
+            retrieveDoubleList(_G_list_header,
+                               _printItem,
+                               RET_FORWARD);
+            _newLine();
+        }
+    }
 }
 
 void T_deleteItemByIndexDoubleList(void)
