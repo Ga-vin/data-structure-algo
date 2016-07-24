@@ -103,22 +103,20 @@ STATE destroyDoubleList(DoubleList p_header)
     DoubleList p_ptr  = LIST_NULL;
     
     if ( !p_header) {
-        return (FALSE);
+        return (TRUE);
     }
-
-    /* 先释放头节点 */
-    p_ptr          = p_header->next;
-    p_header->next = LIST_NULL;
-    free(p_header);
-    p_header       = LIST_NULL;
     
+    p_ptr = p_header->next;
     while ( p_ptr) {
-        p_temp       = p_ptr->next;  /* 保存下一个节点的指针                    */
+        p_temp       = p_ptr->next;  /* 保存指向下一个节点的指针                 */
         p_ptr->next  = LIST_NULL;    /* 前向后向都指空，成为单独一个节点          */
         p_ptr->prior = LIST_NULL;
         free(p_ptr);                 /* 释放该独立的节点                       */
         p_ptr        = p_temp;
     }
+
+    free(p_header);
+    p_header         = LIST_NULL;    
 
     return (TRUE);
 }

@@ -572,4 +572,20 @@ void T_mergeDoubleList(void)
                        _printItem,
                        RET_FORWARD);
     _newLine();
+
+    destroyDoubleList(_list_a);
+    destroyDoubleList(_list_b);
+    destroyDoubleList(_list_c);
+
+    if ( _list_a) {
+        fprintf(stderr, "[x] Destroy List-A pointer error. \n");
+    }
+
+    if ( _list_b) {
+        fprintf(stderr, "[x] Destroy List-B pointer error. \n");
+    }
+
+    if ( _list_c) {
+        fprintf(stderr, "[x] Destroy List-C pointer error. \n");
+    }
 }
