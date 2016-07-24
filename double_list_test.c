@@ -482,5 +482,94 @@ void T_sortDoubleList(void)
 
 void T_mergeDoubleList(void)
 {
+    DoubleList _list_a = LIST_NULL;
+    DoubleList _list_b = LIST_NULL;
+    DoubleList _list_c = LIST_NULL;
+    UINT32     i;
+    ElemType   value;
+
+    _list_a = createNodeDoubleList();
+    if ( !_list_a) {
+        fprintf(stderr, "[x] Create Node for List A error. \n");
+
+        return ;
+    }
+
+    _list_b = createNodeDoubleList();
+    if ( !_list_b) {
+        fprintf(stderr, "[x] Create Node for List B error. \n");
+
+        return ;
+    }
+
+    _list_c = createNodeDoubleList();
+    if ( !_list_c) {
+        fprintf(stderr, "[x] Create Node for List C error. \n");
+
+        return ;
+    }
+
+    srand(time(0));
+
+#define    LIST_A_MAX_LEN    (5)    
+    for (i = 0; i != LIST_A_MAX_LEN; ++i) {
+        value = rand() % 50 + 1;
+        if ( FALSE == insertItemHeaderDoubleList(_list_a,
+                                                 value)) {
+            fprintf(stderr, "[x] Insert item to list A error. \n");
+
+            return ;
+        }
+    }
+
+#define    LIST_B_MAX_LEN    (10)
+    for (i = 0; i != LIST_B_MAX_LEN; ++i) {
+        value = rand() % 50 + 1;
+        if ( FALSE == insertItemHeaderDoubleList(_list_b,
+                                                 value)) {
+            fprintf(stderr, "[x] Insert item to list B error. \n");
+
+            return ;
+        }
+    }
+
+    puts("Before merge double list.");
+    puts("List-A.");
+    retrieveDoubleList(_list_a,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
+
+    puts("List-B.");
+    retrieveDoubleList(_list_b,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
+
+    if ( FALSE == mergeDoubleList(_list_a,
+                        _list_b,
+                        _list_c)) {
+        fprintf(stderr, "[x] Merge list a and list b to list c error. \n");
+
+        return ;
+    }
+
+    puts("After merge double list.");
+    puts("List-A.");
+    retrieveDoubleList(_list_a,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
+
+    puts("List-B.");
+    retrieveDoubleList(_list_b,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
     
+    puts("List-C");
+    retrieveDoubleList(_list_c,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
 }

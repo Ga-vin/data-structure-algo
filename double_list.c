@@ -7,9 +7,38 @@
 /* Version   : (C) v1.0                                                      */
 /* Modified  :                                                               */
 /* ************************************************************************* */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "double_list.h"
+
+/* Name     : _isSorted                                                      */
+/* Function : Check whether the double list is sorted as ASCENING order      */
+/* Input    : p_header   Header pointer of double list                       */
+/* Output   : If sorted as ASCENDING order, TRUE will returned, or else FALSE*/
+static BOOL _isSorted(const DoubleList p_header)
+{
+    Position p_curr = LIST_NULL;
+    Position p_last = LIST_NULL;
+    
+    if ( !p_header) {
+        return (FALSE);
+    }
+
+    p_curr = p_header->next;
+    p_last = p_header->next;
+    while ( p_curr) {
+        if ( p_curr->item < p_last->item) {
+            
+            return (FALSE);
+        }
+
+        p_last = p_curr;
+        p_curr = p_curr->next;
+    }
+
+    return TRUE;
+}
 
 /* Name     : _swap                                                          */
 /* Function : Swap the value of two item by reference                        */
@@ -826,6 +855,67 @@ STATE mergeDoubleList(DoubleList p_list_a,
                       DoubleList p_list_b,
                       DoubleList p_list_c)
 {
+    Position p_curr_a = LIST_NULL;
+    Position p_curr_b = LIST_NULL;
+    Position p_curr_c = LIST_NULL;
+    
+    if ( !p_list_a || !p_list_b)  {
+        debugError("<mergeDoubleList> header pointer NULL.",
+                   GET_FILE,
+                   GET_LINE);
+
+        return (FALSE);
+    }
+
+    if ( !p_list_c) {
+        p_list_c = createNodeDoubleList();
+        if ( !p_list_c) {
+            debugError("<mergeDoubleList> Create node error.",
+                       GET_FILE,
+                       GET_LINE);
+
+            return (FALSE);
+        }
+    }
+
+    if ( FALSE == _isSorted(p_list_a)) {
+        if ( FALSE == sortDoubleList(p_list_a,
+                                     ASCENDING)) {
+            debugError("<mergeDoubleList> sorted list a error",
+                       GET_FILE,
+                       GET_LINE);
+
+            return (FALSE);
+        }
+    }
+
+    if ( FALSE == _isSorted(p_list_b)) {
+        if ( FALSE == sortDoubleList(p_list_b,
+                                     ASCENDING)) {
+            debugError("<mergeDoubleList> sorted list b error",
+                       GET_FILE,
+                       GET_LINE);
+
+            return (FALSE);
+        }
+    }
+
+    p_curr_a = p_list_a->next;
+    p_curr_b = p_list_b->next;
+    p_curr_c = p_list_c;
+    while ( p_curr_a && p_curr_b) {
+        if ( p_curr_a->item < p_curr_b->item) {
+            p_curr_c->next  = p_curr_a;
+            p_curr_c        = p_curr_a;
+            p_curr_a        = p_curr_a->next;
+        } else {
+            p_curr_c->next  = p_curr_b;
+            p_curr_c        = p_curr_b;
+            p_curr_b        = p_curr_b->next;
+        }
+    }
+
+    p_curr_c->next = (p_curr_a ? p_curr_a : p_curr_b);
     
     return (TRUE);
 }

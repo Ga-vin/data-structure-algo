@@ -135,6 +135,8 @@ int main(int argc, char *argv[])
     /* T_deleteItemDoubleList(); */
 
     T_destroyDoubleList();
+
+    T_mergeDoubleList();
     
     return 0;
 }
