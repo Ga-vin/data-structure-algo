@@ -659,6 +659,7 @@ STATE insertItemByIndexDoubleList(DoubleList p_header,
     while ( p_curr && i < index) {
         p_last = p_curr;
         p_curr = p_curr->next;
+        ++i;
     }
 
     p_node = createNodeDoubleList();
@@ -671,7 +672,7 @@ STATE insertItemByIndexDoubleList(DoubleList p_header,
     }
     p_node->item = item;
 
-    if ( (!p_curr) || (i == index)) {
+    if ( (!p_curr) || (i > index)) {
         return (FALSE);
     } else {
         p_node->next = p_curr;

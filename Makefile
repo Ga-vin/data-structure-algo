@@ -43,9 +43,9 @@ $(DIR) :
 	$(MK) $@
 
 $(EXE) : $(OBJ)
-	$(CC) $(CCFLAGS) -o $@ $^ -Map,Wl=$(MAP)
+	$(CC) $(CCFLAGS) -o $@ $^ -Map,Wl=$(MAP) 
 $(OBJ_DIR)/%.o : %.c
-	$(CC) $(CCFLAGS) -o $@ -c $<
+	$(CC) $(CCFLAGS) -o $@ -c $< -lc_p
 
 $(ASM) : $(EXE)
 	objdump $< -SD > $@

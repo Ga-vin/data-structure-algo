@@ -124,6 +124,8 @@ int main(int argc, char *argv[])
 
     T_isEmptyDoubleList();
 
+    T_insertItemByIndexDoubleList();
+
     T_destroyDoubleList();
     
     return 0;

@@ -223,6 +223,7 @@ void T_insertItemDoubleList(void)
     }
 
     _newLine();
+    fprintf(stdout, "\n=============Test Insert Item Double List =================\n");
     for (i = 0; i != MAX_LEN; ++i) {
         value = rand() % 50 + 1;
         fprintf(stdout, "<0x%X> ", value);
@@ -237,6 +238,10 @@ void T_insertItemDoubleList(void)
 
                 return ;
             }
+            retrieveDoubleList(_G_list_header,
+                               _printItem,
+                               RET_FORWARD);
+            _newLine();
         } else {
             if ( FALSE == insertItemDoubleList(_G_list_header,
                                                value,
@@ -247,10 +252,15 @@ void T_insertItemDoubleList(void)
 
                 return ;
             }
+            retrieveDoubleList(_G_list_header,
+                               _printItem,
+                               RET_FORWARD);
+            _newLine();
         }
     }
     _newLine();
 
+    fprintf(stdout, "After all inserted.\n");
     T_getLengthDoubleList();
     if ( FALSE == retrieveDoubleList(_G_list_header,
                                      _printItem,
@@ -261,11 +271,49 @@ void T_insertItemDoubleList(void)
 
         return ;
     }
+    _newLine();
 }
 
 void T_insertItemByIndexDoubleList(void)
 {
-    
+    UINT32 index_buf[5] = {1, 3, 5, 7, 9};
+    UINT32 value_buf[5] = {0};
+    UINT32 i;
+
+    srand(time(0));
+
+    for (i = 0; i != 5; ++i) {
+        value_buf[i] = rand() % 30 + 1;
+        fprintf(stdout, "{0x%x} ", value_buf[i]);
+    }
+    _newLine();
+
+    if ( !_G_list_header) {
+        fprintf(stderr, "[x] Global list header is NULL.\n");
+
+        return ;
+    }
+
+    fprintf(stdout, "\n================Test Insert By Index ===================\n");
+    for (i = 0; i != 5; ++i) {
+        if ( FALSE == insertItemByIndexDoubleList(_G_list_header,
+                                                  index_buf[i],
+                                                  value_buf[i])) {
+            fprintf(stderr, "[x] Insert item 0x%x at %d error.\n",
+                    value_buf[i],
+                    index_buf[i]);
+
+            return ;
+        }
+        retrieveDoubleList(_G_list_header,
+                           _printItem,
+                           RET_FORWARD);
+        _newLine();
+    }
+
+    fprintf(stdout, "All inserted.\n");
+    retrieveDoubleList(_G_list_header, _printItem, RET_FORWARD);
+    _newLine();
 }
 
 void T_getLastDoubleList(void)
