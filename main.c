@@ -126,9 +126,11 @@ int main(int argc, char *argv[])
 
     T_insertItemByIndexDoubleList();
 
-    T_deleteItemHeaderDoubleList();
+    T_sortDoubleList();
 
-    T_deleteItemByIndexDoubleList();
+    /* T_deleteItemHeaderDoubleList(); */
+
+    /* T_deleteItemByIndexDoubleList() */;
 
     /* T_deleteItemDoubleList(); */
 

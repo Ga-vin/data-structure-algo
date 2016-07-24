@@ -413,17 +413,71 @@ void T_insertItemByIndexDoubleList(void)
 
 void T_getLastDoubleList(void)
 {
-    
+    /*
+     * Get last node of double list function has been used frequently to check
+     *  whether it is last one, so its unit test could not be added here
+     */
 }
     
 void T_retrieveDoubleLIst(void)
 {
-    
+    /*
+     * Retrieve function of double list function has been used frequently to
+     * print all items of double list.
+     */    
 }
 
 void T_sortDoubleList(void)
 {
-    
+    if ( !_G_list_header) {
+        fprintf(stderr, "[x] Global list header is NULL.\n");
+
+        return ;
+    }
+
+    fprintf(stdout, "\n===================Test Sort As ASCENDING order Double List===================\n");
+    puts("Before sorted double list");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
+    if ( FALSE == sortDoubleList(_G_list_header,
+                                 ASCENDING)) {
+        fprintf(stderr, "[x] Sort double list error. \n");
+
+        return ;
+    }
+
+    puts("After sorted as ASCENDING order.");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
+
+    if ( !_G_list_header) {
+        fprintf(stderr, "[x] Global list header is NULL.\n");
+
+        return ;
+    }
+
+    fprintf(stdout, "\n===================Test Sort as DESCENDING order Double List===================\n");
+    puts("Before sorted double list");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
+    if ( FALSE == sortDoubleList(_G_list_header,
+                                 DESCENDING)) {
+        fprintf(stderr, "[x] Sort double list error. \n");
+
+        return ;
+    }
+
+    puts("After sorted as DESCENDING order.");
+    retrieveDoubleList(_G_list_header,
+                       _printItem,
+                       RET_FORWARD);
+    _newLine();
 }
 
 void T_mergeDoubleList(void)
