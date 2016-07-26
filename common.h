@@ -39,6 +39,9 @@ typedef    INT32           BOOL;
 
 #define    GET_FILE    (__FILE__)
 #define    GET_LINE    (__LINE__)
+#define    GET_FUNC    (__FUNCTION__)
+#define    GET_DATE    (__DATE__)
+#define    GET_TIME    (__TIME__)
 
 #define    LIST_NULL   (NULL)
 #define    LIST_EMPTY  (0)
@@ -50,5 +53,7 @@ typedef enum _SortOrder_ {
 } SortOrder;
 
 void debugError(const char *str, const char *p_file_name, INT32 line);
+
+void errorHandler(const char *file, const char *func, INT32 line, const char *date, const char *time);
 
 #endif /* __EX_COMMON_H_ */

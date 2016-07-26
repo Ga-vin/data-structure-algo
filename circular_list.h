@@ -48,5 +48,9 @@ typedef CircuList        *PtrCircuList;
 /* *****************************************************************************
  * New definition of new function protocols
  ******************************************************************************/
+PtrCNode createNodeCList(void);
+STATE    destroyCList(CircularList p_list);
+STATE    clearCList(CircularList p_list);
+
 
 #endif /* __CIRCULAR_LIST_H_ */
