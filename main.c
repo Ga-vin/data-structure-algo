@@ -7,6 +7,7 @@
 #include "pointer_test.h"
 #include "list_test.h"
 #include "double_list_test.h"
+#include "circular_list_test.h"
 
 #define    DEBUG_WHICH_ONE     (2)
 #define    DEBUG_LIST_SWITCH   (2)
@@ -108,16 +109,17 @@ int main(int argc, char *argv[])
 
 #if 0    
     T_mergeList();
-#endif
 
     T_createDoubleList();
-#if 0
+    
     T_insertItemHeaderDoubelList();
 
     T_insertItemTailDoubleList();
 
     T_clearDoubleList();
 #endif
+
+#if 0    
     T_isEmptyDoubleList();
 
     T_insertItemDoubleList();
@@ -137,6 +139,10 @@ int main(int argc, char *argv[])
     T_destroyDoubleList();
 
     T_mergeDoubleList();
+
+#endif     
+
+    T_createNodeCList();
     
     return 0;
 }
