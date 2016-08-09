@@ -14,6 +14,7 @@
 /* *****************************************************************************
  * New definition of new constances
  ******************************************************************************/
+#define    CIRCULE_LIST_PRIM_DATA    (0xFFFFFFFF)
 typedef enum __C_INSERT_POS {
     INS_HEADER    = 0x1,
     INS_TAIL      = 0x2,
@@ -51,6 +52,20 @@ typedef CircuList        *PtrCircuList;
 PtrCNode createNodeCList(void);
 STATE    destroyCList(CircularList p_list);
 STATE    clearCList(CircularList p_list);
-
+UINT32   getLengthCList(const CircularList p_list);
+BOOL     isEmptyCList(const CircularList p_list);
+STATE    getItemByIndexCList(const CircularList p_list, UINT32 index, ElemType *p_item);
+STATE    locateItemCList(const CircularList p_list, ElemType item, BOOL (*compare)(ElemType left, ElemType right));
+STATE    getPriorItemCList(const CircularList p_list, ElemType curr_item, ElemType *p_prior_item);
+STATE    getNextItemCList(const CircularList p_list, ElemType curr_item, ElemType *p_next_item);
+PtrCNode getItemPtrCList(const CircularList p_list, UINT32 index);
+STATE    insertItemByIndexCList(CircularList p_list, UINT32 index, ElemType item);
+STATE    insertItemHeaderCList(CircularList p_list, ElemType item);
+STATE    insertItemTailCList(CircularList p_list, ElemType item);
+STATE    deleteItemByIndexCList(CircularList p_list, UINT32 index, ElemType *p_item);
+STATE    deleteItemHeaderCList(CircularList p_list, ElemType *p_item);
+STATE    deleteItemTailCList(CircularList p_list, ElemType *p_item);
+STATE    traverseForwardCList(const CircularList p_list, void (*visit(ElemType item)));
+STATE    traverseBackwardCList(const CircularList p_list, void (*visit)(ElemType item));
 
 #endif /* __CIRCULAR_LIST_H_ */

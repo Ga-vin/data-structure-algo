@@ -143,6 +143,10 @@ int main(int argc, char *argv[])
 #endif     
 
     T_createNodeCList();
+
+    T_getLengthCList();
+
+    T_isEmptyCList();
     
     return 0;
 }

@@ -9,4 +9,8 @@ void T_destroyCList(void);
 
 void T_clearCList(void);
 
+void T_getLengthCList(void);
+
+void T_isEmptyCList(void);
+
 #endif /* __CIRCULAR_LIST_TEST_H_ */
