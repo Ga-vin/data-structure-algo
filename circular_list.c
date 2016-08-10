@@ -7,6 +7,21 @@
 
 #include "circular_list.h"
 
+BOOL equal(ElemType left, ElemType right)
+{
+    return ((left == right) ? (TRUE) : (FALSE));
+}
+
+BOOL greater(ElemType left, ElemType right)
+{
+    return ((left > right) ? (TRUE) : (FALSE));
+}
+
+BOOL less(ElemType left, ElemType right)
+{
+    return ((left < right) ? (TRUE) : (FALSE));
+}
+
 /* Name     : createNodeCList                                                */
 /* Function : Create a node for element of double direction circular list    */
 /* Input    : NONE                                                           */
@@ -223,6 +238,57 @@ STATE locateItemCList(const CircularList p_list,
     if ( TRUE == flag) {
         return (TRUE);
     } else {
+        return (FALSE);
+    }
+}
+
+STATE getPriorItemCList(const CircularList p_list,
+                        ElemType  curr_item,
+                        ElemType *p_prior_item)
+{
+    PtrCNode p_curr = LIST_NULL;
+    PtrCNode p_last = LIST_NULL;
+    BOOL     flag   = FALSE;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+#ifdef __DEBUG_SUG1    
+    p_curr = p_list->p_next;
+    p_last = p_list;
+    while ( p_curr != p_list) {
+        if ( curr_item == p_curr->data) {
+            flag          = TRUE;
+            *p_prior_item = p_last->data;
+            break;
+        }
+
+        p_last = p_curr;
+        p_curr = p_curr->p_next;
+    }
+#endif /* __DEBUG_SUG1 */
+    
+    /* Set p_curr points to the second node of list */
+    p_curr = p_list->p_next->p_next;
+    while ( p_curr != p_list) {
+        if ( curr_item == p_curr->data) {
+            flag          = TRUE;
+            *p_prior_item = p_curr->p_prior->data;
+            break;
+        }
+    }
+
+    if ( TRUE == flag) {
+        return (TRUE);
+    } else {
+        *p_prior_item = CIRCULE_LIST_PRIM_DATA;
         return (FALSE);
     }
 }
