@@ -199,6 +199,13 @@ STATE getItemByIndexCList(const CircularList p_list,
     }
 }
 
+/* Name     : locateItemCList                                                */
+/* Function : Acquire item by specific item                                  */
+/* Input    : p_list  -- header pointer of the list
+              item    -- specific item to find
+              compare -- method to call to compare
+          */
+/* Output   : If the value is found, TRUE will be returned, or else FALSE    */
 STATE locateItemCList(const CircularList p_list,
                       ElemType item,
                       BOOL (*compare)(ElemType left, ElemType right))
@@ -242,6 +249,13 @@ STATE locateItemCList(const CircularList p_list,
     }
 }
 
+/* Name     : getPriorItemCList                                              */
+/* Function : Acquire prior item by specific item                            */
+/* Input    : p_list    -- header pointer of the list
+              curr_item -- current item to find
+              p_prior_item -- item to store prior item
+          */
+/* Output   : If the value is found, TRUE will be returned, or else FALSE    */
 STATE getPriorItemCList(const CircularList p_list,
                         ElemType  curr_item,
                         ElemType *p_prior_item)
@@ -289,6 +303,52 @@ STATE getPriorItemCList(const CircularList p_list,
         return (TRUE);
     } else {
         *p_prior_item = CIRCULE_LIST_PRIM_DATA;
+        return (FALSE);
+    }
+}
+
+STATE getNextItemCList(const CircularList p_list,
+                       ElemType  curr_item,
+                       ElemType *p_next_item)
+{
+    PtrCNode p_curr = LIST_NULL;
+    BOOL     flag   = FALSE;
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+#ifdef __DEBUG_SUG2    
+    p_curr = p_list->p_next;
+    while ( p_curr->p_next != p_list) {
+        if ( curr_item == p_curr->data) {
+            flag         = TRUE;
+            *p_next_item = p_curr->p_next->data;
+            break;
+        }
+
+        p_curr = p_curr->p_next;
+    }
+#endif /* __DEBUG_SUG2 */
+
+    p_curr = p_list->p_next->p_next;
+    while ( p_curr != p_list) {
+        if ( curr_item == p_curr->p_prior->data) {
+            flag = TRUE;
+            *p_next_item = p_curr->data;
+        }
+
+        p_curr = p_curr->p_next;
+    }
+
+    if ( TRUE == flag) {
+        return (TRUE);
+    } else {
         return (FALSE);
     }
 }
