@@ -352,3 +352,37 @@ STATE getNextItemCList(const CircularList p_list,
         return (FALSE);
     }
 }
+
+PtrCNode getItemPtrCList(const CircularList p_list,
+                         UINT32             index)
+{
+    PtrCNode p_node = LIST_NULL;
+    UINT32   cnt    = 1;
+    BOOL     flag   = FALSE;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (LIST_NULL);
+    }
+
+    p_node = p_list->p_next;
+    while ( p_node != p_list) {
+        if ( cnt == index) {
+            flag = TRUE;
+            break;
+        }
+
+        p_node = p_node->p_next;
+    }
+
+    if ( TRUE == flag) {
+        return (p_node);
+    } else {
+        return (LIST_NULL);
+    }
+}
