@@ -307,6 +307,13 @@ STATE getPriorItemCList(const CircularList p_list,
     }
 }
 
+/* Name     : getNextItemCList                                               */
+/* Function : Get the next item by specified one                             */
+/* Input    : p_list    -- header pointer of the list
+              curr_item -- current item to find
+              p_next_item -- item to store next item
+           */
+/* Output   : If the value is found, TRUE will be returned, or else FALSE    */
 STATE getNextItemCList(const CircularList p_list,
                        ElemType  curr_item,
                        ElemType *p_next_item)
@@ -353,6 +360,13 @@ STATE getNextItemCList(const CircularList p_list,
     }
 }
 
+/* Name     : getItemPtrCList                                                */
+/* Function : Get the specific node by index                                 */
+/* Input    : p_list    -- header pointer of the list
+              index     -- specific index to find
+           */
+/* Output   : If it is found, the node will be returned, or else NULL        */
+#define __DEBUG_FLAG
 PtrCNode getItemPtrCList(const CircularList p_list,
                          UINT32             index)
 {
@@ -370,6 +384,17 @@ PtrCNode getItemPtrCList(const CircularList p_list,
         return (LIST_NULL);
     }
 
+    if ( index <= 0 || index > getLengthCList(p_list)) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (LIST_NULL);
+    }
+
+#ifdef __DEBUG_FLAG    
     p_node = p_list->p_next;
     while ( p_node != p_list) {
         if ( cnt == index) {
@@ -377,6 +402,7 @@ PtrCNode getItemPtrCList(const CircularList p_list,
             break;
         }
 
+        ++cnt;
         p_node = p_node->p_next;
     }
 
@@ -385,4 +411,52 @@ PtrCNode getItemPtrCList(const CircularList p_list,
     } else {
         return (LIST_NULL);
     }
+#endif /* __DEBUG_FLAG */
+
+#ifdef __DEBUG_DIRECT    
+    for (cnt = 1; cnt < index; ++cnt) {
+        p_node = p_node->next;
+    }
+#endif /* __DEBUG_DIRECT */
+
+    return (p_node);
+}
+
+/* Name     : insertItemHeaderCList                                          */
+/* Function : Insert a new node into the header of list                      */
+/* Input    : p_list    -- header pointer of the list
+              item      -- item to be inserted the list
+           */
+/* Output   : If inserted successfully, TRUE will be returned, or else NULL  */
+STATE insertItemHeaderCList(CircularList p_list, ElemType item)
+{
+    CircularList p_new_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    p_new_node = createNodeCList();
+    if ( !p_new_node) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+    p_new_node->data = item;
+
+    p_new_node->p_next  = p_list->p_next;
+    p_list->p_next      = p_new_node;
+    p_new_node->p_prior = p_list->p_next->p_prior;
+
+    return (TRUE);
 }
