@@ -261,7 +261,9 @@ STATE getPriorItemCList(const CircularList p_list,
                         ElemType *p_prior_item)
 {
     PtrCNode p_curr = LIST_NULL;
+#ifdef __DEBUG_SUG1    
     PtrCNode p_last = LIST_NULL;
+#endif    
     BOOL     flag   = FALSE;
     
     if ( !p_list) {
@@ -457,6 +459,97 @@ STATE insertItemHeaderCList(CircularList p_list, ElemType item)
     p_new_node->p_next  = p_list->p_next;
     p_list->p_next      = p_new_node;
     p_new_node->p_prior = p_list->p_next->p_prior;
+
+    return (TRUE);
+}
+
+/* Name     : insertItemTailCList                                            */
+/* Function : Insert a new node into the tail of list                        */
+/* Input    : p_list    -- header pointer of the list
+              item      -- item to be inserted the list
+           */
+/* Output   : If inserted successfully, TRUE will be returned, or else NULL  */
+STATE insertItemTailCList(CircularList p_list,
+                          ElemType     item)
+{
+    CircularList p_new_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    p_new_node = createNodeCList();
+    if ( !p_new_node) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+    p_new_node->data        = item;
+    p_list->p_prior->p_next = p_new_node;
+    p_new_node->p_next      = p_list;
+    p_list->p_prior         = p_new_node;
+
+    return (TRUE);
+}
+
+STATE insertItemByIndexCList(CircularList p_list,
+                             UINT32       index,
+                             ElemType     item)
+{
+    CircularList p_new_node = LIST_NULL;
+    CircularList p_node     = LIST_NULL;
+    UINT32       cnt        = 1;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( index > getLengthCList(p_list)) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+        return (FALSE);
+    }
+
+    p_node = p_list->p_next;
+    while ( (cnt < index) && (p_node != p_list)) {
+        p_node = p_node->p_next;
+        ++cnt;
+    }
+
+    p_new_node = createNodeCList();
+    if ( !p_new_node) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    p_new_node->data    = item;
+    p_new_node->p_next  = p_node->p_next;
+    p_new_node->p_prior = p_node;
+    p_node->p_next      = p_new_node;
 
     return (TRUE);
 }
