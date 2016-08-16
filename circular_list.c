@@ -502,6 +502,13 @@ STATE insertItemTailCList(CircularList p_list,
     return (TRUE);
 }
 
+/* Name     : insertItemByIndexCList                                         */
+/* Function : Insert a new node into specific location of list               */
+/* Input    : p_list    -- header pointer of the list
+              index     -- specific location
+              item      -- item to be inserted the list
+           */
+/* Output   : If inserted successfully, TRUE will be returned, or else NULL  */
 STATE insertItemByIndexCList(CircularList p_list,
                              UINT32       index,
                              ElemType     item)
@@ -550,6 +557,266 @@ STATE insertItemByIndexCList(CircularList p_list,
     p_new_node->p_next  = p_node->p_next;
     p_new_node->p_prior = p_node;
     p_node->p_next      = p_new_node;
+
+    return (TRUE);
+}
+
+/* Name     : deleteItemHeaderCList                                          */
+/* Function : Delete a node from the header of list                          */
+/* Input    : p_list    -- header pointer of the list
+              p_item    -- item to be deleted from the list
+           */
+/* Output   : If deleted successfully, TRUE will be returned, or else NULL   */
+STATE deleteItemHeaderCList(CircularList p_list,
+                            ElemType    *p_item)
+{
+    CircularList p_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( TRUE == isEmptyCList(p_list)) {
+        *p_item = CIRCULE_LIST_PRIM_DATA;
+
+        return (FALSE);
+    } else {
+        *p_item = p_list->p_next->data;
+
+        p_node                  = p_list->p_next;
+        p_node->p_next->p_prior = p_list;
+        p_list->p_next          = p_node->p_next;
+        free(p_node);
+        
+        return (TRUE);
+    }
+}
+
+/* Name     : deleteItemTailCList                                            */
+/* Function : Delete a node from the tail of list                            */
+/* Input    : p_list    -- header pointer of the list
+              p_item    -- item to be deleted from the list
+           */
+/* Output   : If deleted successfully, TRUE will be returned, or else NULL   */
+STATE deleteItemTailCList(CircularList p_list,
+                          ElemType    *p_item)
+{
+    CircularList p_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( TRUE == isEmptyCList(p_list)) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        *p_item = CIRCULE_LIST_PRIM_DATA;
+
+        return (FALSE);
+    }
+
+    p_node = p_list;
+    while ( p_node->p_next != p_list) {
+        p_node = p_node->p_next;
+    }
+
+    *p_item = p_node->data;
+    p_node->p_prior->p_next = p_list;    
+    p_list->p_prior = p_node->p_prior;
+    free(p_node);
+
+    return (TRUE);
+}
+
+/* Name     : deleteItemByIndexCList                                         */
+/* Function : Delete a node from the specific location of list               */
+/* Input    : p_list    -- header pointer of the list
+              index     -- specific location of list
+              p_item    -- item to be deleted from the list
+           */
+/* Output   : If deleted successfully, TRUE will be returned, or else NULL   */
+STATE deleteItemByIndexCList(CircularList p_list,
+                             UINT32       index,
+                             ElemType    *p_item)
+{
+    CircularList p_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( TRUE == isEmptyCList(p_list)) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+        *p_item = CIRCULE_LIST_PRIM_DATA;
+
+        return (FALSE);
+    }
+
+    if ( (index <= 0) || (index > getLengthCList(p_list))) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+        *p_item = CIRCULE_LIST_PRIM_DATA;
+
+        return (FALSE);
+    }
+
+    p_node = getItemPtrCList(p_list, index);
+    if ( !p_node) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+        *p_item = CIRCULE_LIST_PRIM_DATA;
+
+        return (FALSE);
+    }
+    
+    *p_item = p_node->data;
+    p_node->p_prior->p_next = p_node->p_next;
+    p_node->p_next->p_prior = p_node->p_prior;
+    free(p_node);
+
+    return (TRUE);
+}
+
+/* Name     : traverseForwardCList                                           */
+/* Function : Traverse each node of list by callback function                */
+/* Input    : p_list      -- header pointer of the list
+              ptrcallback -- function ptr to travserse node
+           */
+/* Output   : If traverse successfully, TRUE will be returned, or else NULL  */
+STATE traverseForwardCList(const CircularList p_list,
+                           void (*ptr_visit)(ElemType item))
+{
+    CircularList p_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( !ptr_visit) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    p_node = p_list->p_next;
+    while ( p_node != p_list) {
+        ptr_visit(p_node->data);
+
+        p_node = p_node->p_next;
+    }
+
+    return (TRUE);
+}
+
+/* Name     : traverseBackwardCList                                          */
+/* Function : Traverse each node of list by callback function                */
+/* Input    : p_list      -- header pointer of the list
+              ptrcallback -- function ptr to travserse node
+           */
+/* Output   : If traverse successfully, TRUE will be returned, or else NULL  */
+STATE traverseBackwardCList(const CircularList p_list,
+                            void (*ptr_visit)(ElemType item))
+{
+    CircularList p_node = LIST_NULL;
+    
+    if ( !p_list) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    if ( !ptr_visit) {
+        errorHandler(GET_FILE,
+                     GET_FUNC,
+                     GET_LINE,
+                     GET_DATE,
+                     GET_TIME);
+
+        return (FALSE);
+    }
+
+    p_node = p_list->p_prior;
+    while ( p_node != p_list) {
+        ptr_visit(p_node->data);
+
+        p_node = p_node->p_prior;
+    }
 
     return (TRUE);
 }

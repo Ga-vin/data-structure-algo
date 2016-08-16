@@ -65,7 +65,7 @@ STATE    insertItemTailCList(CircularList p_list, ElemType item);
 STATE    deleteItemByIndexCList(CircularList p_list, UINT32 index, ElemType *p_item);
 STATE    deleteItemHeaderCList(CircularList p_list, ElemType *p_item);
 STATE    deleteItemTailCList(CircularList p_list, ElemType *p_item);
-STATE    traverseForwardCList(const CircularList p_list, void (*visit(ElemType item)));
+STATE    traverseForwardCList(const CircularList p_list, void (*visit)(ElemType item));
 STATE    traverseBackwardCList(const CircularList p_list, void (*visit)(ElemType item));
 
 #endif /* __CIRCULAR_LIST_H_ */
