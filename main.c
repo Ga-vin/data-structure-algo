@@ -147,6 +147,16 @@ int main(int argc, char *argv[])
     T_getLengthCList();
 
     T_isEmptyCList();
+
+    T_insertItemHeaderCList();
+
+    T_insertItemHeaderCList();
+
+    T_isEmptyCList();
+    T_getLengthCList();
+
+    T_insertItemTailCList();
+    T_getLengthCList();
     
     return 0;
 }

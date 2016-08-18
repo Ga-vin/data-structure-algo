@@ -35,4 +35,8 @@ void T_deleteItemHeaderIndexCList(void);
 
 void T_deleteItemTailCList(void);
 
+void T_traverseForwardCList(void);
+
+void T_traverseBackwardCList(void);
+
 #endif /* __CIRCULAR_LIST_TEST_H_ */

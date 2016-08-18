@@ -146,6 +146,7 @@ void T_getPriorItemCList(void)
         return ;
     }
 
+    _printTitle("Get Prior Item From List");
     end = getLengthCList(_G_p_list);
     for (i = start; i < end; i += 3) {
         if ( FALSE == getPriorItemCList(_G_p_list,
@@ -222,5 +223,104 @@ void T_getItemPtrCList(void)
         fprintf(stderr, "[x] Get item ptr node error. \n");
     } else {
         fprintf(stdout, "[*] Get ptr node in list successfully. Data is %d. \n", p_node->data);
+    }
+}
+
+void T_insertItemHeaderCList(void)
+{
+    UINT32 i;
+    
+    if ( !_G_p_list) {
+        fprintf(stderr, "[x] Global list header is NULL. \n");
+
+        return ;
+    }
+
+    _printTitle("Insert Item Into Header of List");
+    for (i = 0; i != 12; ++i) {
+        if ( FALSE == insertItemHeaderCList(_G_p_list,
+                                            (ElemType)i)) {
+            fprintf(stderr, "[x] Insert item %d into list error. \n", i);
+        } else {
+            fprintf(stdout, "[*] Insert item %d into list successfully. \n", i);
+        }
+    }
+    T_traverseForwardCList();
+}
+
+void T_insertItemTailCList(void)
+{
+    UINT32 i;
+    
+    if ( !_G_p_list) {
+        fprintf(stderr, "[x] Global list header NULL. \n");
+
+        return ;
+    }
+
+    _printTitle("Insert Item By Tail Into List");
+    for (i = 0; i != 5; ++i) {
+        if ( FALSE == insertItemTailCList(_G_p_list,
+                                          (ElemType)i)) {
+            fprintf(stderr, "[x] Insert item into list error. \n");
+        } else {
+            fprintf(stdout, "[*] Insert item into list successfully. \n");
+        }
+    }
+    T_traverseBackwardCList();
+}
+
+void T_insertItemByIndexCList(void)
+{
+    UINT32 i;
+    
+    if ( !_G_p_list) {
+        fprintf(stderr, "[x] Global list header is NULL. \n");
+
+        return ;
+    }
+
+    _printTitle("Insert Item By Index Into List");
+    for (i = 0; i != 10; ++i) {
+        if ( i && !(i % 3)) {
+            if ( FALSE == insertItemByIndexCList(_G_p_list,
+                                                 i,
+                                                 100)) {
+                fprintf(stderr, "[x] Insert item by index into list error. \n");
+            } else {
+                fprintf(stdout, "[*] Insert item by index into list successfully. \n");
+            }
+        }
+        T_traverseForwardCList();
+    }
+}
+
+void T_traverseForwardCList(void)
+{
+    if ( !_G_p_list ){
+        fprintf(stderr, "[x] Global list header is NULL. \n");
+
+        return ;
+    }
+
+    _printTitle("Traverse Forward List");    
+    if ( FALSE == traverseForwardCList(_G_p_list,
+                                       __print)) {
+        fprintf(stderr, "[x] Traverse forward list error. \n");
+    } 
+}
+
+void T_traverseBackwardCList(void)
+{
+    if ( !_G_p_list) {
+        fprintf(stderr, "[x] Global list header is NULL. \n");
+
+        return ;
+    }
+
+    _printTitle("Traverse Backward List");
+    if ( FALSE == traverseBackwardCList(_G_p_list,
+                                        __print)) {
+        fprintf(stderr, "[x] Traverse backward list error. \n");
     }
 }
