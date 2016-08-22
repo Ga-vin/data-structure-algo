@@ -241,9 +241,7 @@ void T_insertItemHeaderCList(void)
         if ( FALSE == insertItemHeaderCList(_G_p_list,
                                             (ElemType)i)) {
             fprintf(stderr, "[x] Insert item %d into list error. \n", i);
-        } else {
-            fprintf(stdout, "[*] Insert item %d into list successfully. \n", i);
-        }
+        } 
     }
     T_traverseForwardCList();
 }
@@ -275,11 +273,9 @@ void T_insertItemTailCList(void)
         if ( FALSE == insertItemTailCList(_G_p_list,
                                           (ElemType)i)) {
             fprintf(stderr, "[x] Insert item into list error. \n");
-        } else {
-            fprintf(stdout, "[*] Insert item into list successfully. \n");
-        }
+        } 
     }
-    T_traverseForwardCList();
+    T_traverseBackwardCList();
 }
 
 void T_insertItemByIndexCList(void)
@@ -299,9 +295,7 @@ void T_insertItemByIndexCList(void)
                                                  i,
                                                  100)) {
                 fprintf(stderr, "[x] Insert item by index into list error. \n");
-            } else {
-                fprintf(stdout, "[*] Insert item by index into list successfully. \n");
-            }
+            } 
         }
         T_traverseForwardCList();
     }

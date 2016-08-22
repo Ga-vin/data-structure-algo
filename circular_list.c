@@ -495,14 +495,12 @@ STATE insertItemTailCList(CircularList p_list,
 
         return (FALSE);
     }
-    fprintf(stdout, "Here.. %d. Len: %d\n", item, getLengthCList(p_list));
     p_new_node->data        = item;
     
     p_list->p_prior->p_next = p_new_node;
+    p_new_node->p_prior     = p_list->p_prior;
     p_list->p_prior         = p_new_node;    
     p_new_node->p_next      = p_list;
-
-    fprintf(stdout, "After.. %d. Len: %d\n", item, getLengthCList(p_list));
 
     return (TRUE);
 }
@@ -817,8 +815,6 @@ STATE traverseBackwardCList(const CircularList p_list,
     }
 
     p_node = p_list->p_prior;
-    fprintf(stdout, "[*] Length: %d \n", getLengthCList(p_list));
-    return (FALSE);
     while ( p_node != p_list) {
         ptr_visit(p_node->data);
 
