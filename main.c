@@ -144,21 +144,15 @@ int main(int argc, char *argv[])
 
     T_createNodeCList();
 
-    T_getLengthCList();
-
-    T_isEmptyCList();
-
     T_insertItemHeaderCList();
 
     T_insertItemHeaderCList();
 
     T_get_last_data_CList();
 
-    T_isEmptyCList();
-    T_getLengthCList();
-
     T_insertItemTailCList();
-    T_getLengthCList();
+
+    T_getItemByIndexCList();
     
     return 0;
 }

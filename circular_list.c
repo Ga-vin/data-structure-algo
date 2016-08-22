@@ -41,7 +41,7 @@ PtrCNode createNodeCList(void)
         return (LIST_NULL);
     }
 
-    p_node->p_next = p_node->p_prior = p_node;
+    p_node->p_next = p_node->p_prior = LIST_NULL;
     p_node->data   = CIRCULE_LIST_PRIM_DATA;
 
     return (p_node);
@@ -164,8 +164,8 @@ BOOL isEmptyCList(const CircularList p_list)
            */
 /* Output   : If the value is found, TRUE will be returned, or else FALSE    */
 STATE getItemByIndexCList(const CircularList p_list,
-                          UINT32    index,
-                          ElemType *p_item)
+                          UINT32             index,
+                          ElemType          *p_item)
 {
     PtrCNode p_node = LIST_NULL;
     UINT32   cnt    = 1;
@@ -189,6 +189,7 @@ STATE getItemByIndexCList(const CircularList p_list,
             break;
         }
         p_node = p_node->p_next;
+        ++cnt;
     }
 
     if ( TRUE == flag) {
@@ -819,7 +820,6 @@ STATE traverseBackwardCList(const CircularList p_list,
         ptr_visit(p_node->data);
 
         p_node = p_node->p_prior;
-        fprintf(stdout, "Here .\n");
     }
 
     return (TRUE);

@@ -50,6 +50,7 @@ void T_createNodeCList(void)
     } else{
         fprintf(stdout, "Create node for the list successfully. \n");
     }
+    _G_p_list->p_next = _G_p_list->p_prior = _G_p_list;
 }
 
 void T_getLengthCList(void)
@@ -99,9 +100,7 @@ void T_getItemByIndexCList(void)
         if ( FALSE == getItemByIndexCList(_G_p_list,
                                           i,
                                           &item)) {
-            fprintf(stderr, "[x] get item by index error. \n");
-
-            return ;
+            fprintf(stderr, "[x] get item by index[%d] error. \n", i);
         } else {
             fprintf(stdout, "[*] Index %d item is %d. \n", i, item);
         }
@@ -275,7 +274,8 @@ void T_insertItemTailCList(void)
             fprintf(stderr, "[x] Insert item into list error. \n");
         } 
     }
-    T_traverseBackwardCList();
+    /* T_traverseBackwardCList(); */
+    T_traverseForwardCList();
 }
 
 void T_insertItemByIndexCList(void)
