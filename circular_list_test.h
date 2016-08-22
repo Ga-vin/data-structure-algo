@@ -39,4 +39,6 @@ void T_traverseForwardCList(void);
 
 void T_traverseBackwardCList(void);
 
+void T_get_last_data_CList(void);
+
 #endif /* __CIRCULAR_LIST_TEST_H_ */

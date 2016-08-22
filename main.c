@@ -152,6 +152,8 @@ int main(int argc, char *argv[])
 
     T_insertItemHeaderCList();
 
+    T_get_last_data_CList();
+
     T_isEmptyCList();
     T_getLengthCList();
 

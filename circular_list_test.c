@@ -237,7 +237,7 @@ void T_insertItemHeaderCList(void)
     }
 
     _printTitle("Insert Item Into Header of List");
-    for (i = 0; i != 12; ++i) {
+    for (i = 3; i != 12; ++i) {
         if ( FALSE == insertItemHeaderCList(_G_p_list,
                                             (ElemType)i)) {
             fprintf(stderr, "[x] Insert item %d into list error. \n", i);
@@ -246,6 +246,18 @@ void T_insertItemHeaderCList(void)
         }
     }
     T_traverseForwardCList();
+}
+
+void T_get_last_data_CList(void)
+{
+    if ( !_G_p_list) {
+        fprintf(stderr, "[x] Global list header is NULL. \n");
+
+        return ;
+    }
+
+    _printTitle("Get Data of Last Node in the List. ");
+    fprintf(stdout, "[%d]\n", _G_p_list->p_prior->data);
 }
 
 void T_insertItemTailCList(void)
@@ -267,7 +279,7 @@ void T_insertItemTailCList(void)
             fprintf(stdout, "[*] Insert item into list successfully. \n");
         }
     }
-    T_traverseBackwardCList();
+    T_traverseForwardCList();
 }
 
 void T_insertItemByIndexCList(void)

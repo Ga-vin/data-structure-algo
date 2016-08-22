@@ -456,9 +456,10 @@ STATE insertItemHeaderCList(CircularList p_list, ElemType item)
     }
     p_new_node->data = item;
 
-    p_new_node->p_next  = p_list->p_next;
-    p_list->p_next      = p_new_node;
-    p_new_node->p_prior = p_list->p_next->p_prior;
+    p_new_node->p_next      = p_list->p_next;
+    p_list->p_next->p_prior = p_new_node;
+    p_list->p_next          = p_new_node;
+    p_new_node->p_prior     = p_list->p_next->p_prior;
 
     return (TRUE);
 }
@@ -494,12 +495,14 @@ STATE insertItemTailCList(CircularList p_list,
 
         return (FALSE);
     }
-    fprintf(stdout, "Here.. %d. \n", item);
+    fprintf(stdout, "Here.. %d. Len: %d\n", item, getLengthCList(p_list));
     p_new_node->data        = item;
+    
     p_list->p_prior->p_next = p_new_node;
+    p_list->p_prior         = p_new_node;    
     p_new_node->p_next      = p_list;
-    p_list->p_prior         = p_new_node;
-    fprintf(stdout, "After.. %d. \n", item);
+
+    fprintf(stdout, "After.. %d. Len: %d\n", item, getLengthCList(p_list));
 
     return (TRUE);
 }
