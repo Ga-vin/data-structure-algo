@@ -297,8 +297,9 @@ void T_insertItemByIndexCList(void)
                 fprintf(stderr, "[x] Insert item by index into list error. \n");
             } 
         }
-        T_traverseForwardCList();
     }
+    T_traverseForwardCList();
+    /* T_traverseBackwardCList(); */
 }
 
 void T_traverseForwardCList(void)

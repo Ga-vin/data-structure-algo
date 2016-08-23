@@ -146,11 +146,25 @@ int main(int argc, char *argv[])
 
     T_insertItemHeaderCList();
 
+#ifdef __DEBUG_CIRCULE    
     T_insertItemHeaderCList();
 
     T_get_last_data_CList();
 
     T_insertItemTailCList();
+
+    T_getItemByIndexCList();
+#endif /* __DEBUG_CIRCULE */    
+
+    T_insertItemByIndexCList();
+
+    T_getItemPtrCList();
+
+    T_getNextItemCList();
+
+    /* T_getPriorItemCList(); */
+
+    T_locateItemCList();
 
     T_getItemByIndexCList();
     
