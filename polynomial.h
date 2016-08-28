@@ -40,7 +40,17 @@ INT32 get_length_list(const PPoly p_header);
 STATE get_item_by_index_list(const PPoly p_header, UINT32 index, TermType *p_term);
 STATE get_index_by_item_list(const PPoly p_header, TermType term, UINT32 *p_index);
 PPoly find_item_list(const PPoly p_header, TermType term);
-
+STATE delete_item_header_list(PPoly p_header, TermType *p_del_item);
+STATE delete_item_tail_list(PPoly p_header, TermType *p_del_item);
+STATE delete_item_list(PPoly p_header, const TermType item);
+STATE delete_item_by_index_list(PPoly p_header, UINT32 index, TermType *p_del_item);
+STATE insert_item_header_list(PPoly p_header, const TermType term);
+STATE insert_item_tail_list(PPoly p_header, const TermType term);
+STATE insert_item_list(PPoly p_header, TermType term);
+STATE insert_item_by_index_list(PPoly p_header, UINT32 index, const TermType term);
+PPoly find_last_list(const PPoly p_header);
+STATE retrieve_list(const PPoly p_header, void (*callback)(const TermType term));
+STATE sort_list(PPoly p_header, SortOrder order);
 
 
 
