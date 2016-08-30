@@ -3,8 +3,25 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <string.h>
+#include <math.h>
 
 #include "polynomial.h"
+
+/* Name     : _is_equal                                                      */
+/* Function : Check whether the two item is equal                            */
+/* Input    : left  -- left item to be checked
+              right -- right item to be checked                              */
+/* Output   : If equal, TRUE will returned, or else FALSE                    */
+#define    PRECISION    (1.0E-006)
+static BOOL _is_equal(TermType left, TermType right)
+{
+    if ( (left.exp == right.exp) &&
+         (abs(left.coef - right.coef) <= PRECISION) ) {
+        return (TRUE);
+    } else {
+        return (FALSE);
+    }
+}
 
 /* Name     : _list_get_next                                                 */
 /* Function : Get next node of list                                          */
@@ -13,6 +30,15 @@
 static PPoly _list_get_next(const PPoly p_node)
 {
     return (p_node->next);
+}
+
+/* Name     : _list_get_data                                                 */
+/* Function : Get data for the node of list                                  */
+/* Input    : p_node -- specific node of list                                */
+/* Output   : Item field of the node for the list                            */
+static TermType _list_get_data(const PPoly p_node)
+{
+    return (p_node->item);
 }
 
 /* Name     : init_list                                                      */
@@ -164,4 +190,81 @@ STATE get_item_by_index_list(const PPoly p_header,
     memcpy(p_term, &p_node->item, sizeof(TermType));
 
     return (TRUE);
+}
+
+/* Name     : get_index_by_item_list                                         */
+/* Function : Get index of node by specific item                             */
+/* Input    : p_header    ---   header of list pointer
+              term        ---   specific item
+              p_index     ---   to store index has found                     */
+/* Output   : If found, TRUE will be returned, or else FALSE                 */
+STATE get_index_by_item_list(const PPoly p_header,
+                             TermType    term,
+                             UINT32     *p_index)
+{
+    PPoly  p_node = LIST_NULL;
+    UINT32 cnt    = 0;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( !p_index) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Index pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_node = _list_get_next(p_header);
+    while ( p_node &&
+            ( FALSE == _is_equal(_list_get_data(p_node),term)) ) {
+        cnt++;
+        p_node = _list_get_next(p_node);
+    }
+
+    if ( !p_node) {
+        *p_index = 0xFFFFFFFF;
+        
+        return (FALSE);
+    }
+
+    *p_index = cnt;
+    return (TRUE);
+}
+
+/* Name     : find_item_list                                                 */
+/* Function : Find a node which item is equal with specific one              */
+/* Input    : p_header    ---   header of list pointer
+              term        ---   specific item                                */
+/* Output   : If found, the node pointer will be returned, or else NULL      */
+PPoly find_item_list(const PPoly p_header,
+                     TermType    term)
+{
+    PPoly p_node = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_node = _list_get_next(p_header);
+    while ( p_node &&
+            ( FALSE == _is_equal(_list_get_data(p_node), term)) ) {
+        p_node = _list_get_next(p_node);
+    }
+
+    if ( !p_node) {
+        return (LIST_NULL);
+    } else {
+        return (p_node);
+    }
 }
