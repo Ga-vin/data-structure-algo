@@ -268,3 +268,162 @@ PPoly find_item_list(const PPoly p_header,
         return (p_node);
     }
 }
+
+/* Name     : insert_item_header_list                                        */
+/* Function : Insert item node into header of the list                       */
+/* Input    : p_header    ---   header of list pointer
+              term        ---   specific item                                */
+/* Output   : If inserted successfully, TRUE will be returned, or else FALSE */
+STATE insert_item_header_list(PPoly          p_header,
+                              const TermType term)
+{
+    PPoly p_node = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_node = init_list();
+    if ( !p_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Malloc pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+    memcpy(&(p_node->item), &term, sizeof(TermType));
+    p_node->next   = _list_get_next(p_header);
+    p_header->next = p_node;
+
+    return (TRUE);
+}
+
+/* Name     : insert_item_tail_list                                          */
+/* Function : Insert item node into tail of the list                         */
+/* Input    : p_header    ---   header of list pointer
+              term        ---   specific item                                */
+/* Output   : If inserted successfully, TRUE will be returned, or else FALSE */
+STATE insert_item_tail_list(PPoly          p_header,
+                            const TermType item)
+{
+    PPoly p_inter_node = LIST_NULL;
+    PPoly p_new_node   = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_new_node = init_list();
+    if ( !p_new_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Malloc NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+    memcpy(&(p_new_node->item), &item, sizeof(TermType));
+
+    p_inter_node = p_header;
+    while ( _list_get_next(p_inter_node)) {
+        p_inter_node = _list_get_next(p_inter_node);
+    }
+
+    p_new_node->next    = LIST_NULL;
+    p_inter_node->next  = p_new_node;
+
+    return (TRUE);
+}
+
+/* Name     : insert_item_list                                               */
+/* Function : Insert node pointer into tail of the list                      */
+/* Input    : p_header    ---   header of list pointer
+              p_node      ---   specific node pointer                        */
+/* Output   : If inserted successfully, TRUE will be returned, or else FALSE */
+STATE insert_item_list(PPoly       p_header,
+                       const PPoly p_node)
+{
+    PPoly p_inter_node = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( !p_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Node pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_inter_node = p_header;
+    while ( _list_get_next(p_inter_node)) {
+        p_inter_node = _list_get_next(p_inter_node);
+    }
+
+    p_inter_node->next = p_node;
+
+    return (TRUE);
+}
+
+/* Name     : insert_item_by_index_list                                      */
+/* Function : Insert node pointer into specific index of the list            */
+/* Input    : p_header    ---   header of list pointer
+              index       ---   specific index
+              term        ---   data field to be inserted                    */
+/* Output   : If inserted successfully, TRUE will be returned, or else FALSE */
+STATE insert_item_by_index_list(PPoly          p_header,
+                                UINT32         index,
+                                const TermType term)
+{
+    PPoly  p_node     = LIST_NULL;
+    PPoly  p_new_node = LIST_NULL;
+    UINT32 cnt        = 0;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( (!index) || (index > get_length_list(p_header)) ) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Index invalid. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_new_node = init_list();
+    if ( !p_new_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Malloc NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+    memcpy(&(p_new_node->item), &term, sizeof(TermType));
+    
+    p_node = _list_get_next(p_header);
+    while ( p_node && (cnt < index) ) {
+        p_node = _list_get_next(p_node);
+    }
+    p_new_node->next = _list_get_next(p_node);
+    p_node->next     = p_new_node;
+
+    return (TRUE);
+}
