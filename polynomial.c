@@ -427,3 +427,91 @@ STATE insert_item_by_index_list(PPoly          p_header,
 
     return (TRUE);
 }
+
+/* Name     : delete_item_header_list                                        */
+/* Function : Delete node from header of the list                            */
+/* Input    : p_header    ---   header of list pointer
+              p_term      ---   item pointer to store node                   */
+/* Output   : If deleted successfully, TRUE will be returned, or else FALSE  */
+STATE delete_item_header_list(PPoly     p_header,
+                              TermType *p_item)
+{
+    if ( !p_header) {
+#ifdef  __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        memset(p_item, 0, sizeof(TermType));
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Store pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( 0 == get_length_list(p_header)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] There is no node list. \n");
+#endif /* __DEBUG_PRINTF */
+
+        memset(p_item, 0, sizeof(TermType));
+        return (FALSE);
+    }
+
+    memcpy(p_item, &p_header->next->item, sizeof(TermType));
+    p_header->next = p_header->next->next;
+
+    return (TRUE);
+}
+
+/* Name     : delete_item_tail_list                                          */
+/* Function : Delete node from tail of the list                              */
+/* Input    : p_header    ---   header of list pointer
+              p_term      ---   item pointer to store node                   */
+/* Output   : If deleted successfully, TRUE will be returned, or else FALSE  */
+STATE delete_item_tail_list(PPoly     p_header,
+                            TermType *p_item)
+{
+    PPoly p_curr = LIST_NULL;
+    PPoly p_last = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        memset(p_item, 0, sizeof(TermType));
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Store pointer is NULL. \n ");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( 0 == get_length_list(p_header)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] There is no node in ths list. \n");
+#endif /* __DEBUG_PRINTF */
+
+        memset(p_item, 0, sizeof(TermType));
+        return (FALSE);
+    }
+
+    p_last = p_curr = p_header;
+    while ( _list_get_next(p_curr)) {
+        p_last = p_curr;
+        p_curr = _list_get_next(p_curr);
+    }
+    memcpy(p_item, &p_curr->item, sizeof(TermType));
+    p_last->next = _list_get_next(p_curr);
+
+    return (TRUE);
+}
