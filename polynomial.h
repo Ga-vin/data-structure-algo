@@ -37,6 +37,7 @@ PPoly init_list(void);
 STATE destroy_list(PPoly p_header);
 STATE clear_list(PPoly p_header);
 INT32 get_length_list(const PPoly p_header);
+BOOL  is_empty_list(const PPoly p_header);
 STATE get_item_by_index_list(const PPoly p_header, UINT32 index, TermType *p_term);
 STATE get_index_by_item_list(const PPoly p_header, TermType term, UINT32 *p_index);
 PPoly find_item_list(const PPoly p_header, TermType term);

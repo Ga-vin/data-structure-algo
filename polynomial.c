@@ -141,6 +141,21 @@ INT32 get_length_list(const PPoly p_header)
     return (cnt);
 }
 
+BOOL is_empty_list(const PPoly p_header)
+{
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    return ((LIST_NULL == p_header->next) ?
+            (TRUE) :
+            (FALSE));
+}
+
 /* Name     : get_item_by_index_list                                         */
 /* Function : Get item of node by specific index                             */
 /* Input    : p_header    ---   header of list pointer
@@ -463,7 +478,7 @@ STATE delete_item_header_list(PPoly     p_header,
     }
 
     memcpy(p_item, &p_header->next->item, sizeof(TermType));
-    p_header->next = p_header->next->next;
+    p_header->next = _list_get_next(_list_get_next(p_header));/* p_header->next->next; */
 
     return (TRUE);
 }
@@ -512,6 +527,68 @@ STATE delete_item_tail_list(PPoly     p_header,
     }
     memcpy(p_item, &p_curr->item, sizeof(TermType));
     p_last->next = _list_get_next(p_curr);
+    free(p_curr);
 
     return (TRUE);
+}
+
+/* Name     : delete_item_by_index_list                                      */
+/* Function : Delete node from specific index of the list                    */
+/* Input    : p_header    ---   header of list pointer
+              index       ---   specific index to be deleted
+              p_term      ---   item pointer to store node                   */
+/* Output   : If deleted successfully, TRUE will be returned, or else FALSE  */
+STATE delete_item_by_index_list(PPoly     p_header,
+                                UINT32    index,
+                                TermType *p_item)
+{
+    UINT32 cnt         = 1;
+    PPoly  p_curr_node = LIST_NULL;
+    PPoly  p_last_node = LIST_NULL;
+    
+    if ( !p_header ){
+#ifdef __DEBUG_PRINTF        
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( !p_item) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Store pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( ( TRUE == is_empty_list(p_header)) ||
+         (index > get_length_list(p_header)) ) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Index exceed. \n");
+#endif /* __DEBUG_PRINTF */
+
+        memset(p_item, 0, sizeof(TermType));
+        return (FALSE);
+    }
+
+    p_last_node = p_header;
+    p_curr_node = _list_get_next(p_header);
+    while ( p_curr_node && (cnt < index))  {
+        ++cnt;
+        p_last_node = p_curr_node;
+        p_curr_node = _list_get_next(p_curr_node);
+    }
+
+    if ( (!p_curr_node) || (cnt > index)) {
+        memset(p_item, 0, sizeof(TermType));
+
+        return (FALSE);
+    } else {
+        memcpy(p_item, &p_curr_node->item, sizeof(TermType));
+        p_last_node->next = _list_get_next(p_curr_node);
+        free(p_curr_node);
+
+        return (TRUE);
+    }
 }
