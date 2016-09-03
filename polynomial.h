@@ -43,7 +43,7 @@ STATE get_index_by_item_list(const PPoly p_header, TermType term, UINT32 *p_inde
 PPoly find_item_list(const PPoly p_header, TermType term);
 STATE delete_item_header_list(PPoly p_header, TermType *p_del_item);
 STATE delete_item_tail_list(PPoly p_header, TermType *p_del_item);
-STATE delete_item_list(PPoly p_header, const TermType item);
+STATE delete_item_list(PPoly p_header, const PPoly p_node);
 STATE delete_item_by_index_list(PPoly p_header, UINT32 index, TermType *p_del_item);
 STATE insert_item_header_list(PPoly p_header, const TermType term);
 STATE insert_item_tail_list(PPoly p_header, const TermType term);

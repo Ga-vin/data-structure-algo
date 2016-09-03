@@ -141,6 +141,11 @@ INT32 get_length_list(const PPoly p_header)
     return (cnt);
 }
 
+/* Name     : is_empty_list                                                  */
+/* Function : Check whether the list is empty                                */
+/* Input    : p_header    ---   header of list pointer
+           */
+/* Output   : If it is empty, TRUE will be returned, or else FALSE           */
 BOOL is_empty_list(const PPoly p_header)
 {
     if ( !p_header) {
@@ -591,4 +596,48 @@ STATE delete_item_by_index_list(PPoly     p_header,
 
         return (TRUE);
     }
+}
+
+/* Name     : delete_item_list                                               */
+/* Function : Delete node from list with specific node                       */
+/* Input    : p_header    ---   header of list pointer
+              p_node      ---   specific node                                */
+/* Output   : If deleted successfully, TRUE will be returned, or else FALSE  */
+STATE delete_item_list(PPoly       p_header,
+                       const PPoly p_node)
+{
+    PPoly p_temp = LIST_NULL;
+    PPoly p_last = LIST_NULL;
+    
+    if ( !p_header || !p_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( TRUE == is_empty_list(p_header)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] List is empty. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+    
+    p_temp = _list_get_next(p_header);
+    p_last = p_header;
+    while ( p_temp) {
+        if ( TRUE == _is_equal(_list_get_data(p_temp),
+                               _list_get_data(p_node))) {
+            p_last->next = _list_get_next(p_temp);
+            free(p_temp);
+            return (TRUE);
+        }
+
+        p_last = p_temp;
+        p_temp = _list_get_next(p_temp);
+    }
+
+    return (FALSE);
 }
