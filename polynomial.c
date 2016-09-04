@@ -7,6 +7,11 @@
 
 #include "polynomial.h"
 
+void __debug_print(const TermType item)
+{
+    fprintf(stdout, "<%5.3f, %2d> ", item.coef, item.exp);
+}
+
 /* Name     : _is_equal                                                      */
 /* Function : Check whether the two item is equal                            */
 /* Input    : left  -- left item to be checked
@@ -49,7 +54,7 @@ PPoly init_list(void)
 {
     PPoly p_list = LIST_NULL;
 
-    p_list = (PPoly)malloc(sizeof(Polynomial));
+    p_list       = (PPoly)malloc(sizeof(Polynomial));
     p_list->next = LIST_NULL;
     memset(&(p_list->item), 0, sizeof(TermType));
 
@@ -410,7 +415,7 @@ STATE insert_item_by_index_list(PPoly          p_header,
 {
     PPoly  p_node     = LIST_NULL;
     PPoly  p_new_node = LIST_NULL;
-    UINT32 cnt        = 0;
+    UINT32 cnt        = 1;
     
     if ( !p_header) {
 #ifdef __DEBUG_PRINTF
@@ -441,6 +446,7 @@ STATE insert_item_by_index_list(PPoly          p_header,
     p_node = _list_get_next(p_header);
     while ( p_node && (cnt < index) ) {
         p_node = _list_get_next(p_node);
+        ++cnt;
     }
     p_new_node->next = _list_get_next(p_node);
     p_node->next     = p_new_node;
@@ -632,6 +638,7 @@ STATE delete_item_list(PPoly       p_header,
                                _list_get_data(p_node))) {
             p_last->next = _list_get_next(p_temp);
             free(p_temp);
+            
             return (TRUE);
         }
 
@@ -640,4 +647,62 @@ STATE delete_item_list(PPoly       p_header,
     }
 
     return (FALSE);
+}
+
+/* Name     : find_last_list                                                 */
+/* Function : Find the last node of list                                     */
+/* Input    : p_header    ---   header of list pointer                       */
+/* Output   : If found successfully, the node will be returned, or else NULL */
+PPoly find_last_list(const PPoly p_header)
+{
+    PPoly p_curr_node = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
+    }
+
+    p_curr_node = p_header;
+    while ( _list_get_next(p_curr_node)) {
+        p_curr_node = _list_get_next(p_curr_node);
+    }
+
+    return (p_curr_node);
+}
+
+/* Name     : retrieve_list                                                  */
+/* Function : Retrieve every node of the list                                */
+/* Input    : p_header    ---   header of list pointer                       */
+/* Output   : If trieved successfully, TRUE will be returned, or else FALSE  */
+STATE retrieve_list(const PPoly p_header,
+                    void (*callback)(const TermType term))
+{
+    PPoly p_curr_node = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( TRUE == is_empty_list(p_header)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] List is Empty. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+    
+    p_curr_node = _list_get_next(p_header);
+    while ( p_curr_node) {
+        callback(_list_get_data(p_curr_node));
+        p_curr_node = _list_get_next(p_curr_node);
+    }
+
+    return (TRUE);
 }

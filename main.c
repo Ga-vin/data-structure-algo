@@ -8,6 +8,7 @@
 #include "list_test.h"
 #include "double_list_test.h"
 #include "circular_list_test.h"
+#include "polynomial_test.h"
 
 #define    DEBUG_WHICH_ONE     (2)
 #define    DEBUG_LIST_SWITCH   (2)
@@ -142,11 +143,11 @@ int main(int argc, char *argv[])
 
 #endif     
 
+#ifdef __DEBUG_CIRCULE        
     T_createNodeCList();
 
     T_insertItemHeaderCList();
 
-#ifdef __DEBUG_CIRCULE    
     T_insertItemHeaderCList();
 
     T_get_last_data_CList();
@@ -156,6 +157,7 @@ int main(int argc, char *argv[])
     T_getItemByIndexCList();
 #endif /* __DEBUG_CIRCULE */    
 
+#ifdef __DEBUG_CIRCULE    
     T_insertItemByIndexCList();
 
     T_getItemPtrCList();
@@ -167,6 +169,47 @@ int main(int argc, char *argv[])
     T_locateItemCList();
 
     T_getItemByIndexCList();
+#endif /* __DEBUG_CIRCULE */
+
+    T_init_list();
+
+    T_get_length_list();
+
+    T_is_empty_list();
+
+    T_insert_item_header_list();
+
+    T_find_last_list();
+
+    T_is_empty_list();
+
+    T_get_length_list();
+
+    T_insert_item_tail_list();
+
+    T_find_last_list();
+
+    T_get_length_list();
+    
+    T_get_item_by_index_list();
+
+    T_get_index_by_item_list();
+
+    T_find_item_list();
+
+    T_insert_item_by_index_list();
+
+    T_find_last_list();
+
+    T_insert_item_list();
+
+    T_find_last_list();
+
+    T_delete_item_header_list();
+
+    T_delete_item_tail_list();
+    
+    T_destroy_list();
     
     return 0;
 }
