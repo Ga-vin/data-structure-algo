@@ -208,6 +208,8 @@ int main(int argc, char *argv[])
     T_delete_item_header_list();
 
     T_delete_item_tail_list();
+
+    T_delete_item_by_index_list();
     
     T_destroy_list();
     

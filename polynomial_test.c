@@ -256,7 +256,33 @@ void T_delete_item_tail_list(void)
 
 void T_delete_item_by_index_list(void)
 {
-    
+    TermType item;
+    UINT32   index = 0;
+
+    if ( !_G_list) {
+        fprintf(stderr, "[x] Global header pointer is NULL. \n");
+
+        return ;
+    }
+
+    __print_title("Delete Item By Index Test");
+    do {
+        ++index;
+        if ( FALSE == delete_item_by_index_list(_G_list,
+                                                1,
+                                                &item)) {
+            fprintf(stderr, "[x] Delete item of index %d fail. \n", index);
+        } else {
+            fprintf(stdout, "[*] Deleted item is <%5.2f, %2d>. \n", item.coef, item.exp);
+        }
+
+        if ( is_empty_list(_G_list)) {
+            fprintf(stdout, "[*] The list has been empty");
+            break;
+        } else {
+            T_retrieve_list();            
+        }
+    } while ( get_length_list(_G_list));
 }
 
 void T_delete_item_list(void)
