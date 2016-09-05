@@ -205,6 +205,8 @@ int main(int argc, char *argv[])
 
     T_find_last_list();
 
+    T_sort_list();
+    
     T_delete_item_header_list();
 
     T_delete_item_tail_list();

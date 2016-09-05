@@ -441,3 +441,23 @@ void T_retrieve_list(void)
         putchar('\n');
     }
 }
+
+
+void T_sort_list(void)
+{
+    if ( !_G_list) {
+        fprintf(stderr, "[x] Global header pointer is NULL. \n");
+
+        return ;
+    }
+
+    __print_title("Sort List Test");
+    if ( FALSE == sort_list(_G_list,
+                            ASCENDING)) {
+        fprintf(stderr, "[x] Sort list ascending order fail. \n");
+
+        return ;
+    } else {
+        T_retrieve_list();
+    }
+}

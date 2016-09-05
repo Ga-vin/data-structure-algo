@@ -12,6 +12,32 @@ void __debug_print(const TermType item)
     fprintf(stdout, "<%5.3f, %2d> ", item.coef, item.exp);
 }
 
+static BOOL _is_exp_greater(TermType left, TermType right)
+{
+    return ((left.exp > right.exp) ? (TRUE) : (FALSE));
+}
+
+static BOOL _is_exp_less(TermType left, TermType right)
+{
+    return ((left.exp < right.exp) ? (TRUE) : (FALSE));
+}
+
+static BOOL _is_exp_equal(TermType left, TermType right)
+{
+    return ((left.exp == right.exp) ? (TRUE) : (FALSE));
+}
+
+static BOOL _swap_item_node(PPoly p_left, PPoly p_right)
+{
+    TermType item;
+
+    memcpy(&item, &p_left->item, sizeof(TermType));
+    memcpy(&p_left->item, &p_right->item, sizeof(TermType));
+    memcpy(&p_right->item, &item, sizeof(TermType));
+
+    return (TRUE);
+}
+
 /* Name     : _is_equal                                                      */
 /* Function : Check whether the two item is equal                            */
 /* Input    : left  -- left item to be checked
@@ -703,6 +729,85 @@ STATE retrieve_list(const PPoly p_header,
         callback(_list_get_data(p_curr_node));
         p_curr_node = _list_get_next(p_curr_node);
     }
+
+    return (TRUE);
+}
+
+STATE sort_list(PPoly p_header, SortOrder order)
+{
+    PPoly p_curr_node = LIST_NULL;
+    PPoly p_last_node = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] List header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( is_empty_list(p_header) ||
+         (1 == get_length_list(p_header))) {
+        return (TRUE);
+    }
+
+    p_curr_node = _list_get_next(p_header);
+    while ( p_curr_node) {
+        p_last_node = _list_get_next(p_curr_node);
+        while ( p_last_node) {
+            switch (order) {
+
+            case ASCENDING:
+                if ( _is_exp_greater(_list_get_data(p_curr_node),
+                                     _list_get_data(p_last_node))) {
+                    _swap_item_node(p_curr_node, p_last_node);
+                }
+                break;
+
+            case DESCENDING:
+                if ( _is_exp_less(_list_get_data(p_curr_node),
+                                  _list_get_data(p_last_node))) {
+                    _swap_item_node(p_curr_node, p_last_node);
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            p_last_node = _list_get_next(p_last_node);
+        }
+
+        p_curr_node = _list_get_next(p_curr_node);
+    }
+
+    return (TRUE);
+}
+
+STATE merge_list(PPoly p_left, PPoly p_right)
+{
+    if ( !p_left ||
+         !p_right) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] List header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( is_empty_list(p_left) &&
+         !is_empty_list(p_right)) {
+        p_left = _list_get_next(p_right);
+
+        return (TRUE);
+    }
+
+    if ( !is_empty_list(p_left) &&
+         is_empty_list(p_right)) {
+        
+        return (TRUE);
+    }
+
 
     return (TRUE);
 }
