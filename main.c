@@ -171,6 +171,7 @@ int main(int argc, char *argv[])
     T_getItemByIndexCList();
 #endif /* __DEBUG_CIRCULE */
 
+#ifdef __DEBUG_POLY_    
     T_init_list();
 
     T_get_length_list();
@@ -206,14 +207,19 @@ int main(int argc, char *argv[])
     T_find_last_list();
 
     T_sort_list();
-    
+#endif /* __DEBUG_POLY_ */    
+
+#ifdef __DEBUG_POLY_    
     T_delete_item_header_list();
 
     T_delete_item_tail_list();
 
     T_delete_item_by_index_list();
+#endif /* __DEBUG_POLY_ */    
+
+    T_merge_list();
     
-    T_destroy_list();
+    /* T_destroy_list(); */
     
     return 0;
 }

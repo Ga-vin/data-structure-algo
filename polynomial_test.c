@@ -460,4 +460,85 @@ void T_sort_list(void)
     } else {
         T_retrieve_list();
     }
+
+    if ( FALSE == sort_list(_G_list,
+                            DESCENDING)) {
+        fprintf(stderr, "[x] Sort list ascending order fail. \n");
+
+        return ;
+    } else {
+        T_retrieve_list();
+    }    
+}
+
+void T_merge_list(void)
+{
+    PPoly    p_a = LIST_NULL;
+    PPoly    p_b = LIST_NULL;
+    PPoly    p_c = LIST_NULL;
+    UINT32   i;
+    TermType item;
+
+    p_a = init_list();
+    p_b = init_list();
+    p_c = init_list();
+
+    if ( !p_a ||
+         !p_b ||
+         !p_c) {
+        fprintf(stderr, "[x] Init list error. \n");
+
+        return ;
+    }
+
+    __print_title("Merge List Test");
+    for (i = 1; i < 15; i += 3) {
+        item.coef = (float)i;
+        item.exp  = i;
+        if ( FALSE == append_list(p_a, item)) {
+            fprintf(stderr, "[x] Append to list-a error. \n");
+
+            return ;
+        }
+    }
+
+    for (i = 20; i > 0; i -= 4) {
+        item.coef = (float)i;
+        item.exp  = i;
+        if ( FALSE == append_list(p_b, item)) {
+            fprintf(stderr, "[x] Append to list-b error. \n");
+
+            return ;
+        }
+    }
+
+    fprintf(stdout, "[*] List-A: \n");
+    retrieve_list(p_a, __retrive);
+    putchar('\n');
+
+    fprintf(stdout, "[*] List-B: \n");
+    retrieve_list(p_b, __retrive);
+    putchar('\n');
+
+    if ( FALSE == merge_list(p_a, p_b, p_c)) {
+        fprintf(stderr, "[x] Merge list unit test fail. \n");
+
+        return ;
+    }
+
+    fprintf(stdout, "[*] List-A: \n");
+    retrieve_list(p_a, __retrive);
+    putchar('\n');
+
+    fprintf(stdout, "[*] List-B: \n");
+    retrieve_list(p_b, __retrive);
+    putchar('\n');
+
+    fprintf(stdout, "[*] List-C: \n");
+    retrieve_list(p_c, __retrive);
+    putchar('\n');
+
+    destroy_list(p_a);
+    destroy_list(p_b);
+    destroy_list(p_c);
 }

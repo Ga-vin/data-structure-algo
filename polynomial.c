@@ -733,6 +733,11 @@ STATE retrieve_list(const PPoly p_header,
     return (TRUE);
 }
 
+/* Name     : sort_list                                                      */
+/* Function : Sort every node of the list with specific order                */
+/* Input    : p_header    ---   header of list pointer
+              order       ---   specific sorted order                        */
+/* Output   : If sorted successfully, TRUE will be returned, or else FALSE   */
 STATE sort_list(PPoly p_header, SortOrder order)
 {
     PPoly p_curr_node = LIST_NULL;
@@ -784,8 +789,19 @@ STATE sort_list(PPoly p_header, SortOrder order)
     return (TRUE);
 }
 
-STATE merge_list(PPoly p_left, PPoly p_right)
+/* Name     : merge_list                                                     */
+/* Function : Merge two list into a new list with ascending order            */
+/* Input    : p_left        ---   to be merged
+              p_right       ---   to be merged
+              p_new_header  ---   to store new list                          */
+/* Output   : If merged successfully, TRUE will be returned, or else FALSE   */
+STATE merge_list(PPoly p_left,
+                 PPoly p_right,
+                 PPoly p_new_header)
 {
+    PPoly p_curr_left_node  = LIST_NULL;
+    PPoly p_curr_right_node = LIST_NULL;
+    
     if ( !p_left ||
          !p_right) {
 #ifdef __DEBUG_PRINTF
@@ -808,6 +824,88 @@ STATE merge_list(PPoly p_left, PPoly p_right)
         return (TRUE);
     }
 
+    if ( !p_new_header) {
+        p_new_header = (PPoly)malloc(sizeof(Polynomial));
+        if ( !p_new_header) {
+            fprintf(stderr, "[x] Malloc space fail. \n");
+
+            return (FALSE);
+        }
+    }
+
+    if ( FALSE == sort_list(p_left, ASCENDING)) {
+#ifdef __DEBUG_PRINTF        
+        fprintf(stderr, "[x] Sort left list error. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( FALSE == sort_list(p_right, ASCENDING)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Sort right list error. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_curr_left_node  = _list_get_next(p_left);
+    p_curr_right_node = _list_get_next(p_right);
+    while ( p_curr_left_node &&
+            p_curr_right_node) {
+        if ( TRUE == _is_exp_less(_list_get_data(p_curr_left_node),
+                                  _list_get_data(p_curr_right_node))) {
+            if ( FALSE == append_list(p_new_header, _list_get_data(p_curr_left_node))) {
+#ifdef __DEBUG_PRINTF
+                fprintf(stderr, "[x] Append left to new list error. \n");
+#endif /* __DEBUG_PRINTF */
+
+                return (FALSE);
+            }
+            p_curr_left_node = _list_get_next(p_curr_left_node);
+        } else {
+            if ( FALSE == append_list(p_new_header, _list_get_data(p_curr_right_node))) {
+#ifdef __DEBUG_PRINTF
+                fprintf(stderr, "[x] Append right to new list error. \n");
+#endif /* __DEBUG_PRINTF */
+
+                return (FALSE);
+            }
+            p_curr_right_node = _list_get_next(p_curr_right_node);
+        }
+    }
+
+    if ( p_curr_left_node) {
+        if ( FALSE == insert_item_list(p_new_header, p_curr_left_node)) {
+#ifdef __DEBUG_PRINTF
+            fprintf(stderr, "[x] Insert item to list left error. \n");
+#endif /* __DEBUG_PRINTF */
+
+            return (FALSE);
+        }
+    }
+
+    if ( p_curr_right_node) {
+        if ( FALSE == insert_item_list(p_new_header, p_curr_right_node)) {
+#ifdef __DEBUG_PRINTFf
+            fprintf(stderr, "[x] Insert item to list right error. \n");
+#endif /* __DEBUG_PRINTF */
+
+            return (FALSE);
+        }
+    }
 
     return (TRUE);
+}
+
+STATE append_list(PPoly          p_header,
+                  const TermType item)
+{
+    return (insert_item_tail_list(p_header, item));
+}
+
+STATE remove_list(PPoly     p_header,
+                  TermType *p_item)
+{
+    return (delete_item_tail_list(p_header, p_item));
 }
