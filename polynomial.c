@@ -898,14 +898,124 @@ STATE merge_list(PPoly p_left,
     return (TRUE);
 }
 
+/* Name     : append_list                                                    */
+/* Function : Append node into the tail of list                              */
+/* Input    : p_header      ---   to be merged
+              item          ---   item to be appended                        */
+/* Output   : If appended successfully, TRUE will be returned, or else FALSE */
 STATE append_list(PPoly          p_header,
                   const TermType item)
 {
     return (insert_item_tail_list(p_header, item));
 }
 
+/* Name     : remove_list                                                    */
+/* Function : Remove last node from the tail of list                         */
+/* Input    : p_header      ---   to be merged
+              item          ---   item to be removed                         */
+/* Output   : If removed successfully, TRUE will be returned, or else FALSE  */
 STATE remove_list(PPoly     p_header,
                   TermType *p_item)
 {
     return (delete_item_tail_list(p_header, p_item));
+}
+
+/* Name     : create_polyn                                                   */
+/* Function : Create header of the polynomial                                */
+/* Input    : NONE                                                           */
+/* Output   : When created successfully, header of polynomial will be returned, or else LIST_NULL                                              */
+PPoly create_polyn(void)
+{
+    return (init_list());
+}
+
+/* Name     : destroy_polyn                                                  */
+/* Function : Destroied every node of the polynomial                         */
+/* Input    : p_header  ---  header pointer of polynomial                    */
+/* Output   : When destroied successfully, header of polynomial will be returned, or else LIST_NULL                                            */
+STATE destroy_polyn(PPoly p_header)
+{
+    return (destroy_list(p_header));
+}
+
+/* Name     : is_empty_polyn                                                 */
+/* Function : Check whether the polynomial is empty                          */
+/* Input    : p_header  ---  header pointer of polynomial                    */
+/* Output   : When it is empty, TRUE will be returned, or else FALSE         */
+BOOL is_empty_polyn(const PPoly p_header)
+{
+    return (is_empty_list(p_header));
+}
+
+/* Name     : get_length_polyn                                               */
+/* Function : How many nodes in the polynomial                               */
+/* Input    : p_header  ---  header pointer of polynomial                    */
+/* Output   : How many nodes in the polynomial                               */
+UINT32 get_length_polyn(const PPoly p_header)
+{
+    return (get_length_list(p_header));
+}
+
+/* Name     : append_polyn                                                   */
+/* Function : Append new item into tail of polynomial                        */
+/* Input    : p_header  ---  header pointer of polynomial
+              item      ---  to be appended                                  */
+/* Output   : When appended successfully, TRUE will be returned, or else FALSE*/
+STATE append_polyn(PPoly          p_header,
+                   const TermType item)
+{
+    return (append_list(p_header,
+                        item));
+}
+
+/* Name     : print_polyn                                                    */
+/* Function : Print each node of polynomial                                  */
+/* Input    : p_header  ---  header pointer of polynomial                    */
+/* Output   : When print successfully, TRUE will be returned, or else FALSE  */
+STATE print_polyn(const PPoly p_header)
+{
+    PPoly    p_node = LIST_NULL;
+    TermType item;
+    
+    if ( !p_header) {
+        fprintf(stderr, "[x] Polynomial list is NULL. \n");
+
+        return (FALSE);
+    }
+
+    if ( TRUE == is_empty_polyn(p_header)) {
+        fprintf(stderr, "[x] Polynomial is Empty. \n");
+
+        return (FALSE);
+    }
+
+    if ( FALSE == sort_polyn(p_header)) {
+        fprintf(stderr, "[x] Sort polynomial error. \n");
+
+        return (FALSE);
+    }
+
+    fprintf(stdout, "P(x) = ");
+    p_node = _list_get_next(p_header);
+    while ( p_node) {
+        item = _list_get_data(p_node);
+        fprintf(stdout, "%5.2fx^%2d ", item.coef, item.exp);
+        if ( _list_get_next(p_node)) {
+            fprintf(stdout, "+ ");
+        }
+
+        p_node = _list_get_next(p_node);
+    }
+    putchar('\n');
+
+    return (TRUE);
+}
+
+/* Name     : sort_polyn                                                     */
+/* Function : Sort the polynomial with ascending order                       */
+/* Input    : p_header  ---  header pointer of polynomial                    */
+/* Output   : When sorted successfully, TRUE will be returned, or else FALSE */
+STATE sort_polyn(PPoly p_header)
+{
+    return (sort_list(p_header, ASCENDING));
 }

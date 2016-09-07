@@ -56,4 +56,16 @@ STATE merge_list(PPoly p_left, PPoly p_right, PPoly p_new_header);
 STATE append_list(PPoly p_header, const TermType item);
 STATE remove_list(PPoly p_header, TermType *item);
 
+PPoly  create_polyn(void);
+STATE  destroy_polyn(PPoly p_header);
+STATE  print_polyn(const PPoly p_header);
+BOOL   is_empty_polyn(const PPoly p_header);
+UINT32 get_length_polyn(const PPoly p_header);
+STATE  sort_polyn(PPoly p_header);
+STATE  append_polyn(PPoly p_header, const TermType item);
+STATE  add_polyn(PPoly p_result, PPoly p_right);
+STATE  sub_polyn(PPoly p_result, PPoly p_right);
+STATE  multiply_polyn(PPoly p_result, PPoly p_right);
+
+
 #endif /* _POLYNOMIAL_H_ */
