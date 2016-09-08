@@ -1019,3 +1019,100 @@ STATE sort_polyn(PPoly p_header)
 {
     return (sort_list(p_header, ASCENDING));
 }
+
+PPoly get_next_polyn(const PPoly p_node)
+{
+    if ( !p_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Node pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
+    }
+
+    return (_list_get_next(p_node));
+}
+
+TermType get_data_polyn(const PPoly p_node)
+{
+    TermType item;
+
+    memset(&item, 0, sizeof(TermType));
+    if ( !p_node) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Node pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (item);
+    }
+
+    item = _list_get_data(p_node);
+    return (item);
+}
+
+STATE add_polyn(PPoly p_result,
+                PPoly p_right)
+{
+    PPoly p_result_node = LIST_NULL;
+    PPoly p_right_node  = LIST_NULL;
+    PPoly p_result_temp = LIST_NULL;
+    PPoly p_right_temp  = LIST_NULL;
+    
+    if ( !p_result ||
+         !p_right) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Polynomial header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( TRUE == is_empty_polyn(p_right)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Polynomial list is EMPTY. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    /* Sort two polynomial list before add operation */
+    if ( FALSE == sort_polyn(p_result)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Sort original polynomial list ERROR.\n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( FALSE == sort_polyn(p_right)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Sort source polynomial list ERROR. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_result_node = get_next_polyn(p_result);
+    p_right_node  = get_next_polyn(p_right);
+    while ( p_result_node &&
+            p_right_node) {
+        if ( get_data_polyn(p_result_node).exp < get_data_polyn(p_right_node).exp) {
+            p_result_node = get_next_polyn(p_result_node);
+        } else if ( get_data_polyn(p_result_node).exp > get_data_polyn(p_right_node).exp) {
+            p_result_temp       = get_next_polyn(p_result_node);
+            p_right_temp        = get_next_polyn(p_right_node);
+            
+            p_result_node->next = p_right_node;
+            p_right_node->next  = p_result_temp;
+            p_right_node        = p_right_temp;
+            p_result_node       = p_result_temp;
+        } else {
+            /* get_data_polyn(p_result_node).coef += get_data_polyn(p_right_node).coef; */
+            p_result_node->item.coef += get_data_polyn(p_right_node).coef;
+            p_result_node = get_next_polyn(p_result_node);
+            p_right_node  = get_next_polyn(p_right_node);
+        }
+    }
+
+    return (TRUE);
+}

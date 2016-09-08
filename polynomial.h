@@ -66,6 +66,8 @@ STATE  append_polyn(PPoly p_header, const TermType item);
 STATE  add_polyn(PPoly p_result, PPoly p_right);
 STATE  sub_polyn(PPoly p_result, PPoly p_right);
 STATE  multiply_polyn(PPoly p_result, PPoly p_right);
+PPoly  get_next_polyn(PPoly p_node);
+TermType get_data_polyn(PPoly p_node);
 
 
 #endif /* _POLYNOMIAL_H_ */
