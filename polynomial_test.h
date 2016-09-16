@@ -21,5 +21,6 @@ void T_find_last_list(void);
 void T_retrieve_list(void);
 void T_sort_list(void);
 void T_merge_list(void);
+void T_add_polyn(void);
 
 #endif /* __POLYNOMIAL_TEST_H_ */

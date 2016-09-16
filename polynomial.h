@@ -30,6 +30,10 @@ typedef struct _Polynomial_ {
 
 typedef Polynomial*    PPoly;
 
+#ifndef __DEBUG_PRINTF
+#define __DEBUG_PRINTF
+#endif /* __DEBUG_PRINTF */
+
 /* *****************************************************************************
  * New definition of new function protocols
  ******************************************************************************/
@@ -63,7 +67,7 @@ BOOL   is_empty_polyn(const PPoly p_header);
 UINT32 get_length_polyn(const PPoly p_header);
 STATE  sort_polyn(PPoly p_header);
 STATE  append_polyn(PPoly p_header, const TermType item);
-STATE  add_polyn(PPoly p_result, PPoly p_right);
+PPoly  add_polyn(PPoly p_result, PPoly p_right);
 STATE  sub_polyn(PPoly p_result, PPoly p_right);
 STATE  multiply_polyn(PPoly p_result, PPoly p_right);
 PPoly  get_next_polyn(PPoly p_node);

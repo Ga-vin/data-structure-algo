@@ -215,9 +215,11 @@ int main(int argc, char *argv[])
     T_delete_item_tail_list();
 
     T_delete_item_by_index_list();
-#endif /* __DEBUG_POLY_ */    
 
     T_merge_list();
+#endif /* __DEBUG_POLY_ */
+
+    T_add_polyn();
     
     /* T_destroy_list(); */
     

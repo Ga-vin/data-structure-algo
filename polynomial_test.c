@@ -542,3 +542,99 @@ void T_merge_list(void)
     destroy_list(p_b);
     destroy_list(p_c);
 }
+
+void T_add_polyn(void)
+{
+    PPoly    p_left       = LIST_NULL;
+    PPoly    p_right      = LIST_NULL;
+    PPoly    p_new        = LIST_NULL;
+    float    left_coef[]  = { 1.0, 1.2, 0.5, 10.0 };
+    INT32    left_exp[]   = { 1, 2, 4, 6 };
+    float    right_coef[] = { 2.0, 4.0, 20.0 };
+    INT32    right_exp[]  = { 2, 3, 10 };
+    UINT32   index;
+    TermType item;
+    
+
+    p_left = create_polyn();
+    if ( LIST_NULL == p_left) {
+        fprintf(stderr, "[x] Create header pointer for polynomial fail. \n");
+
+        return ;
+    }
+
+    p_right = create_polyn();
+    if ( LIST_NULL == p_right) {
+        fprintf(stderr, "[x] Create header pointer for polynomial fail. \n");
+
+        return ;
+    }
+
+    for (index = 0; index != sizeof(left_coef)/sizeof(float); ++index) {
+        item.coef = left_coef[index];
+        item.exp  = left_exp[index];
+
+        if ( FALSE == append_polyn(p_left, item)) {
+            fprintf(stderr, "[x] Append item<%5.2f, %3d> to left polynomial. \n", item.coef, item.exp);
+
+            return ;
+        }
+    }
+
+    for (index = 0; index != sizeof(right_coef)/sizeof(float); ++index) {
+        item.coef = right_coef[index];
+        item.exp  = right_exp[index];
+        if ( FALSE == append_polyn(p_right, item)) {
+            fprintf(stderr, "[x] Append item<%5.2f, %3d> to right polynomial. \n", item.coef, item.exp);
+
+            return ;
+        }
+    }
+
+    fprintf(stdout, "\nBEFORE ADD\n");
+    fprintf(stdout, "[*] Polynomial Left: ");
+    print_polyn(p_left);
+    putchar('\n');
+
+    fprintf(stdout, "[*] Polynomial Right: ");
+    print_polyn(p_right);
+    putchar('\n');
+
+    p_new = add_polyn(p_left, p_right);
+    if ( LIST_NULL == p_new) {
+        fprintf(stderr, "[x] Add two polynomial fail. \n");
+
+        return ;
+    }
+
+    fprintf(stdout, "\nAFTER ADD\n");    
+    fprintf(stdout, "[*] Polynomial Left: ");
+    print_polyn(p_left);
+    putchar('\n');
+
+    fprintf(stdout, "[*] Polynomial Right: ");
+    print_polyn(p_right);
+    putchar('\n');
+
+    fprintf(stdout, "[*] Polynomial new one: ");
+    print_polyn(p_new);
+    putchar('\n');
+
+    if ( FALSE == destroy_polyn(p_left)) {
+        fprintf(stderr, "[x] Destroy left polynomial fail. \n");
+
+        return ;
+    }
+
+    if ( FALSE == destroy_polyn(p_right)) {
+        fprintf(stderr, "[x] Destroy right polynomial fail. \n");
+
+        return ;
+    }
+
+    if ( FALSE == destroy_polyn(p_new)) {
+        fprintf(stderr, "[x] Destroy new polynomial fail. \n");
+
+        return ;
+    }
+}

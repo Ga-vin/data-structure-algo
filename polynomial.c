@@ -1050,13 +1050,13 @@ TermType get_data_polyn(const PPoly p_node)
     return (item);
 }
 
-STATE add_polyn(PPoly p_result,
+PPoly add_polyn(PPoly p_result,
                 PPoly p_right)
 {
     PPoly p_result_node = LIST_NULL;
     PPoly p_right_node  = LIST_NULL;
-    PPoly p_result_temp = LIST_NULL;
-    PPoly p_right_temp  = LIST_NULL;
+    PPoly p_newest_node = LIST_NULL;
+    PPoly p_new_header  = LIST_NULL;
     
     if ( !p_result ||
          !p_right) {
@@ -1064,7 +1064,7 @@ STATE add_polyn(PPoly p_result,
         fprintf(stderr, "[x] Polynomial header pointer is NULL. \n");
 #endif /* __DEBUG_PRINTF */
 
-        return (FALSE);
+        return (LIST_NULL);
     }
 
     if ( TRUE == is_empty_polyn(p_right)) {
@@ -1072,7 +1072,7 @@ STATE add_polyn(PPoly p_result,
         fprintf(stderr, "[x] Polynomial list is EMPTY. \n");
 #endif /* __DEBUG_PRINTF */
 
-        return (FALSE);
+        return (LIST_NULL);
     }
 
     /* Sort two polynomial list before add operation */
@@ -1081,7 +1081,7 @@ STATE add_polyn(PPoly p_result,
         fprintf(stderr, "[x] Sort original polynomial list ERROR.\n");
 #endif /* __DEBUG_PRINTF */
 
-        return (FALSE);
+        return (LIST_NULL);
     }
 
     if ( FALSE == sort_polyn(p_right)) {
@@ -1089,30 +1089,87 @@ STATE add_polyn(PPoly p_result,
         fprintf(stderr, "[x] Sort source polynomial list ERROR. \n");
 #endif /* __DEBUG_PRINTF */
 
-        return (FALSE);
+        return (LIST_NULL);
     }
+
+    p_new_header = (PPoly)malloc(sizeof(Polynomial));
+    if ( !p_new_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Malloc new node for polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
+    }
+    p_newest_node = p_new_header;
 
     p_result_node = get_next_polyn(p_result);
     p_right_node  = get_next_polyn(p_right);
     while ( p_result_node &&
             p_right_node) {
         if ( get_data_polyn(p_result_node).exp < get_data_polyn(p_right_node).exp) {
-            p_result_node = get_next_polyn(p_result_node);
-        } else if ( get_data_polyn(p_result_node).exp > get_data_polyn(p_right_node).exp) {
-            p_result_temp       = get_next_polyn(p_result_node);
-            p_right_temp        = get_next_polyn(p_right_node);
+            if ( FALSE == append_polyn(p_newest_node, get_data_polyn(p_result_node))) {
+#ifdef __DEBUG_PRINTF
+                fprintf(stderr, "[x] Append new item to polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+                return (LIST_NULL);
+            }
             
-            p_result_node->next = p_right_node;
-            p_right_node->next  = p_result_temp;
-            p_right_node        = p_right_temp;
-            p_result_node       = p_result_temp;
+            p_result_node       = get_next_polyn(p_result_node);
+        } else if ( get_data_polyn(p_result_node).exp > get_data_polyn(p_right_node).exp) {
+            if ( FALSE == append_polyn(p_newest_node, get_data_polyn(p_right_node))) {
+#ifdef __DEBUG_PRINTF
+                fprintf(stderr, "[x] Append new item to polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+                return (LIST_NULL);
+            }
+
+            p_right_node        = get_next_polyn(p_right_node);
         } else {
-            /* get_data_polyn(p_result_node).coef += get_data_polyn(p_right_node).coef; */
-            p_result_node->item.coef += get_data_polyn(p_right_node).coef;
-            p_result_node = get_next_polyn(p_result_node);
-            p_right_node  = get_next_polyn(p_right_node);
+            TermType item             = get_data_polyn(p_result_node);
+            item.coef                += get_data_polyn(p_right_node).coef;
+            if ( !item.coef) {
+                goto DO;
+            }
+            
+            if ( FALSE == append_polyn(p_newest_node, item)) {
+#ifdef __DEBUG_PRINTF
+                fprintf(stderr, "[x] Append new item to polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+                return (LIST_NULL);
+            }
+
+        DO:            
+            p_result_node             = get_next_polyn(p_result_node);
+            p_right_node              = get_next_polyn(p_right_node);
         }
     }
 
-    return (TRUE);
+    while ( p_result_node) {
+        if ( FALSE == append_polyn(p_newest_node, get_data_polyn(p_result_node))) {
+#ifdef __DEBUG_PRINTF
+            fprintf(stderr, "[x] Append new item to polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+            return (LIST_NULL);
+        }
+
+        p_result_node = get_next_polyn(p_result_node);
+    }
+
+    while ( p_right_node) {
+        if ( FALSE == append_polyn(p_newest_node, get_data_polyn(p_right_node))) {
+#ifdef __DEBUG_PRINTF
+            fprintf(stderr, "[x] Append new item to polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+            return (LIST_NULL);
+        }
+
+        p_right_node = get_next_polyn(p_right_node);
+    }
+
+    return (p_new_header);
 }
