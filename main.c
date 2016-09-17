@@ -219,7 +219,11 @@ int main(int argc, char *argv[])
     T_merge_list();
 #endif /* __DEBUG_POLY_ */
 
+#ifdef __DEBUG_ADD_    
     T_add_polyn();
+#endif /* __DEBUG_ADD_ */
+
+    T_sub_polyn();
     
     /* T_destroy_list(); */
     
