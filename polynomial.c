@@ -1060,6 +1060,63 @@ TermType get_data_polyn(const PPoly p_node)
     return (item);
 }
 
+/* Name     : merge_polyn                                                    */
+/* Function : Merge some nodes of the polynomial with same exponent          */
+/* Input    : p_header  ---  header pointer of result polynomial             */
+/* Output   : When merged successfully, new pointer of polynomial will be returned, or else LIST_NULL.                                        */
+STATE merge_polyn(PPoly p_header)
+{
+    PPoly p_front_node = LIST_NULL;
+    PPoly p_back_node  = LIST_NULL;
+    
+    if ( !p_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Polynomial header pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( TRUE == is_empty_polyn(p_header)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Polynomial is EMPTY. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    if ( FALSE == sort_polyn(p_header)) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Sorted polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (FALSE);
+    }
+
+    p_front_node = get_next_polyn(p_header);
+    while ( p_front_node) {
+        TermType item        = get_data_polyn(p_front_node);
+        PPoly    p_temp_node = LIST_NULL;
+        
+        p_back_node = get_next_polyn(p_front_node);
+        while ( p_back_node) {
+            if ( item.exp != get_data_polyn(p_back_node).exp) {
+                break;
+            }
+
+            p_temp_node              = get_next_polyn(p_back_node);
+            p_front_node->item.coef += get_data_polyn(p_back_node).coef;
+            p_front_node->next       = p_temp_node;
+            free(p_back_node);
+            p_back_node              = p_temp_node;
+        }
+
+        p_front_node = get_next_polyn(p_front_node);
+    }
+
+    return (TRUE);
+}
+
 /* Name     : add_polyn                                                      */
 /* Function : Add two specific polynomial into a new polynomial              */
 /* Input    : p_result  ---  header pointer of result polynomial
@@ -1320,6 +1377,75 @@ PPoly sub_polyn(PPoly p_left,
         }
 
         p_right_node = get_next_polyn(p_right_node);
+    }
+
+    return (p_new_header);
+}
+
+PPoly multiply_polyn(PPoly p_left,
+                     PPoly p_right)
+{
+    PPoly p_left_node  = LIST_NULL;
+    PPoly p_right_node = LIST_NULL;
+    PPoly p_new_header = LIST_NULL;
+    PPoly p_new_node   = LIST_NULL;
+    
+    if ( !p_left ||
+         !p_right) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] One of two polynomials or all are NULL. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
+    }
+
+    if ( is_empty_polyn(p_left) ||
+         is_empty_polyn(p_right)) {
+#ifdef  __DEBUG_PRINTF
+        fprintf(stderr, "[x] One of two polynomials or all are EMPTY. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
+    }
+
+    p_new_header = (PPoly)malloc(sizeof(Polynomial));
+    if ( !p_new_header) {
+#ifdef __DEBUG_PRINTF
+        fprintf(stderr, "[x] Malloc header of polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
+    }
+
+    p_new_node = p_new_header;
+
+    p_left_node = get_next_polyn(p_left);
+    while ( p_left_node) {
+        p_right_node = get_next_polyn(p_right);
+        while ( p_right_node) {
+            TermType item = get_data_polyn(p_right_node);
+            item.exp     += get_data_polyn(p_left_node).exp;
+            item.coef    *= get_data_polyn(p_left_node).coef;
+            if ( FALSE == append_polyn(p_new_node, item)) {
+#ifdef  __DEBUG_PRINTF
+                fprintf(stderr, "[x] Appended to polynomial fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+                return (LIST_NULL);
+            }
+
+            p_right_node = get_next_polyn(p_right_node);
+        }
+
+        p_left_node = get_next_polyn(p_left_node);
+    }
+
+    if ( FALSE == merge_polyn(p_new_header)) {
+#ifdef  __DEBUG_PRINTF
+        fprintf(stderr, "[x] Merged polynomial after multiply fail. \n");
+#endif /* __DEBUG_PRINTF */
+
+        return (LIST_NULL);
     }
 
     return (p_new_header);

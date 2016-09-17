@@ -734,3 +734,139 @@ void T_sub_polyn(void)
         return ;
     }
 }
+
+void T_merge_polyn(void)
+{
+    PPoly p_polynomial = LIST_NULL;
+    const float coef_array[] = {
+        1.2, 3.5, 19.2 
+    };
+    const INT32 exp_array[] = {
+        2, 2, 2 
+    };
+    size_t index;
+
+    p_polynomial = create_polyn();
+    if ( LIST_NULL == p_polynomial) {
+        fprintf(stderr, "[x] Create new polynomial fail.\n");
+
+        return ;
+    }
+
+    for (index = 0; index != sizeof(coef_array)/sizeof(float); ++index) {
+        TermType item;
+        item.coef = coef_array[index];
+        item.exp  = exp_array[index];
+        if ( FALSE == append_polyn(p_polynomial, item)) {
+            fprintf(stderr, "[x] Append to polynomial fail. \n");
+
+            return ;
+        }
+    }
+
+    fprintf(stdout, "[*] Original polynomial is ");
+    print_polyn(p_polynomial);
+    putchar('\n');
+
+    if ( FALSE == merge_polyn(p_polynomial)) {
+        fprintf(stderr, "[x] Merged polynomial fail. \n");
+
+        return ;
+    }
+
+    fprintf(stdout, "[*] After merged polynomial: ");
+    print_polyn(p_polynomial);
+    putchar('\n');
+}
+
+void T_multipy_polyn(void)
+{
+    PPoly p_left                   = LIST_NULL;
+    PPoly p_right                  = LIST_NULL;
+    PPoly p_result                 = LIST_NULL;
+    const float left_coef_array[]  = {
+        2.0, 1.0, 4.0, 3.0
+    };
+    const INT32 left_exp_array[]   = {
+        3, 1, 5, 2
+    };
+    const float right_coef_array[] = {
+        3.0, 1.0, 4.0
+    };
+    const INT32 right_exp_array[]  = {
+        1, 2, 3
+    };
+    size_t index;
+    
+    p_left = create_polyn();
+    if ( !p_left) {
+        fprintf(stderr, "[x] Create header pointer for left polynomial fail. \n");
+
+        return ;
+    }
+
+    p_right = create_polyn();
+    if ( !p_right) {
+        fprintf(stderr, "[x] Create header pointer for right polynomial fail. \n");
+
+        return ;
+    }
+
+    p_result = create_polyn();
+    if ( !p_result) {
+        fprintf(stderr, "[x] Create header pointer for result polynomial fail. \n");
+
+        return ;
+    }
+
+    for (index = 0; index != sizeof(left_coef_array)/sizeof(float); ++index) {
+        TermType item;
+        item.coef = left_coef_array[index];
+        item.exp  = left_exp_array[index];
+        if ( FALSE == append_polyn(p_left, item)) {
+            fprintf(stderr, "[x] Appended to left polynomial fail. \n");
+
+            return ;
+        }
+    }
+
+    for (index = 0; index != sizeof(right_coef_array)/sizeof(float); ++index) {
+        TermType item;
+        item.coef = right_coef_array[index];
+        item.exp  = right_exp_array[index];
+        if ( FALSE == append_polyn(p_right, item)) {
+            fprintf(stderr, "[x] Appended to right polynomial fail. \n");
+
+            return ;
+        }
+    }
+
+    p_result = multiply_polyn(p_left, p_right);
+    if ( !p_result) {
+        fprintf(stderr, "[x] Multiply two polynomials fail. \n");
+
+        return ;
+    }
+
+    fprintf(stdout, "[*] Left polynomial: ");
+    print_polyn(p_left);
+    putchar('\n');
+
+    fprintf(stdout, "[*] Right polynomial: ");
+    print_polyn(p_right);
+    putchar('\n');
+
+    fprintf(stdout, "[*] Result polynomial: ");
+    print_polyn(p_result);
+    putchar('\n');
+
+    /* if ( FALSE == merge_polyn(p_result)) { */
+    /*     fprintf(stderr, "[x] Merged polynomial fail. \n"); */
+
+    /*     return ; */
+    /* } */
+
+    /* fprintf(stdout, "[*] After merged: "); */
+    /* print_polyn(p_result); */
+    /* putchar('\n'); */
+}

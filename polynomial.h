@@ -67,9 +67,10 @@ BOOL   is_empty_polyn(const PPoly p_header);
 UINT32 get_length_polyn(const PPoly p_header);
 STATE  sort_polyn(PPoly p_header);
 STATE  append_polyn(PPoly p_header, const TermType item);
+STATE  merge_polyn(PPoly p_header);
 PPoly  add_polyn(PPoly p_result, PPoly p_right);
 PPoly  sub_polyn(PPoly p_result, PPoly p_right);
-STATE  multiply_polyn(PPoly p_result, PPoly p_right);
+PPoly  multiply_polyn(PPoly p_result, PPoly p_right);
 PPoly  get_next_polyn(PPoly p_node);
 TermType get_data_polyn(PPoly p_node);
 

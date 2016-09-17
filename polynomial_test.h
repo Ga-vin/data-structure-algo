@@ -23,6 +23,8 @@ void T_sort_list(void);
 void T_merge_list(void);
 void T_add_polyn(void);
 void T_sub_polyn(void);
+void T_merge_polyn(void);
+void T_multipy_polyn(void);
 
 
 #endif /* __POLYNOMIAL_TEST_H_ */

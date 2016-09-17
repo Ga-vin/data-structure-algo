@@ -223,7 +223,15 @@ int main(int argc, char *argv[])
     T_add_polyn();
 #endif /* __DEBUG_ADD_ */
 
+#ifdef __DEBUG_SUB_    
     T_sub_polyn();
+#endif /* __DEBUG_SUB_ */
+
+#ifdef  __DEBUG_MERGE_    
+    T_merge_polyn();
+#endif /* __DEBUG_MERGE_ */
+
+    T_multipy_polyn();
     
     /* T_destroy_list(); */
     
