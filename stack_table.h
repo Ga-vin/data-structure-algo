@@ -26,7 +26,7 @@ typedef INT32    StackSize;
 typedef struct _StackTable_ {
     StackItemType    *top;
     StackItemType    *bottom;
-    StackSize         stack_size;            
+    StackSize         size;            
 } StackTable;
 
 typedef StackTable    *PStackTable;

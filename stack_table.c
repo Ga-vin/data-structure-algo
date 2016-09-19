@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -13,7 +14,29 @@
 /* Output   : The stack has been created                                     */
 StackTable init_tstack(StackSize size)
 {
+    StackTable stack;
+
+    memset(&stack, 0, sizeof(StackTable));
+    stack.top    = STACK_NULL;
+    stack.bottom = STACK_NULL;
     
+    if ( !size) {
+        stack.size = STACK_INIT_SIZE;
+    } else {
+        stack.size = size;
+    }
+
+    stack.top    = (StackItemType *)malloc(sizeof(StackItemType) * stack.size);
+    if ( !stack.top) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Malloc stack top pointer fail. \n");
+#endif /* __DEBUG_PRINTF_ */
+
+        return (stack);
+    }
+    stack.bottom = stack.top;
+
+    return (stack);
 }
 
 /* Name     : destroy_stack                                                  */
@@ -22,7 +45,28 @@ StackTable init_tstack(StackSize size)
 /* Output   : When destroied successfully, TRUE will be returned, or else FALSE*/
 STATE destroy_tstack(PStackTable p_stack)
 {
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+
+    if ( !p_stack->top ||
+         !p_stack->bottom) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack top or bottom pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
+
+        return (FALSE);
+    }
+
+    free(p_stack->top);
+    p_stack->top    = STACK_NULL;
+    p_stack->bottom = STACK_NULL;
+    p_stack->size   = 0;
+    
     return (TRUE);
 }
 

@@ -9,6 +9,7 @@
 #include "double_list_test.h"
 #include "circular_list_test.h"
 #include "polynomial_test.h"
+#include "stack_table_test.h"
 
 #define    DEBUG_WHICH_ONE     (2)
 #define    DEBUG_LIST_SWITCH   (2)
@@ -231,9 +232,13 @@ int main(int argc, char *argv[])
     T_merge_polyn();
 #endif /* __DEBUG_MERGE_ */
 
+#ifdef __DEBUG_MULTIPY_    
     T_multipy_polyn();
-    
-    /* T_destroy_list(); */
+#endif /* __DEBUG_MULTIPY_ */
+
+    T_init_tstack();
+
+    T_destroy_tstack();
     
     return 0;
 }
