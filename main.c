@@ -238,6 +238,22 @@ int main(int argc, char *argv[])
 
     T_init_tstack();
 
+    T_get_length_tstack();
+
+    T_is_empty_tstack();
+
+    T_push_tstack();
+
+    T_get_length_tstack();
+
+    T_clear_tstack();
+
+    T_push_tstack();
+
+    T_pop_tstack();
+
+    T_get_length_tstack();
+
     T_destroy_tstack();
     
     return 0;

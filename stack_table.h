@@ -17,6 +17,8 @@
 #define    STACK_INIT_SIZE     (100)
 #define    STACK_INCREASE_STEP (10)
 
+#define    STACK_EMPTY          (0)
+
 /* *****************************************************************************
  * New definition of new constances
  ******************************************************************************/

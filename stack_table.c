@@ -76,7 +76,17 @@ STATE destroy_tstack(PStackTable p_stack)
 /* Output   : When cleared successfully, TRUE will be returned, or else FALSE*/
 STATE clear_tstack(PStackTable p_stack)
 {
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+
+    p_stack->top  = p_stack->bottom;
+    p_stack->size = STACK_INIT_SIZE;
+    
     return (TRUE);
 }
 
@@ -86,7 +96,15 @@ STATE clear_tstack(PStackTable p_stack)
 /* Output   : When empty, TRUE will be returned, or else FALSE               */
 BOOL is_empty_tstack(const PStackTable p_stack)
 {
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+    
+    return ((p_stack->top == p_stack->bottom) ? (TRUE) : (FALSE));
 }
 
 /* Name     : get_length_tstack                                              */
@@ -95,7 +113,15 @@ BOOL is_empty_tstack(const PStackTable p_stack)
 /* Output   : How many elements in it                                        */
 StackSize get_length_tstack(const PStackTable p_stack)
 {
-    
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
+
+        return (STACK_EMPTY);
+    }
+
+    return ((p_stack->top - p_stack->bottom) / sizeof(StackItemType));
 }
 
 /* Name     : get_top_tstack                                                 */
@@ -106,7 +132,22 @@ StackSize get_length_tstack(const PStackTable p_stack)
 STATE get_top_tstack(const PStackTable  p_stack,
                      StackItemType     *p_item)
 {
+    if ( !p_stack ||
+         !p_item) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer or item pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+
+    if ( is_empty_tstack(p_stack)) {
+        *p_item = 0;
+
+        return (FALSE);
+    }
+
+    *p_item = *(p_stack->top - 1);
 
     return (TRUE);
 }
@@ -119,7 +160,28 @@ STATE get_top_tstack(const PStackTable  p_stack,
 STATE push_tstack(PStackTable   p_stack,
                   StackItemType item)
 {
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+
+    if ( get_length_tstack(p_stack) == p_stack->size) {
+        p_stack->bottom = (StackItemType *)realloc(p_stack->bottom,
+                                               (p_stack->size + STACK_INCREASE_STEP) * sizeof(StackItemType));
+        if ( !p_stack->bottom) {
+#ifdef __DEBUG_PRINTF_
+            fprintf(stderr, "[x] Realloc space fail. \n");
+#endif /* __DEBUG_PRINTF_ */
+
+            return (FALSE);
+        }
+    }
+
+    *(p_stack->top) = item;
+    (p_stack->top)++;
 
     return (TRUE);
 }
@@ -132,7 +194,21 @@ STATE push_tstack(PStackTable   p_stack,
 STATE pop_tstack(PStackTable    p_stack,
                  StackItemType *p_item)
 {
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+
+    if ( is_empty_tstack(p_stack)) {
+        *p_item = 0;
+
+        return (FALSE);
+    }
+
+    *p_item = *(--(p_stack->top));
 
     return (TRUE);
 }
@@ -145,7 +221,22 @@ STATE pop_tstack(PStackTable    p_stack,
 STATE traverse_tstack(const PStackTable p_stack,
                       void (*callback)(const StackItemType item))
 {
+    StackItemType *p_move = STACK_NULL;
+    
+    if ( !p_stack ||
+         !callback) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer or function pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+
+    p_move = p_stack->bottom;
+    while ( p_move != p_stack->top) {
+        callback(*p_move);
+        ++p_move;
+    }
 
     return (TRUE);
 }
