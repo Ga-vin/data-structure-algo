@@ -178,6 +178,9 @@ STATE push_tstack(PStackTable   p_stack,
 
             return (FALSE);
         }
+
+        p_stack->size += STACK_INCREASE_STEP;
+        p_stack->top   = p_stack->bottom + p_stack->size;
     }
 
     *(p_stack->top) = item;

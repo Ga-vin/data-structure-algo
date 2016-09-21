@@ -17,6 +17,8 @@ static void __print_stack(const StackItemType item)
 }
 
 #define    __DEBUG_SIZE_50_
+#undef     __DEBUG_SIZE_50_
+#define    __DEBUG_SIZE_0_
 void T_init_tstack(void)
 {
 #ifdef __DEBUG_SIZE_0_    
@@ -158,7 +160,7 @@ void T_push_tstack(void)
     }
 
     __print_title("Push Stack");
-    for (index = 0; index != 10; ++index) {
+    for (index = 0; index != 30; ++index) {
         item = index;
         if ( FALSE == push_tstack(&_G_stack,
                                   item)) {
@@ -166,6 +168,12 @@ void T_push_tstack(void)
         } else {
             fprintf(stdout, "[*] Push <%d> into stack successfully. \n", item);
         }
+
+        if ( FALSE == traverse_tstack(&_G_stack,
+                                      __print_stack)) {
+            fprintf(stderr, "[x] Traverse stack fail. \n");
+        }
+        putchar('\n');        
     }
 
     if ( FALSE == traverse_tstack(&_G_stack,
@@ -194,5 +202,11 @@ void T_pop_tstack(void)
         } else {
             fprintf(stdout, "[*] Pop <%4d> from stack top success. \n", item);
         }
+
+        if ( FALSE == traverse_tstack(&_G_stack,
+                                      __print_stack)) {
+            fprintf(stderr, "[x] Traverse stack fail. \n");
+        }
+        putchar('\n');        
     }
 }
