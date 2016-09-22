@@ -26,6 +26,7 @@ PStackLink init_lstack(void)
         return (STACK_LINK_NULL);
     }
 
+    memset(&GET_STACK_DATA(p_new_stack), 0, sizeof(StackValueType));
     p_new_stack->next = STACK_LINK_NULL;
 
     return (p_new_stack);
@@ -159,7 +160,7 @@ STATE      get_top_lstack(const PStackLink p_stack,
         return (FALSE);
     }
 
-    memcpy(p_item, &(GET_NEXT_STACK(p_stack)->item), sizeof(StackValueType));
+    memcpy(p_item, &(GET_STACK_DATA(GET_NEXT_STACK(p_stack))), sizeof(StackValueType));
 
     return (TRUE);
 }
@@ -190,7 +191,7 @@ STATE      push_lstack(PStackLink     p_stack,
 
         return (FALSE);
     }
-    memcpy(&(p_new_node->item), &item, sizeof(StackValueType));
+    memcpy(&(GET_STACK_DATA(p_new_node)), &item, sizeof(StackValueType));
     
     GET_NEXT_STACK(p_new_node) = GET_NEXT_STACK(p_stack);
     GET_NEXT_STACK(p_stack)    = p_new_node;
@@ -227,7 +228,7 @@ STATE      pop_lstack(PStackLink      p_stack,
         return (FALSE);
     }
 
-    memcpy(p_item, &(GET_NEXT_STACK(p_stack)->item), sizeof(StackValueType));
+    memcpy(p_item, &(GET_STACK_DATA(GET_NEXT_STACK(p_stack))), sizeof(StackValueType));
     p_node = GET_NEXT_STACK(p_stack);
     GET_NEXT_STACK(p_stack) = GET_NEXT_STACK(GET_NEXT_STACK(p_stack));
     free(p_node);
