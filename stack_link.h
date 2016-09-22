@@ -38,7 +38,7 @@ STATE      destroy_lstack(PStackLink p_stack);
 STATE      clear_lstack(PStackLink p_stack);
 BOOL       is_empty_lstack(const PStackLink p_stack);
 INT32      get_length_lstack(const PStackLink p_stack);
-STATE      get_top_lstack(const PStackLink p_stack);
+STATE      get_top_lstack(const PStackLink p_stack, StackValueType *p_item);
 STATE      push_lstack(PStackLink p_stack, StackValueType item);
 STATE      pop_lstack(PStackLink p_stack, StackValueType *p_item);
 STATE      traverse_lstack(const PStackLink p_stack, void (*callback)(StackValueType item));
