@@ -6,6 +6,8 @@
 
 #include "stack_link.h"
 
+#define    GET_NEXT_STACK(p_stack)    (p_stack->next)
+
 /* Name     : init_lstack                                                    */
 /* Function : Initialization for the stack                                   */
 /* Input    : NONE                                                           */
@@ -34,7 +36,27 @@ PStackLink init_lstack(void)
 /* Output   : When destroyed successfully, TRUE will be returned, or else FALSE */
 STATE      destroy_lstack(PStackLink p_stack)
 {
+    PStackLink p_node = STACK_LINK_NULL;
+    PStackLink p_temp = STACK_LINK_NULL;
     
+    if ( !p_stack) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[x] Stack pointer is NULL. \n");
+#endif /* __DEBUG_PRINTF_ */
+
+        return (FALSE);
+    }
+
+    p_node = GET_NEXT_STACK(p_stack);
+    while ( p_node) {
+        p_temp = GET_NEXT_STACK(p_node);
+        free(p_node);
+        p_node = p_temp;
+    }
+    free(p_stack);
+    p_stack = STACK_LINK_NULL;
+
+    return (TRUE);
 }
 
 /* Name     : clear_lstack                                                   */
