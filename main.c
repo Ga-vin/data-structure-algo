@@ -10,6 +10,7 @@
 #include "circular_list_test.h"
 #include "polynomial_test.h"
 #include "stack_table_test.h"
+#include "stack_link_test.h"
 
 #define    DEBUG_WHICH_ONE     (2)
 #define    DEBUG_LIST_SWITCH   (2)
@@ -236,6 +237,7 @@ int main(int argc, char *argv[])
     T_multipy_polyn();
 #endif /* __DEBUG_MULTIPY_ */
 
+#ifdef __DEBUG_STACK_TABLE_    
     T_init_tstack();
 
     T_get_length_tstack();
@@ -255,6 +257,33 @@ int main(int argc, char *argv[])
     T_get_length_tstack();
 
     T_destroy_tstack();
+#endif /* __DEBUG_STACK_TABLE_ */
+
+    T_init_lstack();
+
+    T_is_empty_lstack();
+
+    T_get_length_lstack();
+
+    T_push_lstack();
+
+    T_is_empty_list();
+
+    T_get_length_lstack();
+
+    T_traverse_lstack();
+
+    T_pop_lstack();
+
+    T_is_empty_list();
+
+    T_get_length_lstack();
+
+    T_traverse_lstack();
+
+    T_test_lstack();
+
+    T_destroy_lstack();
     
     return 0;
 }

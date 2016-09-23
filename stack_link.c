@@ -9,6 +9,8 @@
 #define    GET_NEXT_STACK(p_stack)    (p_stack->next)
 #define    GET_STACK_DATA(p_stack)    (p_stack->item)
 
+#define    __DEBUG_PRINTF_
+
 /* Name     : init_lstack                                                    */
 /* Function : Initialization for the stack                                   */
 /* Input    : NONE                                                           */
@@ -88,7 +90,7 @@ STATE      clear_lstack(PStackLink p_stack)
     return (TRUE);
 }
 
-/* Name     : is_empty_lstack                                               */
+/* Name     : is_empty_lstack                                                */
 /* Function : Check whether the stack is empty                               */
 /* Input    : p_stack   --- stack pointer                                    */
 /* Output   : When it is empty, TRUE will be returned, or else FALSE         */
@@ -107,7 +109,7 @@ BOOL      is_empty_lstack(const PStackLink p_stack)
              (FALSE));
 }
 
-/* Name     : get_length_lstack                                             */
+/* Name     : get_length_lstack                                              */
 /* Function : Get how many nodes in the stack                                */
 /* Input    : p_stack   --- stack pointer                                    */
 /* Output   : How many nodes in the stack                                    */
