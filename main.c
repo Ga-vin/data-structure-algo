@@ -259,6 +259,7 @@ int main(int argc, char *argv[])
     T_destroy_tstack();
 #endif /* __DEBUG_STACK_TABLE_ */
 
+#ifdef __DEBUG_STACK_LINK_    
     T_init_lstack();
 
     T_is_empty_lstack();
@@ -284,6 +285,10 @@ int main(int argc, char *argv[])
     T_test_lstack();
 
     T_destroy_lstack();
+
+#endif /* __DEBUG_STACK_LINK_ */
+
+    T_diff_test_stack();
     
     return 0;
 }
