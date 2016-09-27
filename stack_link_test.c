@@ -4,9 +4,12 @@
 #include <string.h>
 #include <sys/types.h>
 #include <time.h>
+#include <sys/time.h>
 
 #include "stack_link.h"
 #include "stack_link_test.h"
+
+#include "stack_table.h"
 
 static PStackLink _G_p_stack = STACK_LINK_NULL;
 
@@ -309,3 +312,66 @@ void T_test_lstack(void)
 
     __get_user_input();
 }
+
+#define    ITER_TIMES    (10000000)
+void T_diff_test_stack(void)
+{
+    UINT32 index;
+    PStackLink p_stack_link = STACK_LINK_NULL;
+    StackTable stack_table;
+    struct timeval tv_start;
+    struct timeval tv_end;
+
+    fprintf(stdout, "[*] Initialization for two formats stack....\n");
+    p_stack_link = init_lstack();
+    if ( STACK_LINK_NULL == p_stack_link) {
+        fprintf(stderr, "[x] Initialization for link stack fail. \n");
+
+        return ;
+    }
+
+    stack_table = init_tstack(ITER_TIMES);
+    if ( !stack_table.bottom) {
+        fprintf(stderr, "[x] Initilization for table stack fail. \n");
+
+        return ;
+    }
+    fprintf(stdout, "[*] Initialization successfully....\n");
+
+    memset(&tv_start, 0, sizeof(struct timeval));
+    memset(&tv_end,   0, sizeof(struct timeval));
+    fprintf(stdout, "[*] Push %d times....\n", ITER_TIMES);
+    gettimeofday(&tv_start, NULL);
+    for (index = 0; index != ITER_TIMES; ++index) {
+        if ( FALSE == push_lstack(p_stack_link, index)) {
+            fprintf(stderr, "[x] Push item for link stack at %d fail. \n", index);
+
+            return ;
+        }
+    }
+    gettimeofday(&tv_end, NULL);
+    fprintf(stdout, "[Link Stack] Total time expends %10.6f s. \n", ((float)(tv_end.tv_sec*1000+tv_end.tv_usec-tv_start.tv_sec*1000-tv_start.tv_usec)/1000.0));
+
+    memset(&tv_start, 0, sizeof(struct timeval));
+    memset(&tv_end,   0, sizeof(struct timeval));
+    fprintf(stdout, "Push %d times....\n", ITER_TIMES);
+    gettimeofday(&tv_start, NULL);
+    for (index = 0; index != ITER_TIMES; ++index) {
+        if ( FALSE == push_tstack(&stack_table, index)) {
+            fprintf(stderr, "[x] Push item with table stack at %d fail. \n", index);
+
+            return ;
+        }
+    }
+    gettimeofday(&tv_end, NULL);
+    fprintf(stdout, "[Table Stack] Total time expends %10.6f s. \n", ((float)(tv_end.tv_sec*1000+tv_end.tv_usec-tv_start.tv_sec*1000-tv_start.tv_usec)/1000.0));
+
+    if ( FALSE == destroy_tstack(&stack_table)) {
+        fprintf(stderr, "[x] Destroy table stack fail. \n");
+    }
+
+    if ( FALSE == destroy_lstack(p_stack_link)) {
+        fprintf(stderr, "[x] Destroy link stack fail. \n");
+    }
+}
+    

@@ -11,5 +11,6 @@ void T_push_lstack(void);
 void T_pop_lstack(void);
 void T_traverse_lstack(void);
 void T_test_lstack(void);
+void T_diff_test_stack(void);
 
 #endif /* __STACK_LINK_TEST_H_ */
