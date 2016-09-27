@@ -218,8 +218,6 @@ static void __add_item(void)
     
     if ( FALSE == push_lstack(_G_p_stack, item)) {
         fprintf(stderr, "[x] Push fail. \n");
-    } else {
-        fprintf(stdout, "[*] Push success. \n");
     }
 }
 
@@ -229,9 +227,7 @@ static void __del_item(void)
 
     if ( FALSE == pop_lstack(_G_p_stack, &item)) {
         fprintf(stderr, "[x] Del item from stack fail. \n");
-    } else {
-        fprintf(stdout, "[*] Popped item is %d. \n", item);
-    }
+    } 
 }
 
 static void __get_counts(void)
@@ -246,7 +242,7 @@ static void __get_top(void)
     if ( FALSE == get_top_lstack(_G_p_stack, &item)) {
         fprintf(stderr, "[x] Get top item from stack fail. \n");
     } else {
-        fprintf(stdout, "[x] Get top item<%d> success. \n", item);
+        fprintf(stdout, "Top item is %d. \n", item);
     }
 }
 
@@ -254,25 +250,17 @@ static void __print_item(void)
 {
     if ( FALSE == traverse_lstack(_G_p_stack, __print_msg)) {
         fprintf(stderr, "[x] Traverse stack fail. \n");
-    } else {
-        fprintf(stdout, "[*] Traverse stack successfully.");
-    }
+    } 
 }
 
-void T_test_lstack(void)
+static void __get_user_input(void)
 {
-    INT32          user_input;
+    UINT8 user_input;
     
-    if ( !_G_p_stack) {
-        fprintf(stderr, "[x] Global stack is NULL. \n");
-
-        return ;
-    }
-
     do {
         __print_menu();
 
-        scanf("%d", &user_input);
+        scanf("%c", &user_input);
         __clean_line();
 
         switch( user_input)  {
@@ -300,10 +288,24 @@ void T_test_lstack(void)
         case 'T':
         case 't':
             __print_item();
+            break;
 
         case 'x':
         case 'X':
+            fprintf(stdout, "System will be terminated. \n");
+            exit(EXIT_FAILURE);
             break;
         }
-    } while ( TRUE);
+    } while ( TRUE);    
+}
+
+void T_test_lstack(void)
+{
+    if ( !_G_p_stack) {
+        fprintf(stderr, "[x] Global stack is NULL. \n");
+
+        return ;
+    }
+
+    __get_user_input();
 }
