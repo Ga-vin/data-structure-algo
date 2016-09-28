@@ -20,7 +20,7 @@
 /* *****************************************************************************
  * New definition of new constances
  ******************************************************************************/
-typedef    UINT32    StackValueType;
+typedef    INT32    StackValueType;
 /* typedef    INT32     StackSize; */
 
 typedef struct _StackLink_ {

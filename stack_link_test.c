@@ -8,7 +8,6 @@
 
 #include "stack_link.h"
 #include "stack_link_test.h"
-
 #include "stack_table.h"
 
 static PStackLink _G_p_stack = STACK_LINK_NULL;

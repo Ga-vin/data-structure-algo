@@ -11,6 +11,7 @@
 #include "polynomial_test.h"
 #include "stack_table_test.h"
 #include "stack_link_test.h"
+#include "application.h"
 
 #define    DEBUG_WHICH_ONE     (2)
 #define    DEBUG_LIST_SWITCH   (2)
@@ -288,7 +289,11 @@ int main(int argc, char *argv[])
 
 #endif /* __DEBUG_STACK_LINK_ */
 
+#ifdef __DEBUG_COMPLEX_    
     T_diff_test_stack();
+#endif /* __DEBUG_COMPLEX_ */
+
+    T_convert_10_to_any_system();
     
     return 0;
 }
