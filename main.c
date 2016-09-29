@@ -293,7 +293,11 @@ int main(int argc, char *argv[])
     T_diff_test_stack();
 #endif /* __DEBUG_COMPLEX_ */
 
+#ifdef __DEBUG_CONVERT_    
     T_convert_10_to_any_system();
+#endif /* __DEBUG_CONVERT_ */
+
+    T_is_parentheses_match();
     
     return 0;
 }

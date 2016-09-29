@@ -28,4 +28,7 @@ typedef    UINT32      StackBaseSystem;
 StackItemType convert_10_to_any_system(const StackItemType item, StackBaseSystem base);
 void T_convert_10_to_any_system(void);
 
+BOOL is_parentheses_match(const INT8 *buf, size_t len);
+void T_is_parentheses_match(void);
+
 #endif /* __APPLICATION_H_ */
