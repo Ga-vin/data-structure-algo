@@ -12,6 +12,7 @@
 #include "stack_table_test.h"
 #include "stack_link_test.h"
 #include "application.h"
+#include "queue_link_test.h"
 
 #define    DEBUG_WHICH_ONE     (2)
 #define    DEBUG_LIST_SWITCH   (2)
@@ -156,7 +157,7 @@ int main(int argc, char *argv[])
     T_get_last_data_CList();
 
     T_insertItemTailCList();
-
+p
     T_getItemByIndexCList();
 #endif /* __DEBUG_CIRCULE */    
 
@@ -297,7 +298,21 @@ int main(int argc, char *argv[])
     T_convert_10_to_any_system();
 #endif /* __DEBUG_CONVERT_ */
 
+#ifdef __DEBUG_MATH_    
     T_is_parentheses_match();
+#endif /* __DEBUG_MATH_ */
+
+#ifdef __DEBUG_EDIT_    
+    line_edit_app();
+#endif /* __DEBUG_EDIT_ */
+
+#ifdef __DEBUG_SUFFIX_    
+    calc_suffix_app();
+#endif /* __DEBUG_SUFFIX_  */
+
+#ifdef __DEBUG_MID_TO_SUFFIX_    
+    mid_to_suffix();
+#endif /* __DEBUG_MID_TO_SUFFIX_ */
     
     return 0;
 }
