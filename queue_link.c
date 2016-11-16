@@ -6,19 +6,37 @@
 
 #include "queue_link.h"
 
-BOOL init_link_queue(PLQueue *pp_queue)
+BOOL init_link_queue(PLQueue p_queue)
+{
+    if ( p_queue) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[INFO] Queue object has been initialized.  File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
+
+        return (TRUE);
+    }
+
+    p_queue->front = p_queue->rear = (PQLNode)malloc(sizeof(QLNode));
+    if ( !p_queue->front) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Malloc fail. File: %s Line: %d Func: %s. ", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
+
+        return (FALSE);
+    }
+
+    p_queue->front->next = NULL;
+    
+    return (TRUE);
+}
+
+BOOL destroy_link_queue(PLQueue p_queue)
 {
 
     return (TRUE);
 }
 
-BOOL destroy_link_queue(PLQueue *pp_queue)
-{
-
-    return (TRUE);
-}
-
-BOOL clear_link_queue(PLQueue *pp_queue)
+BOOL clear_link_queue(PLQueue p_queue)
 {
 
 
@@ -43,14 +61,14 @@ void * get_head_link_queue(const PLQueue p_queue)
     
 }
 
-BOOL enqueue_link_queue(PLQueue *pp_queue,
+BOOL enqueue_link_queue(PLQueue p_queue,
                         void    *argv)
 {
 
     return (TRUE);
 }
 
-BOOL dequeue_link_queue(PLQueue *pp_queue,
+BOOL dequeue_link_queue(PLQueue p_queue,
                         void    *argv)
 {
 
