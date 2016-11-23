@@ -6,8 +6,8 @@
 typedef void (*PrintCallback)(void *argv);
 
 typedef struct _QLNode {
-    void          *data;
-    struct QLNode *next;
+    void           *data;
+    struct _QLNode *next;
 } QLNode;
 
 typedef QLNode *PQLNode;
