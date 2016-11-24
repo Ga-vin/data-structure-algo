@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#define __DEBUG_PRINTF_
+
 #include "queue_link.h"
 
 /* Name     : init_link_queue                      */
@@ -122,30 +124,127 @@ INT32 get_length_link_queue(const LQueue queue)
     return (cnt);
 }
 
+/* Name     : get_head_link_queue                  */
+/* Function : Get the header of queue              */
+/* Input    : queue --> Queue to be checked        */
+/* Output   : Data of header for link queue        */
 void * get_head_link_queue(const PLQueue p_queue)
 {
-    
+    if ( !p_queue) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Queue is not initialized. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
+
+        return (NULL);
+    }
+
+    if ( p_queue->front == p_queue->rear) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Queue is empty. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
+
+        return (NULL);
+    } else {
+        return (p_queue->front->data);
+    }
 }
 
+/* Name     : enqueue_link_queue                   */
+/* Function : Insert item to  header of queue      */
+/* Input    : queue --> Queue to be checked        */
+/* Output   : TRUE will be returned when success   */
 BOOL enqueue_link_queue(PLQueue p_queue,
                         void    *argv)
 {
+    PQLNode p_temp_node = NULL;
+    
+    if ( !p_queue) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Queue is not initialized. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
+    
+    p_temp_node = (PQLNode)malloc(sizeof(QLNode));
+    if ( !p_temp_node) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Malloc fail. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
+
+        return (FALSE);
+    }
+
+    memcpy(p_temp_node->data, argv, sizeof(argv));
+    p_temp_node->next = NULL;
+
+    p_queue->rear->next = p_temp_node;
+    p_queue->rear       = p_temp_node;
+    
     return (TRUE);
 }
 
+/* Name     : dequeue_link_queue                   */
+/* Function : Delete item from header of queue     */
+/* Input    : queue --> Queue to be checked        */
+/* Output   : TRUE will be returned when success   */
 BOOL dequeue_link_queue(PLQueue p_queue,
                         void    *argv)
 {
+    PQLNode p_temp_node = NULL;
+    
+    if ( !p_queue) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Queue is not initialized. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
 
+    if ( TRUE == is_empty_link_queue(*p_queue)) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[INFO] Queue is empty. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
+
+        return (FALSE);
+    }
+
+    p_temp_node = p_queue->front->next;
+    memcpy(argv, p_temp_node->data, sizeof(argv));
+
+    p_queue->front->next = p_temp_node->next;
+    if ( p_temp_node == p_queue->rear) {
+        p_queue->rear = p_queue->front;
+    }
+    free(p_temp_node);
+    
     return (TRUE);
 }
 
+/* Name     : traverse_link_queue                  */
+/* Function : Traverse each item of queue          */
+/* Input    : queue --> Queue to be checked
+              callback --> invoke function         */
+/* Output   : TRUE will be returned when success   */
 BOOL traverse_link_queue(const PLQueue p_queue,
                          PrintCallback callback)
 {
+    PQLNode p_temp = NULL;
+    
+    if ( !p_queue) {
+#ifdef __DEBUG_PRINTF_
+        fprintf(stderr, "[ERROR] Queue is not initalized. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
+#endif /* __DEBUG_PRINTF_ */
 
+        return (FALSE);
+    }
 
+    p_temp = p_queue->front;
+    while ( p_temp != p_queue->rear) {
+        callback(p_temp->data);
+
+        p_temp = p_temp->next;
+    }
+    
     return (TRUE);
 }
