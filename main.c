@@ -313,6 +313,8 @@ p
 #ifdef __DEBUG_MID_TO_SUFFIX_    
     mid_to_suffix();
 #endif /* __DEBUG_MID_TO_SUFFIX_ */
+
+    T_link_queue_test();
     
     return 0;
 }

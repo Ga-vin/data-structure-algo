@@ -19,4 +19,6 @@ void T_dequeue_link_queue(void);
 
 void T_traverse_link_queue(void);
 
+void T_link_queue_test(void);
+
 #endif /* QUEUE_LINK_TEST_H_ */

@@ -15,6 +15,7 @@
               initialized, or else FALSE           */
 BOOL init_link_queue(PLQueue p_queue)
 {
+#ifdef __DEBUG_QUEUE_    
     if ( p_queue) {
 #ifdef __DEBUG_PRINTF_
         fprintf(stderr, "[INFO] Queue object has been initialized.  File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
@@ -22,6 +23,7 @@ BOOL init_link_queue(PLQueue p_queue)
 
         return (TRUE);
     }
+#endif __DEBUG_QUEUE_    
 
     p_queue->front = p_queue->rear = (PQLNode)malloc(sizeof(QLNode));
     if ( !p_queue->front) {
@@ -128,14 +130,14 @@ INT32 get_length_link_queue(const LQueue queue)
 /* Function : Get the header of queue              */
 /* Input    : queue --> Queue to be checked        */
 /* Output   : Data of header for link queue        */
-void * get_head_link_queue(const PLQueue p_queue)
+QNodeType get_head_link_queue(const PLQueue p_queue)
 {
     if ( !p_queue) {
 #ifdef __DEBUG_PRINTF_
         fprintf(stderr, "[ERROR] Queue is not initialized. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
 #endif /* __DEBUG_PRINTF_ */
 
-        return (NULL);
+        return (-1);
     }
 
     if ( p_queue->front == p_queue->rear) {
@@ -143,9 +145,10 @@ void * get_head_link_queue(const PLQueue p_queue)
         fprintf(stderr, "[ERROR] Queue is empty. File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
 #endif /* __DEBUG_PRINTF_ */
 
-        return (NULL);
+        return (-1);
     } else {
-        return (p_queue->front->data);
+        /* Return first node of queue except header of queue */
+        return (p_queue->front->next->data);
     }
 }
 
@@ -165,7 +168,7 @@ BOOL enqueue_link_queue(PLQueue p_queue,
 
         return (FALSE);
     }
-    
+
     p_temp_node = (PQLNode)malloc(sizeof(QLNode));
     if ( !p_temp_node) {
 #ifdef __DEBUG_PRINTF_
@@ -175,9 +178,10 @@ BOOL enqueue_link_queue(PLQueue p_queue,
         return (FALSE);
     }
 
-    memcpy(p_temp_node->data, argv, sizeof(argv));
+    p_temp_node->data = *(QNodeType *)argv;
     p_temp_node->next = NULL;
 
+    /* Insert new node into tail of queue, and move pointer of tail to last node */
     p_queue->rear->next = p_temp_node;
     p_queue->rear       = p_temp_node;
     
@@ -191,7 +195,8 @@ BOOL enqueue_link_queue(PLQueue p_queue,
 BOOL dequeue_link_queue(PLQueue p_queue,
                         void    *argv)
 {
-    PQLNode p_temp_node = NULL;
+    PQLNode    p_temp_node = NULL;
+    QNodeType *p_value     = (QNodeType *)argv;
     
     if ( !p_queue) {
 #ifdef __DEBUG_PRINTF_
@@ -210,9 +215,10 @@ BOOL dequeue_link_queue(PLQueue p_queue,
     }
 
     p_temp_node = p_queue->front->next;
-    memcpy(argv, p_temp_node->data, sizeof(argv));
+    *p_value    = p_temp_node->data;
 
     p_queue->front->next = p_temp_node->next;
+    /* Make sure header be located before tail of queue */
     if ( p_temp_node == p_queue->rear) {
         p_queue->rear = p_queue->front;
     }
@@ -239,12 +245,14 @@ BOOL traverse_link_queue(const PLQueue p_queue,
         return (FALSE);
     }
 
-    p_temp = p_queue->front;
+    p_temp = p_queue->front->next;
     while ( p_temp != p_queue->rear) {
-        callback(p_temp->data);
+        callback((void *)&(p_temp->data));
 
         p_temp = p_temp->next;
     }
+    callback((void *)&p_temp->data);
+    fprintf(stdout, "\n");
     
     return (TRUE);
 }
