@@ -314,7 +314,11 @@ p
     mid_to_suffix();
 #endif /* __DEBUG_MID_TO_SUFFIX_ */
 
+#ifdef __DEBUG_LINK_QUEUE    
     T_link_queue_test();
+#endif /* __DEBUG_LINK_QUEUE */
+
+    T_test_queue();
     
     return 0;
 }

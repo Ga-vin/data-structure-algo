@@ -13,7 +13,7 @@ PQANode init_array_queue(INT32 max_size)
 {
     PQANode p_queue = NULL;
     
-    if ( max_size < 0) {
+    if ( max_size <= 0) {
 #ifdef __DEBUG_PRINTF_
         fprintf(stderr, "[ERROR] Max size of queue should be positive. "
                 "File: %s Line: %d Func: %s \n", GET_FILE, GET_LINE, GET_FUNC);
@@ -98,6 +98,7 @@ BOOL is_empty_array_queue(const PQANode p_queue)
 
         return (QUEUE_ARRAY_INVALID_ITEM);        
     }
+    
     return ((p_queue->size == 0) ? TRUE : FALSE);
 }
 
@@ -139,6 +140,7 @@ QANodeType get_head_array_queue(const PQANode p_queue)
 
         return (QUEUE_ARRAY_INVALID_ITEM);
     }
+    
     if ( TRUE == is_empty_array_queue(p_queue)) {
         return (QUEUE_ARRAY_INVALID_ITEM);
     }
@@ -213,7 +215,7 @@ BOOL dequeue_array_queue(PQANode p_queue, void *p_argv)
     }
 
     *p_value = GET_DATA(p_queue, p_queue->front);
-    p_queue->front--;
+    p_queue->front++;
     p_queue->size--;
 
     return (TRUE);
